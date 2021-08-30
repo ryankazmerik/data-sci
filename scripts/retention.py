@@ -31,7 +31,7 @@ def get_training_dataset(client_id, product, train_season_year):
         WHERE 
             lkupclientid = {client_id} 
         AND 
-            productgrouping = '{product}' 
+            productgrouping = {"'"+ str(product) + "'"} 
         AND 
             year < {train_season_year};
     '''
@@ -67,4 +67,4 @@ if __name__ == "__main__":
                     product['train_year']
                 )
 
-                print(df_train.head())
+                print(df_train.info())
