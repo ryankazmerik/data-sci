@@ -1,0 +1,29 @@
+[
+  {
+      "lkupclientid": 9,
+      "clientcode": "hops",
+      "league": "MILB",
+      "stlrdbname":"stlrMILB",
+      "products": [{
+        "type": "Full Season", 
+        "train_year": 2019,
+        "test_year": 2021
+      },
+      {
+        "type": "Mini Plans / Flex Plans",
+        "train_year":2019,
+        "test_year":2021
+      },
+      {
+        "type": "Hospitality",
+        "train_year":2019,
+        "test_year":2021
+      },
+      {
+        "type": "Half Season",
+        "train_year":2019,
+        "test_year":2021
+      }
+    ]
+  }
+]

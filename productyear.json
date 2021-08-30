@@ -1,0 +1,546 @@
+[
+  {
+      "lkupclientid": 9,
+      "clientcode": "hops",
+      "league": "MILB",
+      "stlrdbname":"stlrMILB",
+      "products": [{
+          "Full Season" : {
+            "train_year": 2019,
+            "test_year": 2021
+          }},
+          {
+              "Mini Plans / Flex Plans":{
+                  "train_year":2019,
+                  "test_year":2021
+          }},
+          {
+              "Hospitality":{
+                  "train_year":2019,
+                  "test_year":2021
+          }},
+          {
+            "Half Season":{
+                "train_year":2019,
+                "test_year":2021
+        }}
+      ]
+  },
+
+  {
+    "lkupclientid": 11,
+    "clientcode": "bulls",
+    "league": "MILB",
+    "stlrdbname":"stlrMILB",
+    "products": [{
+        "Full Season" : {
+          "train_year": 2019,
+          "test_year": 2021
+        }},
+        {
+            "Group":{
+                "train_year":2019,
+                "test_year":2021
+        }},
+        {
+            "Half Season":{
+                "train_year":2019,
+                "test_year":2021
+        }},
+        {
+          "Mini Plan":{
+              "train_year":2019,
+              "test_year":2021
+      }}
+    ]
+},
+{
+  "lkupclientid": 12,
+  "clientcode": "rivercats",
+  "league": "MILB",
+  "stlrdbname":"stlrMILB",
+  "products": [{
+      "Full Season" : {
+        "train_year": 2019,
+        "test_year": 2021
+      }},
+      {
+          "Half Season":{
+              "train_year":2019,
+              "test_year":2021
+      }},
+      {
+          "Mini Plan":{
+              "train_year":2019,
+              "test_year":2021
+      }},
+      {
+        "Quarter Season":{
+            "train_year":2019,
+            "test_year":2021
+    }}
+  ]
+},
+{
+  "lkupclientid": 15,
+  "clientcode": "vegas51s",
+  "league": "MILB",
+  "stlrdbname":"stlrMILB",
+  "products": [{
+      "Full Season" : {
+        "train_year": 2019,
+        "test_year": 2021
+      }},
+      {
+          "Half Season":{
+              "train_year":2019,
+              "test_year":2021
+      }},
+      {
+          "Mini Plan":{
+              "train_year":2019,
+              "test_year":2021
+      }}
+  ]
+},
+{
+  "lkupclientid": 17,
+  "clientcode": "rainiers",
+  "league": "MILB",
+  "stlrdbname":"stlrMILB",
+  "products": [{
+      "Full Season" : {
+        "train_year": 2019,
+        "test_year": 2021
+      }},
+      {
+          "Half Season":{
+              "train_year":2019,
+              "test_year":2021
+      }},
+      {
+          "Mini Plan":{
+              "train_year":2019,
+              "test_year":2021
+      }}
+  ]
+},
+{
+  "lkupclientid": 19,
+  "clientcode": "66ers",
+  "league": "MILB",
+  "stlrdbname":"stlrMILB",
+  "products": [{
+      "Full Season" : {
+        "train_year": 2019,
+        "test_year": 2021
+      }},
+      {
+          "Half Season":{
+              "train_year":2019,
+              "test_year":2021
+      }},
+      {
+          "Mini Plan":{
+              "train_year":2019,
+              "test_year":2021
+      }}
+  ]
+},
+{
+  "lkupclientid": 20,
+  "clientcode": "loons",
+  "league": "MILB",
+  "stlrdbname":"stlrMILB",
+  "products": [{
+      "Full Season" : {
+        "train_year": 2019,
+        "test_year": 2021
+      }},
+      {
+          "Half Season":{
+              "train_year":2019,
+              "test_year":2019
+      }},
+      {
+          "Mini Plan":{
+              "train_year":2019,
+              "test_year":2021
+      }}
+  ]
+},
+{
+  "lkupclientid": 21,
+  "clientcode": "indyindians",
+  "league": "MILB",
+  "stlrdbname":"stlrMILB",
+  "products": [{
+      "Full Season" : {
+        "train_year": 2019,
+        "test_year": 2021
+      }},
+      {
+          "Half Season":{
+              "train_year":2019,
+              "test_year":2021
+      }},
+      {
+          "Mini Plan":{
+              "train_year":2019,
+              "test_year":2021
+      }}
+  ]
+},
+{
+  "lkupclientid": 24,
+  "clientcode": "rattlers",
+  "league": "MILB",
+  "stlrdbname":"stlrMILB",
+  "products": [{
+      "Full Season" : {
+        "train_year": 2019,
+        "test_year": 2021
+      }},
+      {
+          "Half Season":{
+              "train_year":2019,
+              "test_year":2021
+      }},
+      {
+          "Mini Plan":{
+              "train_year":2019,
+              "test_year":2021
+      }}
+  ]
+},
+{
+  "lkupclientid": 25,
+  "clientcode": "ports",
+  "league": "MILB",
+  "stlrdbname":"stlrMILB",
+  "products": [{
+      "Full Season" : {
+        "train_year": 2019,
+        "test_year": 2021
+      }},
+      {
+          "Half Season":{
+              "train_year":2019,
+              "test_year":2021
+      }},
+      {
+          "Mini Plan":{
+              "train_year":2019,
+              "test_year":2021
+      }}
+  ]
+},
+{
+  "lkupclientid": 26,
+  "clientcode": "legends",
+  "league": "MILB",
+  "stlrdbname":"stlrMILB",
+  "products": [{
+      "Full Season" : {
+        "train_year": 2019,
+        "test_year": 2021
+      }}
+  ]
+},
+{
+  "lkupclientid": 27,
+  "clientcode": "grizzlies",
+  "league": "MILB",
+  "stlrdbname":"stlrMILB",
+  "products": [{
+      "Full Season" : {
+        "train_year": 2019,
+        "test_year": 2020
+      }},
+      {
+          "Half Season":{
+              "train_year":2019,
+              "test_year":2020
+      }},
+      {
+          "Mini Plan":{
+              "train_year":2019,
+              "test_year":2020
+      }},
+      {
+          "Club Seats":{
+              "train_year":2019,
+              "test_year":2020
+      }}
+  ]
+},
+{
+  "lkupclientid": 28,
+  "clientcode": "fireflies",
+  "league": "MILB",
+  "stlrdbname":"stlrMILB",
+  "products": [{
+      "Full Season" : {
+        "train_year": 2019,
+        "test_year": 2021
+      }},
+      {
+          "Half Season":{
+              "train_year":2019,
+              "test_year":2021
+      }},
+      {
+          "Partial Plan":{
+              "train_year":2019,
+              "test_year":2021
+      }}
+  ]
+},
+{
+  "lkupclientid": 30,
+  "clientcode": "elpaso",
+  "league": "MILB",
+  "stlrdbname":"stlrMILB",
+  "products": [{
+      "Full Season" : {
+        "train_year": 2019,
+        "test_year": 2021
+      }},
+      {
+          "Half Season":{
+              "train_year":2019,
+              "test_year":2021
+      }},
+      {
+          "Paw-tial Plan":{
+              "train_year":2019,
+              "test_year":2021
+      }}
+  ]
+},
+{
+  "lkupclientid": 34,
+  "clientcode": "rrexpress",
+  "league": "MILB",
+  "stlrdbname":"stlrMILB",
+  "products": [{
+      "Fireworks Plans" : {
+        "train_year": 2019,
+        "test_year": 2021
+      }},
+      {
+          "Flex Plan":{
+              "train_year":2019,
+              "test_year":2021
+      }},
+      {
+          "Full Season":{
+              "train_year":2019,
+              "test_year":2021
+      }}
+  ]
+},
+{
+  "lkupclientid": 40,
+  "clientcode": "renoaces",
+  "league": "MILB",
+  "stlrdbname":"stlrMILB",
+  "products": [{
+      "Full Season" : {
+        "train_year": 2019,
+        "test_year": 2021
+      }},
+      {
+          "Half Season":{
+              "train_year":2019,
+              "test_year":2019
+      }},
+      {
+          "Mini Plan":{
+              "train_year":2019,
+              "test_year":2021
+      }},
+      {
+        "Voucher":{
+            "train_year":2019,
+            "test_year":2021
+    }}
+  ]
+},
+{
+  "lkupclientid": 43,
+  "clientcode": "stormchasers",
+  "league": "MILB",
+  "stlrdbname":"stlrMILB",
+  "products": [{
+      "Full Season" : {
+        "train_year": 2019,
+        "test_year": 2021
+      }},
+      {
+          "Partial Season":{
+              "train_year":2019,
+              "test_year":2021
+      }}
+  ]
+},
+{
+  "lkupclientid": 44,
+  "clientcode": "hartfordyardgoats",
+  "league": "MILB",
+  "stlrdbname":"stlrMILB",
+  "products": [{
+      "Full Season" : {
+        "train_year": 2019,
+        "test_year": 2021
+      }},
+      {
+          "Mini Plan":{
+              "train_year":2019,
+              "test_year":2021
+      }}
+  ]
+},
+{
+  "lkupclientid": 46,
+  "clientcode": "knights",
+  "league": "MILB",
+  "stlrdbname":"stlrMILB",
+  "products": [{
+      "Full Season" : {
+        "train_year": 2019,
+        "test_year": 2021
+      }},
+      {
+          "Half Season":{
+              "train_year":2019,
+              "test_year":2021
+      }},
+      {
+          "Flex Plan":{
+              "train_year":2019,
+              "test_year":2021
+      }}
+  ]
+},
+{
+  "lkupclientid": 47,
+  "clientcode": "okcdodgers",
+  "league": "MILB",
+  "stlrdbname":"stlrMILB",
+  "products": [{
+      "Full Season" : {
+        "train_year": 2019,
+        "test_year": 2021
+      }},
+      {
+          "Half Season":{
+              "train_year":2019,
+              "test_year":2021
+      }},
+      {
+          "Mini Plan":{
+              "train_year":2019,
+              "test_year":2021
+      }},
+      {
+        "Partial Season":{
+            "train_year":2019,
+            "test_year":2021
+    }},
+    {
+        "Friends and Family 4 Pack":{
+            "train_year":2019,
+            "test_year":2019
+    }}
+  ]
+},
+{
+  "lkupclientid": 48,
+  "clientcode": "drive",
+  "league": "MILB",
+  "stlrdbname":"stlrMILB",
+  "products": [{
+      "Full Season" : {
+        "train_year": 2019,
+        "test_year": 2021
+      }},
+      {
+          "Half Season":{
+              "train_year":2019,
+              "test_year":2021
+      }},
+      {
+          "Suite Lease":{
+              "train_year":2019,
+              "test_year":2021
+      }},
+      {
+        "Weekend":{
+            "train_year":2019,
+            "test_year":2021
+    }}
+  ]
+},
+{
+  "lkupclientid": 49,
+  "clientcode": "stripers",
+  "league": "MILB",
+  "stlrdbname":"stlrMILB",
+  "products": [{
+      "Full Season" : {
+        "train_year": 2019,
+        "test_year": 2021
+      }},
+      {
+          "Half Season":{
+              "train_year":2019,
+              "test_year":2021
+      }},
+      {
+          "Partial Season":{
+              "train_year":2019,
+              "test_year":2021
+      }},
+      {
+        "Voucher":{
+            "train_year":2019,
+            "test_year":2021
+    }}
+  ]
+},
+{
+  "lkupclientid": 51,
+  "clientcode": "kanecounty",
+  "league": "MILB",
+  "stlrdbname":"stlrMILB",
+  "products": [{
+      "Full Season" : {
+        "train_year": 2019,
+        "test_year": 2021
+      }},
+      {
+          "Package":{
+              "train_year":2019,
+              "test_year":2021
+      }}
+  ]
+},
+{
+  "lkupclientid": 59,
+  "clientcode": "toledomudhens",
+  "league": "MILB",
+  "stlrdbname":"stlrMILB",
+  "products": [{
+      "Full Season" : {
+        "train_year": 2019,
+        "test_year": 2021
+      }},
+      {
+          "Partial Season":{
+              "train_year":2019,
+              "test_year":2021
+      }}
+  ]
+}
+]
