@@ -56,8 +56,9 @@ def train_models(df_train):
 
     model = setup(df_train, target='isnextyear_buyer', train_size = 0.8)
 
-    model_matrix = compare_models(fold=3, include=['lightgbm'])
+    lgbm = create_model('lightgbm')
 
+    return lgbm
 
 if __name__ == "__main__":
 
@@ -75,6 +76,7 @@ if __name__ == "__main__":
                 
                 print(client_id, product['type'], product['train_year'])
                 
+                # GET TRAIN AND EVAL DATASETS
                 df_train, df_eval = get_dataset(
                     client_id, 
                     product['type'], 
@@ -83,4 +85,6 @@ if __name__ == "__main__":
 
                 #TRAIN MODELS FOR EACH TEAM-PRODUCT
                 train_models(df_train)
+
+
 
