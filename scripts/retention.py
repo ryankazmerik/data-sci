@@ -15,7 +15,7 @@ def get_dataset(client_id, product, train_season_year):
 
     cursor = CNXN.cursor()
 
-    query =  f'''
+    query =  f"""
         SELECT 
             r.dimcustomermasterid,
             recency,
@@ -36,7 +36,7 @@ def get_dataset(client_id, product, train_season_year):
             productgrouping = {"'"+ str(product) + "'"} 
         AND 
             year < {train_season_year};
-    '''
+    """
     
     df = pd.read_sql(query, CNXN)
     
