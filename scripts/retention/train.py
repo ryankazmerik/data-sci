@@ -7,8 +7,6 @@ METRIC="F1"
 
 def train_models(df_train):
 
-    print(df_train.head())
-
     setup(
         df_train, 
         target='isnextyear_buyer', 

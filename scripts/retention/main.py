@@ -25,10 +25,10 @@ if __name__ == "__main__":
                     product['train_year']
                 )
                 
-                #TRAIN MODELS FOR EACH TEAM-PRODUCT
-                model = [train.train_models(df_train)]
+                #TRAIN MODEL & GET FEATURE IMPORTANCE FOR EACH TEAM-PRODUCT
+                model, features = [train.train_models(df_train)]
 
-                
+
 
 
 
