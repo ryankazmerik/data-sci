@@ -1,3 +1,4 @@
+from scripts.retention.legacy import run_training
 from pycaret.classification import *
 
 #ALGORITHMS=['gbc', 'lightgmb', 'rf']
