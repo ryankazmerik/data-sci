@@ -24,10 +24,6 @@ def run_training(client_id, client_code, product, train_year, test_year):
     # GET DATA FROM MSSQL
     cursor = CNXN.cursor()
 
-    client_id = 11 #bulls
-    product = "Full Season"
-    train_year = 2019
-
     query =  f"""
         SELECT 
             r.dimcustomermasterid,
@@ -82,7 +78,9 @@ def run_training(client_id, client_code, product, train_year, test_year):
         scale_pos_weight=3,
         subsample=0.9,
         colsample_bytree=0.5,
+        verbosity=0
     )
+
     clf.fit(
         X,
         y,
@@ -97,14 +95,10 @@ def run_training(client_id, client_code, product, train_year, test_year):
         {"feature": list(X.columns), "importance": clf.feature_importances_}
     ).sort_values("importance", ascending=False)
 
-    # Display
-    feature_importances_df
-
     feature_importances = feature_importances_df[["feature", "importance"]]
     feature_importances["product"] = product
     feature_importances = feature_importances[["feature", "importance"]]
     feature_importances.drop([0], axis=0, inplace=True)
-    feature_importances
 
     feature_importance_dict = {}
     for ind in feature_importances.index:
@@ -113,10 +107,9 @@ def run_training(client_id, client_code, product, train_year, test_year):
         )
 
     connection = MongoClient(
-        "mongodb://sean:monstertruck1@52.54.218.77:28001/?authMechanism=SCRAM-SHA-1"
+        "mongodb://sean:monstertruck1@52.3.224.165:28001/?authMechanism=SCRAM-SHA-1"
     )
-    # connection
-    # for x in (connection.views.views_meta_data.find_one()):
+
     db = connection["views"]
     collection = db["views_meta_data"]
     myquery = {"_id": client_code}
@@ -300,7 +293,7 @@ def run_training(client_id, client_code, product, train_year, test_year):
     # final_list
 
     connection = MongoClient(
-        "mongodb://sean:monstertruck1@52.54.218.77:28001/?authMechanism=SCRAM-SHA-1"
+        "mongodb://sean:monstertruck1@52.3.224.165:28001/?authMechanism=SCRAM-SHA-1"
     )
     # connection
     db = connection["views"]
@@ -416,28 +409,54 @@ def run_training(client_id, client_code, product, train_year, test_year):
 # teamproductyear_id = 32  # 1,2...74
 # 18,19,20, 24, 25, 26 no data for testing
 
-#def get_params(teamproductyearid):
+def get_params(teamproductyear_id):
+
+    cursor = CNXN.cursor()
+    query = f"""
+        SELECT 
+            teamproductyearid,
+            lkupclientid,
+            clientcode,
+            productgrouping,
+            trainseasonyear,
+            testseasonyear,
+            facttestprevyear 
+        FROM 
+            ds.productyear_all r 
+        WHERE 
+            teamproductyearid ={teamproductyear_id} ;
+        
+        """
+    
+    df_params = pd.read_sql(query, CNXN)
+    
+    CNXN.commit()
+    cursor.close()
+
+    return df_params
 
 
 if __name__ == "__main__":
 
-    teams = [17]
+    teams = [101]
 
-    for teamproductyearid in teams:
+    for teamproductyear_id in teams:
         
-        #params = get_params(teamproductyearid)
+        df_params = get_params(teamproductyear_id)
 
-        #run_training(17, "rainiers", "Full Season", 2019, 2021)
-        run_training(93, "panthers", "Full Season", 2019, 2021)
-        
-        # team_set = [1]
+        try:
+            run_training(
+                df_params['lkupclientid'][0], 
+                df_params['clientcode'][0], 
+                df_params['productgrouping'][0],
+                df_params['trainseasonyear'][0], 
+                df_params['testseasonyear'][0]
+            )
 
-    # for id in team_set:
+            print("\n RETENTION SCORING COMPLETED: ")
+            print(df_params, end="\n\n")
 
-    #     try:
-    #         run_training(id)
-    #         print("RETENTION SCORING COMPLETED FOR:", id, end="\n\n")
-
-    #     except Exception as err:
-    #         print(err)
-    #         print("RETENTION SCORING FAILED FOR:", id, end="\n\n")
+        except Exception as err:
+            print("\n RETENTION SCORING FAILED: ")     
+            print(df_params, end="\n\n")
+            print(err, end="\n\n")
