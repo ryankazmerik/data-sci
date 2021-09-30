@@ -1,35 +1,26 @@
-import boto3
 import datetime
 import json
 import numpy as np
 import pandas as pd
 import pyodbc
+import ssm_helpers
 import sys
 import xgboost as xgb
 import warnings
-
-from pymongo import MongoClient
-from xgboost.training import train
 
 if not sys.warnoptions:
     warnings.simplefilter("ignore")
 
 DATE_TIME = datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S")
 
-ssm_client = boto3.client("ssm", "us-east-1")
-response = ssm_client.get_parameter(
-    Name="/product/ai/notebook/db-connections/LEGACY-MSSQL-QA-VPC-WRITE",
-    WithDecryption=True,
-)["Parameter"]["Value"]
-CONN = json.loads(response)
+CONN = json.loads(ssm_helpers.get_param("/product/ai/notebook/db-connections/LEGACY-MSSQL-QA-VPC-WRITE"))
 
-# override SSM server IP to public IP
+# override SSM server IP to public IP (for local testing)
 CONN["server"] = "52.44.171.130"
 
 # NOTE: refactor feature_importances2 code
 # NOTE: reformat insert statements
-# NOTE: add inline documentation
-# NOTE: add print & log statements to each function
+# NOTE: add inline documentation & print statements
 # NOTE: add error handling for no test data (2021 data)
 
 
