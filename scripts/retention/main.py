@@ -49,6 +49,7 @@ def get_params(teamproductyear_id):
             trainseasonyear,
             testseasonyear,
             facttestprevyear,
+            facttestyear,
             stlrDBName 
         FROM 
             ds.productyear_all r 
@@ -66,7 +67,30 @@ def get_params(teamproductyear_id):
     return df_params
 
 
-def get_datasets(df_params):
+def get_features(df_params):
+
+    features = [
+        "dimCustomerMasterId",
+        "recency",
+        "attendancePercent",
+        "totalSpent",
+        "distToVenue",
+        "source_tenure",
+        "renewedBeforeDays",
+        "missed_games_1",
+        "missed_games_2",
+        "missed_games_over_2",
+        "isNextYear_Buyer",
+        "year",
+        "productGrouping",
+    ]
+    
+    df_features = pd.DataFrame(features, columns = ['Features'])
+
+    return df_features
+
+
+def get_datasets(df_params, df_features):
 
     CNXN = pyodbc.connect(
         "DRIVER={ODBC Driver 17 for SQL Server}"
@@ -90,24 +114,7 @@ def get_datasets(df_params):
     CNXN.commit()
     cursor.close()
 
-    # select features from df
-    df = df[
-        [
-            "dimCustomerMasterId",
-            "recency",
-            "attendancePercent",
-            "totalSpent",
-            "distToVenue",
-            "source_tenure",
-            "renewedBeforeDays",
-            "missed_games_1",
-            "missed_games_2",
-            "missed_games_over_2",
-            "isNextYear_Buyer",
-            "year",
-            "productGrouping",
-        ]
-    ]
+
 
     # apply some data type transformations
     df["year"] = pd.to_numeric(df["year"])
@@ -117,29 +124,34 @@ def get_datasets(df_params):
     df["distToVenue"] = pd.to_numeric(df["distToVenue"])
 
     # create df_train filtered by product and train year
-    df_train = df[
+
+    df = df[
         (df["productGrouping"] == df_params["productgrouping"])
         & (df["year"] < df_params["trainseasonyear"])
     ]
 
-     # create df_target filtered by product and train year
+    df_train = df
+
+    df_train = df_train[df_features["Features"]]
+
+    # create df_target filtered by product and train year
     df_target = df_train["isNextYear_Buyer"].copy()
 
     # drop columns from df_train not needed for training
-    df_train = df_train.drop(
-        ["isNextYear_Buyer", "productGrouping", "year"], axis=1
-    )
-   
+    df_train = df_train.drop(["isNextYear_Buyer", "productGrouping", "year"], axis=1)
+
     # create df_test filtered by product and test year
-    df_test = df[
-        (df["productGrouping"] == df_params["productgrouping"])
-        & (df["year"] >= df_params["testseasonyear"])
-    ]
+    df_test = df
+
+    df_test = df_test[df_features["Features"]]
 
     # drop columns from df_test not needed for testing
-    df_test = df_test.drop(["isNextYear_Buyer", "productGrouping", "year"], axis=1).copy()
+    df_test = df_test.drop(
+        ["isNextYear_Buyer", "productGrouping", "year"], axis=1
+    ).copy()
+    df_test.reset_index(drop=True, inplace=True)
 
-    return df_train, df_target, df_test
+    return df, df_train, df_target, df_test
 
 
 def create_model(df_train, df_target):
@@ -209,7 +221,7 @@ def create_model(df_train, df_target):
     return clf, feature_importances2
 
 
-def calc_retention_scores(df_params, df_test, clf):
+def calc_retention_scores(df_params, df, df_test, clf):
 
     # make predictions for test data
     y_pred_test = clf.predict_proba(df_test)
@@ -221,17 +233,41 @@ def calc_retention_scores(df_params, df_test, clf):
     df_y_pred_test = pd.DataFrame(array_y_pred_test)
     df_y_pred_test.columns = ["nonbuyer", "buyer"]
 
-    result_test = pd.concat([df_y_pred_test, df_test], axis=1, join="inner")
+    result_test = pd.concat([df_y_pred_test, df], axis=1, join="inner")
 
     result_test = result_test.drop(["nonbuyer"], axis=1).copy()
 
     result_test["buyer"] = pd.to_numeric(result_test["buyer"])
+    merged_inner = pd.merge(
+        left=result_test,
+        right=df_test,
+        how="inner",
+        left_on="dimCustomerMasterId",
+        right_on="dimCustomerMasterId",
+    )
 
-    newscors = result_test[["dimCustomerMasterId", "buyer"]]
-    newscors.columns = ["dimCustomerMasterId", "buyer_score"]
+    newscors = merged_inner[
+        [
+            "dimCustomerMasterId",
+            "buyer",
+            "source_tenure_x",
+            "attendancePercent_x",
+            "recentDate",
+        ]
+    ]
+    newscors.columns = [
+        "dimCustomerMasterId",
+        "buyer_score",
+        "tenuredays",
+        "attendancePercentage",
+        "mostrecentattendance",
+    ]
     newscors["year"] = df_params["testseasonyear"]
     newscors["lkupclientid"] = df_params["lkupclientid"]
     newscors["productgrouping"] = df_params["productgrouping"]
+    newscors["currVersnFlag"] = 1
+    newscors["loadid"] = 0
+    newscors["seasonyear"] = df_params["facttestyear"]
     newscors["insertDate"] = DATE_TIME
 
     return newscors
@@ -256,10 +292,18 @@ def write_retention_scores(df_params, retention_scores):
     # Insert Dataframe into SQL Server:
     for index, row in retention_scores.iterrows():
         cursor.execute(
-            "INSERT INTO ds.finalscore (dimcustomermasterid,buyer_score,year,lkupclientid,productgrouping,insertDate) values("
-            + str(row.dimcustomermasterid)
+            "INSERT INTO ds.customerScores (dimCustomerMasterId,buyer_score,tenuredays,attendancePercentage,mostrecentattendance,year,lkupclientid,productgrouping,seasonYear,insertDate) values("
+            + str(row.dimCustomerMasterId)
             + ","
             + str(round(row.buyer_score, 4))
+            + ","
+            + str(row.tenuredays)
+            + ","
+            + str(row.attendancePercentage)
+            + ","
+            + "'"
+            + str(row.mostrecentattendance)
+            + "'"
             + ","
             + str(row.year)
             + ","
@@ -268,6 +312,8 @@ def write_retention_scores(df_params, retention_scores):
             + "'"
             + str(row.productgrouping)
             + "'"
+            + ","
+            + str(df_params["facttestyear"])
             + ","
             + "'"
             + str(row.insertDate)
@@ -296,7 +342,7 @@ def write_feature_importances(df_params, feature_importances):
     cursor = CNXN.cursor()
 
     for index, row in feature_importances.iterrows():
-        
+
         cursor.execute(
             "INSERT INTO stlrMILB.dw.lkupRetentionAttributeImportance (attribute,product,indexValue,rank,lkupClientId,modelVersnNumber,scoreDate,loadId) values("
             + "'"
@@ -330,9 +376,9 @@ def write_feature_importances(df_params, feature_importances):
 if __name__ == "__main__":
 
     teams = [
-        {"clientcode": "tester", "teamproductyear_ids": [7]},
+        # {"clientcode": "tester", "teamproductyear_ids": [7]},
         # {"clientcode": "66ers", "teamproductyear_ids": [18, 19, 20]},
-        # {"clientcode": "bulls", "teamproductyear_ids": [4, 5, 6, 7]},
+        {"clientcode": "bulls", "teamproductyear_ids": [4, 5, 6, 7]},
         # {"clientcode": "drive", "teamproductyear_ids": [63, 64, 65, 66]},
         # {"clientcode": "elpaso", "teamproductyear_ids": [41, 42, 43]},
         # # {"clientcode": "fireflies", "teamproductyear_ids": [38, 39, 40]},
@@ -365,13 +411,14 @@ if __name__ == "__main__":
             df_params = get_params(teamproductyear_id)
             print("\n", df_params, end="\n\n")
 
-            df_train, df_target, df_test = get_datasets(df_params)
+            df_features = get_features(df_params)
 
+            df, df_train, df_target, df_test = get_datasets(df_params, df_features)
             model, feature_importances = create_model(df_train, df_target)
             # print(model, end="\n\n")
             # print(feature_importances, end="\n\n")
 
-            retention_scores = calc_retention_scores(df_params, df_test, model)
+            retention_scores = calc_retention_scores(df_params, df, df_test, model)
             # print(retention_scores, end="\n\n")
 
             write_retention_scores(df_params, retention_scores)
