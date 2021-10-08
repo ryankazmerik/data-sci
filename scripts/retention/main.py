@@ -59,25 +59,16 @@ def get_team_dataset(team):
     return df
 
 
-def get_product_datasets(df, product):
-
-    print(product)
+def get_product_datasets(df, features, product):
 
     # create df_train filtered by product and train year
     df_train = df[
-        (df["productGrouping"] == params["product"])
-        & (df["year"] < params["product"]["trainseasonyear"])
+        (df["productGrouping"] == product["type"])
+        & (df["year"] < product["train_year"])
     ]
 
-    df_train = df
-
-    print(df_train.info())
-    print()
-
-    df_train = df_train[df_features["features"]]
-
-    print(df_train.info())
-    print()
+    # select features for the dataframe
+    df_train = df[features]
 
     # create df_target filtered by product and train year
     df_target = df_train["isNextYear_Buyer"].copy()
@@ -85,15 +76,11 @@ def get_product_datasets(df, product):
     # drop columns from df_train not needed for training
     df_train = df_train.drop(["isNextYear_Buyer", "productGrouping", "year"], axis=1)
 
-    # create df_test filtered by product and test year
-    df_test = df
-
-    df_test = df_test[df_features["Features"]]
+    # create df_test and filter by selected features
+    df_test = df[features]
 
     # drop columns from df_test not needed for testing
-    df_test = df_test.drop(
-        ["isNextYear_Buyer", "productGrouping", "year"], axis=1
-    ).copy()
+    df_test = df_test.drop(["isNextYear_Buyer", "productGrouping", "year"], axis=1).copy()
     df_test.reset_index(drop=True, inplace=True)
 
     return df_train, df_target, df_test
@@ -333,13 +320,15 @@ if __name__ == "__main__":
 
         # get filtered datasets for each product
         for product in team['products']:
+
+            features = team['features']
             
             # get train, target and test dataframes for each product
-            df_train, df_target, df_test = get_product_datasets(df, product)
+            df_train, df_target, df_test = get_product_datasets(df, features, product)
 
-                # model, feature_importances = create_model(df_train, df_target)
-                # # print(model, end="\n\n")
-                # # print(feature_importances, end="\n\n")
+            #model, feature_importances = create_model(df_train, df_target)
+            #print(model, end="\n\n")
+            #print(feature_importances, end="\n\n")
 
                 # retention_scores = calc_retention_scores(df_params, df, df_test, model)
                 # # print(retention_scores, end="\n\n")

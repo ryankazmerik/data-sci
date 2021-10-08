@@ -20,17 +20,17 @@
             ],
             "products": [
                 {
-                    "product": "Full Season",
+                    "type": "Full Season",
                     "train_year": 2019,
                     "test_year": 2021
                 },
                 {
-                    "product": "Half Season",
+                    "type": "Half Season",
                     "train_year": 2019,
                     "test_year": 2021
                 },
                 {
-                    "product": "Mini Plan",
+                    "type": "Mini Plan",
                     "train_year": 2019,
                     "test_year": 2021
                 }
@@ -57,22 +57,22 @@
             ],
             "products": [
                 {
-                    "product": "Full Season",
+                    "type": "Full Season",
                     "train_year": 2019,
                     "test_year": 2021
                 },
                 {
-                    "product": "Group",
+                    "type": "Group",
                     "train_year": 2019,
                     "test_year": 2021
                 },
                 {
-                    "product": "Half Season",
+                    "type": "Half Season",
                     "train_year": 2019,
                     "test_year": 2021
                 },
                 {
-                    "product": "Mini Plan",
+                    "type": "Mini Plan",
                     "train_year": 2019,
                     "test_year": 2021
                 }
@@ -99,17 +99,17 @@
             ],
             "products": [
                 {
-                    "product": "Full Season",
+                    "type": "Full Season",
                     "train_year": 2019,
                     "test_year": 2021
                 },
                 {
-                    "product": "Half Season",
+                    "type": "Half Season",
                     "train_year": 2019,
                     "test_year": 2021
                 },
                 {
-                    "product": "Partial Plan",
+                    "type": "Partial Plan",
                     "train_year": 2019,
                     "test_year": 2021
                 }
