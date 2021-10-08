@@ -1,5 +1,6 @@
 import pandas as pd
 import pyodbc
+
 SERVER = '52.44.171.130' 
 DATABASE = 'datascience' 
 USERNAME = 'nrad' 

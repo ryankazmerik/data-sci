@@ -22,82 +22,17 @@ CONN["server"] = "52.44.171.130"
 # NOTE: reformat insert statements
 # NOTE: add inline documentation & print statements
 # NOTE: add error handling for no test data (2021 data)
+# NOTE: add dynamic feature engineering
 
 
-def get_params(teamproductyear_id):
-
-    CNXN = pyodbc.connect(
-        "DRIVER={ODBC Driver 17 for SQL Server}"
-        + ";SERVER="
-        + CONN["server"]
-        + ";DATABASE="
-        + CONN["database"]
-        + ";UID="
-        + CONN["username"]
-        + ";PWD="
-        + CONN["password"]
-    )
-
-    # query sql for parameters
-    cursor = CNXN.cursor()
-    query = f"""
-        SELECT 
-            teamproductyearid,
-            lkupclientid,
-            clientcode,
-            productgrouping,
-            trainseasonyear,
-            testseasonyear,
-            facttestprevyear,
-            facttestyear,
-            stlrDBName 
-        FROM 
-            ds.productyear_all r 
-        WHERE 
-            teamproductyearid ={teamproductyear_id} ;
-        
-        """
-
-    # create a dictionary of parameters
-    df_params = pd.read_sql(query, CNXN).to_dict("records")[0]
-
-    CNXN.commit()
-    cursor.close()
-
-    return df_params
-
-
-def get_features(df_params):
-
-    features = [
-        "dimCustomerMasterId",
-        "recency",
-        "attendancePercent",
-        "totalSpent",
-        "distToVenue",
-        "source_tenure",
-        "renewedBeforeDays",
-        "missed_games_1",
-        "missed_games_2",
-        "missed_games_over_2",
-        "isNextYear_Buyer",
-        "year",
-        "productGrouping",
-    ]
-    
-    df_features = pd.DataFrame(features, columns = ['Features'])
-
-    return df_features
-
-
-def get_datasets(df_params, df_features):
+def get_team_dataset(team):
 
     CNXN = pyodbc.connect(
         "DRIVER={ODBC Driver 17 for SQL Server}"
         + ";SERVER="
         + CONN["server"]
         + ";DATABASE="
-        + df_params["stlrDBName"]
+        + team["stlrDBName"]
         + ";UID="
         + CONN["username"]
         + ";PWD="
@@ -106,15 +41,13 @@ def get_datasets(df_params, df_features):
 
     cursor = CNXN.cursor()
     storedProc = (
-        f"""Exec [ds].[getRetentionScoringModelData] {df_params['lkupclientid']}"""
+        f"""Exec [ds].[getRetentionScoringModelData] {team["lkupclientid"]}"""
     )
 
     df = pd.read_sql(storedProc, CNXN)
 
     CNXN.commit()
     cursor.close()
-
-
 
     # apply some data type transformations
     df["year"] = pd.to_numeric(df["year"])
@@ -123,16 +56,28 @@ def get_datasets(df_params, df_features):
     df["totalSpent"] = pd.to_numeric(df["totalSpent"])
     df["distToVenue"] = pd.to_numeric(df["distToVenue"])
 
-    # create df_train filtered by product and train year
+    return df
 
-    df = df[
-        (df["productGrouping"] == df_params["productgrouping"])
-        & (df["year"] < df_params["trainseasonyear"])
+
+def get_product_datasets(df, product):
+
+    print(product)
+
+    # create df_train filtered by product and train year
+    df_train = df[
+        (df["productGrouping"] == params["product"])
+        & (df["year"] < params["product"]["trainseasonyear"])
     ]
 
     df_train = df
 
-    df_train = df_train[df_features["Features"]]
+    print(df_train.info())
+    print()
+
+    df_train = df_train[df_features["features"]]
+
+    print(df_train.info())
+    print()
 
     # create df_target filtered by product and train year
     df_target = df_train["isNextYear_Buyer"].copy()
@@ -151,7 +96,8 @@ def get_datasets(df_params, df_features):
     ).copy()
     df_test.reset_index(drop=True, inplace=True)
 
-    return df, df_train, df_target, df_test
+    return df_train, df_target, df_test
+
 
 
 def create_model(df_train, df_target):
@@ -375,54 +321,31 @@ def write_feature_importances(df_params, feature_importances):
 
 if __name__ == "__main__":
 
-    teams = [
-        # {"clientcode": "tester", "teamproductyear_ids": [7]},
-        # {"clientcode": "66ers", "teamproductyear_ids": [18, 19, 20]},
-        {"clientcode": "bulls", "teamproductyear_ids": [4, 5, 6, 7]},
-        # {"clientcode": "drive", "teamproductyear_ids": [63, 64, 65, 66]},
-        # {"clientcode": "elpaso", "teamproductyear_ids": [41, 42, 43]},
-        # # {"clientcode": "fireflies", "teamproductyear_ids": [38, 39, 40]},
-        # {"clientcode": "grizzlies", "teamproductyear_ids": [34, 35, 36, 37]},
-        # {"clientcode": "hartfordyardgoats", "teamproductyear_ids": [53, 54]},
-        # # {"clientcode": "hops", "teamproductyear_ids": [1, 2, 3, 96]},
-        # # {"clientcode": "indyindians", "teamproductyear_ids": [24, 25, 26]},
-        # {"clientcode": "kanecounty", "teamproductyear_ids": [71, 72]},
-        # {"clientcode": "knights", "teamproductyear_ids": [55, 56, 57]},
-        # {"clientcode": "legends", "teamproductyear_ids": [33]},
-        # {"clientcode": "loons", "teamproductyear_ids": [21, 22, 23]},
-        # # {"clientcode": "okcdodgers", "teamproductyear_ids": [58, 59, 60, 61, 62]},
-        # {"clientcode": "ports", "teamproductyear_ids": [30, 31, 32]},
-        # {"clientcode": "rainiers", "teamproductyear_ids": [15, 16, 17]},
-        # {"clientcode": "rattlers", "teamproductyear_ids": [27, 28, 29]},
-        # {"clientcode": "renoaces", "teamproductyear_ids": [47, 48, 49, 50]},
-        # {"clientcode": "rivercats", "teamproductyear_ids": [8, 9, 10, 11]},
-        # {"clientcode": "rrexpress", "teamproductyear_ids": [44, 45, 46]},
-        # {"clientcode": "stormchasers", "teamproductyear_ids": [51, 52]},
-        # # {"clientcode": "stripers", "teamproductyear_ids": [67, 68, 69, 70]},
-        # {"clientcode": "toledomudhens", "teamproductyear_ids": [73, 74]},
-        # {"clientcode": "vegas51s", "teamproductyear_ids": [12, 13, 14]},
-    ]
+    # get params for each team
+    teams_config = open("../retention/team_config.json")
+    params = json.load(teams_config)
 
-    for team in teams:
+    # iterate through each team
+    for team in params['teams']:
 
-        teamproductyear_ids = team["teamproductyear_ids"]
-        for teamproductyear_id in teamproductyear_ids:
+        # get full datasets for each team
+        df = get_team_dataset(team)   
 
-            df_params = get_params(teamproductyear_id)
-            print("\n", df_params, end="\n\n")
+        # get filtered datasets for each product
+        for product in team['products']:
+            
+            # get train, target and test dataframes for each product
+            df_train, df_target, df_test = get_product_datasets(df, product)
 
-            df_features = get_features(df_params)
+                # model, feature_importances = create_model(df_train, df_target)
+                # # print(model, end="\n\n")
+                # # print(feature_importances, end="\n\n")
 
-            df, df_train, df_target, df_test = get_datasets(df_params, df_features)
-            model, feature_importances = create_model(df_train, df_target)
-            # print(model, end="\n\n")
-            # print(feature_importances, end="\n\n")
+                # retention_scores = calc_retention_scores(df_params, df, df_test, model)
+                # # print(retention_scores, end="\n\n")
 
-            retention_scores = calc_retention_scores(df_params, df, df_test, model)
-            # print(retention_scores, end="\n\n")
+                # write_retention_scores(df_params, retention_scores)
 
-            write_retention_scores(df_params, retention_scores)
+                # write_feature_importances(df_params, feature_importances)
 
-            write_feature_importances(df_params, feature_importances)
-
-    print("~ Fin ~", end="\n\n")
+    print("\n~ Fin ~", end="\n\n")
