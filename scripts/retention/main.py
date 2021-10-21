@@ -59,6 +59,7 @@ def get_team_dataset(team):
     return df
 
 
+
 def get_product_datasets(df, features, product):
 
     # create df_train filtered by product and train year
@@ -117,7 +118,7 @@ def create_model(df_train, df_target):
     ).sort_values("importance", ascending=False)
 
     feature_importances = feature_importances_df[["feature", "importance"]]
-    feature_importances["productgrouping"] = df_params["productgrouping"]
+    feature_importances["productgrouping"] = product
 
     feature_importances = feature_importances[["feature", "importance"]]
     feature_importances.drop([0], axis=0, inplace=True)
@@ -139,7 +140,7 @@ def create_model(df_train, df_target):
     feature_importances2["modelVersnNumber"] = 2
     feature_importances2["scoreDate"] = DATE_TIME
     feature_importances2["loadId"] = 0
-    feature_importances2["product"] = df_params["productgrouping"]
+    feature_importances2["product"] = product
     feature_importances2.columns = [
         "attribute",
         "indexValue",
@@ -152,6 +153,7 @@ def create_model(df_train, df_target):
     ]
 
     return clf, feature_importances2
+
 
 
 def calc_retention_scores(df_params, df, df_test, clf):
@@ -206,6 +208,7 @@ def calc_retention_scores(df_params, df, df_test, clf):
     return newscors
 
 
+
 def write_retention_scores(df_params, retention_scores):
 
     CNXN = pyodbc.connect(
@@ -256,6 +259,7 @@ def write_retention_scores(df_params, retention_scores):
 
     CNXN.commit()
     cursor.close()
+
 
 
 def write_feature_importances(df_params, feature_importances):
@@ -326,9 +330,9 @@ if __name__ == "__main__":
             # get train, target and test dataframes for each product
             df_train, df_target, df_test = get_product_datasets(df, features, product)
 
-            #model, feature_importances = create_model(df_train, df_target)
-            #print(model, end="\n\n")
-            #print(feature_importances, end="\n\n")
+            model, feature_importances = create_model(df_train, df_target)
+            print(model, end="\n\n")
+            print(feature_importances, end="\n\n")
 
                 # retention_scores = calc_retention_scores(df_params, df, df_test, model)
                 # # print(retention_scores, end="\n\n")
