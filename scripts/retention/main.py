@@ -1,6 +1,7 @@
 import datetime
 import json
 import numpy as np
+from numpy.core.fromnumeric import prod
 import pandas as pd
 import pyodbc
 import ssm_helpers
@@ -13,17 +14,14 @@ if not sys.warnoptions:
 
 DATE_TIME = datetime.datetime.now().strftime("%m-%d-%Y %H:%M:%S")
 
-CONN = json.loads(ssm_helpers.get_param("/product/ai/notebook/db-connections/LEGACY-MSSQL-QA-VPC-WRITE"))
+CONN = json.loads(
+    ssm_helpers.get_param(
+        "/product/ai/notebook/db-connections/LEGACY-MSSQL-QA-VPC-WRITE"
+    )
+)
 
 # override SSM server IP to public IP (for local testing)
 CONN["server"] = "52.44.171.130"
-
-# NOTE: refactor feature_importances2 code
-# NOTE: reformat insert statements
-# NOTE: add inline documentation & print statements
-# NOTE: add error handling for no test data (2021 data)
-# NOTE: add dynamic feature engineering
-
 
 def get_team_dataset(team):
 
@@ -40,9 +38,7 @@ def get_team_dataset(team):
     )
 
     cursor = CNXN.cursor()
-    storedProc = (
-        f"""Exec [ds].[getRetentionScoringModelData] {team["lkupclientid"]}"""
-    )
+    storedProc = f"""Exec [ds].[getRetentionScoringModelData] {team["lkupclientid"]}"""
 
     df = pd.read_sql(storedProc, CNXN)
 
@@ -57,7 +53,6 @@ def get_team_dataset(team):
     df["distToVenue"] = pd.to_numeric(df["distToVenue"])
 
     return df
-
 
 
 def get_product_datasets(df, features, product):
@@ -81,14 +76,15 @@ def get_product_datasets(df, features, product):
     df_test = df[features]
 
     # drop columns from df_test not needed for testing
-    df_test = df_test.drop(["isNextYear_Buyer", "productGrouping", "year"], axis=1).copy()
+    df_test = df_test.drop(
+        ["isNextYear_Buyer", "productGrouping", "year"], axis=1
+    ).copy()
     df_test.reset_index(drop=True, inplace=True)
 
     return df_train, df_target, df_test
 
 
-
-def create_model(df_train, df_target):
+def create_model(df_train, df_target, team, product):
 
     clf = xgb.XGBClassifier(
         objective="binary:logistic",
@@ -118,7 +114,7 @@ def create_model(df_train, df_target):
     ).sort_values("importance", ascending=False)
 
     feature_importances = feature_importances_df[["feature", "importance"]]
-    feature_importances["productgrouping"] = product
+    feature_importances["productgrouping"] = product["type"]
 
     feature_importances = feature_importances[["feature", "importance"]]
     feature_importances.drop([0], axis=0, inplace=True)
@@ -136,11 +132,11 @@ def create_model(df_train, df_target):
     feature_importances2.at[9, "feature"] = "Missed Games Streak Over 2"
 
     feature_importances2["attrank"] = {1, 2, 3, 4, 5, 6, 7, 8, 9}
-    feature_importances2["lkupClientId"] = df_params["lkupclientid"]
+    feature_importances2["lkupClientId"] = lkupclientid
     feature_importances2["modelVersnNumber"] = 2
     feature_importances2["scoreDate"] = DATE_TIME
     feature_importances2["loadId"] = 0
-    feature_importances2["product"] = product
+    feature_importances2["product"] = product["type"]
     feature_importances2.columns = [
         "attribute",
         "indexValue",
@@ -155,8 +151,7 @@ def create_model(df_train, df_target):
     return clf, feature_importances2
 
 
-
-def calc_retention_scores(df_params, df, df_test, clf):
+def calc_retention_scores(df, df_test, clf, lkupclientid, product):
 
     # make predictions for test data
     y_pred_test = clf.predict_proba(df_test)
@@ -197,19 +192,18 @@ def calc_retention_scores(df_params, df, df_test, clf):
         "attendancePercentage",
         "mostrecentattendance",
     ]
-    newscors["year"] = df_params["testseasonyear"]
-    newscors["lkupclientid"] = df_params["lkupclientid"]
-    newscors["productgrouping"] = df_params["productgrouping"]
+    newscors["year"] = product["test_year"]
+    newscors["lkupclientid"] = lkupclientid
+    newscors["productgrouping"] = product["type"]
     newscors["currVersnFlag"] = 1
     newscors["loadid"] = 0
-    newscors["seasonyear"] = df_params["facttestyear"]
+    newscors["seasonyear"] = product["test_year"]
     newscors["insertDate"] = DATE_TIME
 
     return newscors
 
 
-
-def write_retention_scores(df_params, retention_scores):
+def write_retention_scores(product, retention_scores):
 
     CNXN = pyodbc.connect(
         "DRIVER={ODBC Driver 17 for SQL Server}"
@@ -249,7 +243,7 @@ def write_retention_scores(df_params, retention_scores):
             + str(row.productgrouping)
             + "'"
             + ","
-            + str(df_params["facttestyear"])
+            + str(product["test_year"])
             + ","
             + "'"
             + str(row.insertDate)
@@ -259,7 +253,6 @@ def write_retention_scores(df_params, retention_scores):
 
     CNXN.commit()
     cursor.close()
-
 
 
 def write_feature_importances(df_params, feature_importances):
@@ -287,7 +280,7 @@ def write_feature_importances(df_params, feature_importances):
             + "'"
             + ","
             + "'"
-            + str(df_params["productgrouping"])
+            + str(product["type"])
             + "'"
             + ","
             + str(round(row.indexValue, 4))
@@ -317,28 +310,43 @@ if __name__ == "__main__":
     params = json.load(teams_config)
 
     # iterate through each team
-    for team in params['teams']:
+    for team in params["teams"]:
+
+        print("\nRUNNING TEAM:", team['clientcode'])
+        lkupclientid = team["lkupclientid"]
 
         # get full datasets for each team
-        df = get_team_dataset(team)   
+        df = get_team_dataset(team)
 
         # get filtered datasets for each product
-        for product in team['products']:
+        for product in team["products"]:
 
-            features = team['features']
-            
+            print(">", product['type'])
+
+            features = team["features"]
+
             # get train, target and test dataframes for each product
             df_train, df_target, df_test = get_product_datasets(df, features, product)
+            print(" - Datasets generated")
 
-            model, feature_importances = create_model(df_train, df_target)
-            print(model, end="\n\n")
-            print(feature_importances, end="\n\n")
+            # create the model and get feature importances
+            model, feature_importances = create_model(
+                df_train, df_target, team, product
+            )
+            print(" - Model created")
 
-                # retention_scores = calc_retention_scores(df_params, df, df_test, model)
-                # # print(retention_scores, end="\n\n")
+            # generate retention scores based on the model
+            retention_scores = calc_retention_scores(
+                df, df_test, model, lkupclientid, product
+            )
+            print(" - Retention scores calculated")
 
-                # write_retention_scores(df_params, retention_scores)
+            # write retention scores back to mssql
+            write_retention_scores(product, retention_scores)
+            print(" - Retention scores written to DB")
 
-                # write_feature_importances(df_params, feature_importances)
+            # write feature importances back to mssql
+            write_feature_importances(product, feature_importances)
+            print(" - Feature importance writted to DB")
 
-    print("\n~ Fin ~", end="\n\n")
+    print("\n\n JOB COMPLETED")
