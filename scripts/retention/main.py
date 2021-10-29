@@ -37,6 +37,8 @@ def get_team_dataset(team):
         + CONN["password"]
     )
 
+    print(CONN)
+
     cursor = CNXN.cursor()
     storedProc = f"""Exec [ds].[getRetentionScoringModelData] {team["lkupclientid"]}"""
 
@@ -306,7 +308,7 @@ def write_feature_importances(df_params, feature_importances):
 if __name__ == "__main__":
 
     # get params for each team
-    teams_config = open("../retention/team_config.json")
+    teams_config = open("../retention/teams_config.json")
     params = json.load(teams_config)
 
     # iterate through each team
