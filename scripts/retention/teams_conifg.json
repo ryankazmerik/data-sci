@@ -1,0 +1,1476 @@
+{
+    "teams": [
+        {
+            "lkupclientid": "9",
+            "clientcode": "hops",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "distToVenue",
+                "totalSpent",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+                     ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Mini Plans / Flex Plans",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Hospitality",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Half Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                }
+            ],
+            "stlrDBName": "stlrMILB"
+        },
+        {
+            "lkupclientid": "11",
+            "clientcode": "bulls",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "distToVenue",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Group",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Half Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Mini Plan",
+                    "train_year": 2019,
+                    "test_year": 2021
+                }
+            ],
+            "stlrDBName": "stlrMILB"
+        },
+        {
+            "lkupclientid": "12",
+            "clientcode": "rivercats",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "distToVenue",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Half Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Mini Plan",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Quarter Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                }
+            ],
+            "stlrDBName": "stlrMILB"
+        },
+        {
+            "lkupclientid": "15",
+            "clientcode": "vegas51s",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "distToVenue",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Half Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Mini Plan",
+                    "train_year": 2019,
+                    "test_year": 2021
+                }
+            ],
+            "stlrDBName": "stlrMILB"
+        },
+        {
+            "lkupclientid": "19",
+            "clientcode": "66ers",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "distToVenue",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Half Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Mini Plan",
+                    "train_year": 2019,
+                    "test_year": 2021
+                }
+            ],
+            "stlrDBName": "stlrMILB"
+        },
+        {
+            "lkupclientid": "20",
+            "clientcode": "loons",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "distToVenue",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Half Season",
+                    "train_year": 2019,
+                    "test_year": 2019
+                },
+                {
+                    "type": "Mini Plan",
+                    "train_year": 2019,
+                    "test_year": 2021
+                }
+            ],
+            "stlrDBName": "stlrMILB"
+        },
+        {
+            "lkupclientid": "21",
+            "clientcode": "indyindians",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "distToVenue",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Half Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Mini Plan",
+                    "train_year": 2019,
+                    "test_year": 2021
+                }
+            ],
+            "stlrDBName": "stlrMILB"
+        },
+        {
+            "lkupclientid": "24",
+            "clientcode": "rattlers",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "distToVenue",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Half Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Mini Plan",
+                    "train_year": 2019,
+                    "test_year": 2021
+                }
+            ],
+            "stlrDBName": "stlrMILB"
+        },
+        {
+            "lkupclientid": "25",
+            "clientcode": "ports",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "distToVenue",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Half Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Mini Plan",
+                    "train_year": 2019,
+                    "test_year": 2021
+                }
+            ],
+            "stlrDBName": "stlrMILB"
+        },
+        {
+            "lkupclientid": "26",
+            "clientcode": "legends",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "distToVenue",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                }
+            ],
+            "stlrDBName": "stlrMILB"
+        },
+        {
+            "lkupclientid": "27",
+            "clientcode": "grizzlies",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "distToVenue",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2020
+                },
+                {
+                    "type": "Half Season",
+                    "train_year": 2019,
+                    "test_year": 2020
+                },
+                {
+                    "type": "Mini Plan",
+                    "train_year": 2019,
+                    "test_year": 2020
+                },
+                {
+                    "type": "Club Seats",
+                    "train_year": 2019,
+                    "test_year": 2020
+                }
+            ],
+            "stlrDBName": "stlrMILB"
+        },
+         {
+            "lkupclientid": "28",
+            "clientcode": "fireflies",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "distToVenue",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Half Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Partial Plan",
+                    "train_year": 2019,
+                    "test_year": 2021
+                }
+            ],
+            "stlrDBName": "stlrMILB"
+        },
+        {
+            "lkupclientid": "30",
+            "clientcode": "elpaso",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "distToVenue",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Half Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Paw-tial Plan",
+                    "train_year": 2019,
+                    "test_year": 2021
+                }
+            ],
+            "stlrDBName": "stlrMILB"
+        },
+        {
+            "lkupclientid": "34",
+            "clientcode": "rrexpress",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "distToVenue",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Fireworks Plans",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Flex Plan",
+                    "train_year": 2019,
+                    "test_year": 2021
+                }
+            ],
+            "stlrDBName": "stlrMILB"
+        },
+        {
+            "lkupclientid": "40",
+            "clientcode": "renoaces",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "distToVenue",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2020,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Half Season",
+                    "train_year": 2019,
+                    "test_year": 2019
+                },
+                {
+                    "type": "Mini Plan",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Voucher",
+                    "train_year": 2020,
+                    "test_year": 2021
+                }
+            ],
+            "stlrDBName": "stlrMILB"
+        },
+        {
+            "lkupclientid": "43",
+            "clientcode": "stormchasers",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "distToVenue",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Partial Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                }
+            ],
+            "stlrDBName": "stlrMILB"
+        },
+        {
+            "lkupclientid": "44",
+            "clientcode": "hartfordyardgoats",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "distToVenue",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Mini Plan",
+                    "train_year": 2019,
+                    "test_year": 2021
+                }
+            ],
+            "stlrDBName": "stlrMILB"
+        },
+        {
+            "lkupclientid": "46",
+            "clientcode": "knights",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "distToVenue",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Half Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Flex Plan",
+                    "train_year": 2019,
+                    "test_year": 2021
+                }
+            ],
+            "stlrDBName": "stlrMILB"
+        },
+        {
+            "lkupclientid": "47",
+            "clientcode": "okcdodgers",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "distToVenue",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Half Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Mini Plan",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Partial Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Friends and Family 4 Pack",
+                    "train_year": 2019,
+                    "test_year": 2019
+                }
+            ],
+            "stlrDBName": "stlrMILB"
+        },
+        {
+            "lkupclientid": "48",
+            "clientcode": "drive",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "distToVenue",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Half Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Suite Lease",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Weekend",
+                    "train_year": 2019,
+                    "test_year": 2021
+                }
+            ],
+            "stlrDBName": "stlrMILB"
+        },
+        {
+            "lkupclientid": "49",
+            "clientcode": "stripers",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "distToVenue",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Half Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Partial Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Voucher",
+                    "train_year": 2019,
+                    "test_year": 2021
+                }
+            ],
+            "stlrDBName": "stlrMILB"
+        },
+        {
+            "lkupclientid": "51",
+            "clientcode": "kanecounty",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "distToVenue",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Package",
+                    "train_year": 2019,
+                    "test_year": 2021
+                }
+            ],
+            "stlrDBName": "stlrMILB"
+        },
+        {
+            "lkupclientid": "59",
+            "clientcode": "toledomudhens",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "distToVenue",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Partial Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                }
+            ],
+            "stlrDBName": "stlrMILB"
+        },
+        {
+            "lkupclientid": "6",
+            "clientcode": "galaxy",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "clickToOpenRatio",
+                "clickToSendRatio",
+                "distToVenue",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "openToSendRatio",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Partial Plan",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Mini Plan",
+                    "train_year": 2019,
+                    "test_year": 2021
+                }
+            ],
+            "stlrDBName": "stlrMLS"
+        },
+        {
+            "lkupclientid": "13",
+            "clientcode": "dynamo",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "distToVenue",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Partial Plan",
+                    "train_year": 2019,
+                    "test_year": 2021
+                }
+            ],
+            "stlrDBName": "stlrMLS"
+        },
+        {
+            "lkupclientid": "31",
+            "clientcode": "sacfc",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "clickToOpenRatio",
+                "clickToSendRatio",
+                "distToVenue",
+                "email",
+                "inperson_contact",
+                "internal_note",
+                "left_message",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "openToSendRatio",
+                "phonecall",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Mini/Flex Plan",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Half Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                }
+            ],
+            "stlrDBName": "stlrMLS"
+        },
+        {
+            "lkupclientid": "18",
+            "clientcode": "sounders2",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "distToVenue",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Half Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                }
+            ],
+            "stlrDBName": "stlrUSL"
+        },
+        {
+            "lkupclientid": "16",
+            "clientcode": "admirals",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "distToVenue",
+                "inperson_contact",
+                "inbound_phonecall",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "outbound_phonecall",
+                "phonecall",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Half Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Flex Plan",
+                    "train_year": 2019,
+                    "test_year": 2021
+                }
+            ],
+            "stlrDBName": "stlrAHL"
+        },
+        {
+            "lkupclientid": "52",
+            "clientcode": "toledowalleye",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "distToVenue",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Partial Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                }
+            ],
+            "stlrDBName": "stlrAHL"
+        },
+        {
+            "lkupclientid": "56",
+            "clientcode": "roadrunners",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "distToVenue",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Half Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Flex Plan",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "12 Game Plan",
+                    "train_year": 2020,
+                    "test_year": 2021
+                }
+            ],
+            "stlrDBName": "stlrAHL"
+        },
+        {
+            "lkupclientid": "7",
+            "clientcode": "canucks",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "distToVenue",
+                "totalSpent",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Half Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Mini Pack",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Quarter",
+                    "train_year": 2019,
+                    "test_year": 2021
+                }
+            ],
+            "stlrDBName": "stlrCanucks"
+        },
+        {
+            "lkupclientid": "35",
+            "clientcode": "stempeders",
+            "features": [
+                "dimCustomerMasterId",
+                "renewedBeforeDays",
+                "attendancePercent",
+                "clickToOpenRatio",
+                "clickToSendRatio",
+                "distToVenue",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "openToSendRatio",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Flex Plan",
+                    "train_year": 2019,
+                    "test_year": 2021
+                }
+            ],
+            "stlrDBName": "stlrCFL"
+        },
+        {
+            "lkupclientid": "55",
+            "clientcode": "coyotes",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "distToVenue",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Flex Plan",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Half Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Mini Plan",
+                    "train_year": 2020,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Partial Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                }
+            ],
+            "stlrDBName": "stlrCoyotes"
+        },
+        {
+            "lkupclientid": "36",
+            "clientcode": "flames",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "clickToOpenRatio",
+                "clickToSendRatio",
+                "distToVenue",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "openToSendRatio",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Flex Plan",
+                    "train_year": 2019,
+                    "test_year": 2019
+                },
+                {
+                    "type": "Half Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Mini Plan",
+                    "train_year": 2020,
+                    "test_year": 2019
+                }
+            ],
+            "stlrDBName": "stlrFlames"
+        },
+        {
+            "lkupclientid": "33",
+            "clientcode": "vgk",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "distToVenue",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Partial",
+                    "train_year": 2019,
+                    "test_year": 2021
+                }
+            ],
+            "stlrDBName": "stlrVGK"
+        },
+        {
+            "lkupclientid": "93",
+            "clientcode": "nhlpanthers",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "distToVenue",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Half Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                }
+            ],
+            "stlrDBName": "stlrNHLPanthers"
+        },
+        {
+            "lkupclientid": "8",
+            "clientcode": "roughnecks",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "distToVenue",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                }
+            ],
+            "stlrDBName": "stlrNLL"
+        },
+        {
+            "lkupclientid": "45",
+            "clientcode": "rays",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "clickToOpenRatio",
+                "clickToSendRatio",
+                "distToVenue",
+                "email",
+                "inperson_contact",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "openToSendRatio",
+                "phonecall",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Half Season",
+                    "train_year": 2019,
+                    "test_year": 2019
+                },
+                {
+                    "type": "Partial Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                }
+            ],
+            "stlrDBName": "stlrRays"
+        },
+        {
+            "lkupclientid": "35",
+            "clientcode": "stamps",
+            "features": [
+                "dimCustomerMasterId",  
+                "totalSpent", 
+                "attendancePercent",  
+                "renewedBeforeDays",   
+                "source_tenure",
+                "tenure",
+                "totalGames",
+                "missed_games_1",
+                "missed_games_over_2",
+                "click_link",
+                "open_email",
+                "send_email",
+                "openToSendRatio",
+                "clickToSendRatio",
+                "clickToOpenRatio",
+                "credits_after_refund",   
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Flex Plan",
+                    "train_year": 2019,
+                    "test_year": 2019
+                }
+            ],
+            "stlrDBName": "stlrRays"
+        },
+        {
+            "lkupclientid": "37",
+            "clientcode": "hitmen",
+            "features": [
+                "dimCustomerMasterId",
+                "attendancePercent",
+                "clickToOpenRatio",
+                "clickToSendRatio",
+                "distToVenue",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "openToSendRatio",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Flex Plan",
+                    "train_year": 2019,
+                    "test_year": 2019
+                }
+            ],
+            "stlrDBName": "stlrWHL"
+        },
+        {
+            "lkupclientid": "5",
+            "clientcode": "blazers",
+            "features": [
+                "dimCustomerMasterId",
+                "annualHHIncome",
+                "attendancePercent",
+                "childrenPresentInHH",
+                "clickToOpenRatio",
+                "clickToSendRatio",
+                "distToVenue",
+                "education",
+                "gender",
+                "lengthOfResidenceInYrs",
+                "maritalStatus",
+                "fill_out_form",
+                "missed_games_1",
+                "missed_games_2",
+                "missed_games_over_2",
+                "totalSpent",
+                "openToSendRatio",
+                "recency",
+                "resale_atp",
+                "cancel_records",
+                "forward_records",
+                "posting_records",
+                "resale_records",
+                "tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
+            ],
+            "products": [
+                {
+                    "type": "Full Season",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Flex Plan",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Partial Season",
+                    "train_year": 2019,
+                    "test_year": 2019
+                }
+            ],
+            "stlrDBName": "stlrTrailBlazers"
+        }
+    ]
+}

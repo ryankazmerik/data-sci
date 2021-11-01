@@ -1,23 +1,18 @@
 {
     "teams": [
         {
-            "lkupclientid": "19",
-            "clientcode": "66ers",
+            "lkupclientid": "9",
+            "clientcode": "hops",
             "features": [
                 "dimCustomerMasterId",
-                "recency",
                 "attendancePercent",
-                "totalSpent",
                 "distToVenue",
+                "totalSpent",
+                "recency",
                 "source_tenure",
                 "renewedBeforeDays",
-                "missed_games_1",
-                "missed_games_2",
-                "missed_games_over_2",
-                "isNextYear_Buyer",
-                "year",
-                "productGrouping"
-            ],
+                "isNextYear_Buyer"
+                     ],
             "products": [
                 {
                     "type": "Full Season",
@@ -25,12 +20,17 @@
                     "test_year": 2021
                 },
                 {
-                    "type": "Half Season",
+                    "type": "Mini Plans / Flex Plans",
                     "train_year": 2019,
                     "test_year": 2021
                 },
                 {
-                    "type": "Mini Plan",
+                    "type": "Hospitality",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Half Season",
                     "train_year": 2019,
                     "test_year": 2021
                 }
@@ -42,18 +42,17 @@
             "clientcode": "bulls",
             "features": [
                 "dimCustomerMasterId",
-                "recency",
                 "attendancePercent",
-                "totalSpent",
                 "distToVenue",
-                "source_tenure",
-                "renewedBeforeDays",
                 "missed_games_1",
                 "missed_games_2",
                 "missed_games_over_2",
+                "totalSpent",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
                 "isNextYear_Buyer",
-                "year",
-                "productGrouping"
+                "isNextYear_Buyer"
             ],
             "products": [
                 {
@@ -80,22 +79,20 @@
             "stlrDBName": "stlrMILB"
         },
         {
-            "lkupclientid": "30",
-            "clientcode": "elpaso",
+            "lkupclientid": "12",
+            "clientcode": "rivercats",
             "features": [
                 "dimCustomerMasterId",
-                "recency",
                 "attendancePercent",
-                "totalSpent",
                 "distToVenue",
-                "source_tenure",
-                "renewedBeforeDays",
                 "missed_games_1",
                 "missed_games_2",
                 "missed_games_over_2",
-                "isNextYear_Buyer",
-                "year",
-                "productGrouping"
+                "totalSpent",
+                "recency",
+                "source_tenure",
+                "renewedBeforeDays",
+                "isNextYear_Buyer"
             ],
             "products": [
                 {
@@ -109,7 +106,12 @@
                     "test_year": 2021
                 },
                 {
-                    "type": "Partial Plan",
+                    "type": "Mini Plan",
+                    "train_year": 2019,
+                    "test_year": 2021
+                },
+                {
+                    "type": "Quarter Season",
                     "train_year": 2019,
                     "test_year": 2021
                 }
