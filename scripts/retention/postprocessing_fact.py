@@ -1,38 +1,36 @@
-import psycopg2
-import getpass
+import boto3
+import json
 import pandas as pd
 import pyodbc
-import sys
-import warnings
 
-if not sys.warnoptions:
-    warnings.simplefilter("ignore")
+def handler(event, context):
 
-
-# override SSM server IP to public IP (for local testing)
-CONN["server"] = "52.44.171.130"
-
-def run_fact():
-
+     # get db connection from SSM
+    ssm_client = boto3.client("ssm", "us-east-1")
+    response = ssm_client.get_parameter(
+        Name=f"/product/ai/notebook/db-connections/LEGACY-MSSQL-QA-VPC-WRITE",
+        WithDecryption=True,
+    )["Parameter"]["Value"]
+    CONN = json.loads(response)
+    
     CNXN = pyodbc.connect(
         "DRIVER={ODBC Driver 17 for SQL Server}"
         + ";SERVER="
         + CONN["server"]
         + ";DATABASE="
-        + team["stlrDBName"]
+        + CONN["database"]
         + ";UID="
         + CONN["username"]
         + ";PWD="
         + CONN["password"]
     )
 
-    print(CONN)
-
     cursor = CNXN.cursor()
     storedProc = f"""Exec [DS].[Run_factCustomerRetention_Full_LOAD] """
 
     df = pd.read_sql(storedProc, CNXN)
 
+    print(df.info())
+
     CNXN.commit()
     cursor.close()
-    return df
