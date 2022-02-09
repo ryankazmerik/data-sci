@@ -148,6 +148,7 @@ drop table if exists #customerEventDaysOut
 select 
     do.minDaysOut,
     do.maxDaysOut,
+    ce.dimCustomerMasterId,
     ce.eventDate,
     ce.eventName,
     -- ce.eventDay,
@@ -168,8 +169,24 @@ from #customerEvent ce, #daysOut do
 where 1=1
     and (ce.purchasedDaysOut is null or ce.purchasedDaysOut < isnull(do.maxDaysOut, ce.purchasedDaysOut + 1))
 
+
 -- scoring data
--- select *
--- from #customerEventDaysOut
--- where 1=1
--- order by eventDate asc, minDaysOut desc
+drop table if exists #sample_purchases
+select *
+into #sample_purchases
+from #customerEventDaysOut where did_purchase = 1
+
+declare @ratio float = 0.5
+declare @numPurchaseSamples int = (select count(*) from #sample_purchases)
+declare @numNonPurchaseSamples int = @ratio * @numPurchaseSamples / (1 - @ratio)
+
+
+select top(@numNonPurchaseSamples) *
+into #sample_nonPurchases
+from #customerEventDaysOut
+where did_purchase = 0
+order by newid()
+
+select * from #sample_purchases
+union
+select * from #sample_nonPurchases
