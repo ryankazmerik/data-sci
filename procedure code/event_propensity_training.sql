@@ -67,6 +67,7 @@ into #customer
 from dw.cohortCustomer c
     join #customerPurchase p on c.dimCustomerMasterId = p.dimCustomerMasterId
 where 1=1
+    and c.accountType not in ('Broker', 'Employee')
     -- debug
     -- and p.dimCustomerMasterId = 24853291
     -- and p.dimCustomerMasterId = 745312
