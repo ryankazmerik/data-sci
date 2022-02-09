@@ -147,8 +147,12 @@ where 1=1
 
 drop table if exists #customerEventDaysOut
 select 
-    do.minDaysOut,
-    do.maxDaysOut,
+    (case 
+        when do.minDaysOut = 0 then 'Day Of'
+        when do.minDaysOut = 1 then '1 to 3 Days Out'
+        when do.minDaysOut = 4 then '4 to 7 Days Out'
+        when do.minDaySOut = 8 then 'Over a Week'
+    end) as daysOut,
     ce.dimCustomerMasterId,
     ce.eventDate,
     ce.eventName,
