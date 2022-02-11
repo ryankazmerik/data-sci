@@ -44,7 +44,7 @@ begin
 			and fts.isRegularSeason = 1
             and fts.isRenewalEvent = 0
 			and fts.eventDate < @datenow
-			and fts.subProductName = 'Online Individual Game'
+			and fts.productType = 'Individual'
             and fts.dimCustomerMasterId <> -1
             and de.inMarket ='True'
             and not exists (select 'true'
@@ -55,7 +55,7 @@ begin
                         and fts2.isRegularSeason = 1
                         and ds2.inMarket ='True'
                         and fts2.dimCustomerMasterId <> -1
-                        and fts2.subProductName <> 'Online Individual Game'
+                        and fts2.productType <> 'Individual'
 					and fts.dimCustomerMasterId = fts2.dimCustomerMasterId
 					and fts.seasonYear = fts2.seasonYear)
 		group by
@@ -80,7 +80,7 @@ begin
             and fts.isRenewalEvent = 0
             and ms.inMarket ='True'
             and fts.dimCustomerMasterId <> -1
-			and fts.subProductName = 'Online Individual Game'
+			and fts.productType = 'Individual'
             and not exists (select 'true'
 					from dw.cohortPurchase fts2
 						inner join dw.dimCustomerMaster ds2
@@ -89,7 +89,7 @@ begin
                         and fts2.isRegularSeason = 1
                         and ds2.inMarket = 'True'
                         and fts2.dimCustomerMasterId <> -1
-                        and fts2.subProductName <> 'Online Individual Game'
+                        and fts2.productType <> 'Individual'
 					and fts.dimCustomerMasterId = fts2.dimCustomerMasterId
 					and fts.seasonYear = fts2.seasonYear)
 	group by
@@ -112,7 +112,7 @@ begin
             and fts.isRenewalEvent = 0
             and ms.inMarket ='True'
             and fts.dimCustomerMasterId <> -1
-			and fts.subProductName = 'Online Individual Game'
+			and fts.productType = 'Individual'
             and not exists (select 'true'
 					from dw.cohortPurchase fts2
 						inner join dw.dimCustomerMaster ds2
@@ -122,7 +122,7 @@ begin
                         and fts2.dimCustomerMasterId <> -1
                         and ds2.inMarket ='True'
                         and fts2.attendanceCount > 0
-                        and fts2.subProductName <> 'Online Individual Game'
+                        and fts2.productType <> 'Individual'
 					and fts.dimCustomerMasterId = fts2.dimCustomerMasterId
 					and fts.seasonYear = fts2.seasonYear)
 	group by
@@ -155,7 +155,7 @@ begin
             and fts.isRenewalEvent = 0
             and fts.dimCustomerMasterId <> -1
             and dc.inMarket ='True'
-			and fts.subProductName = 'Online Individual Game'
+			and fts.productType = 'Individual'
             and not exists (select 'true'
 					from dw.cohortPurchase fts2
 						inner join dw.dimCustomerMaster ds2
@@ -165,7 +165,7 @@ begin
                         and fts2.dimCustomerMasterId <> -1
                         and ds2.inMarket ='True'
                         and fts2.attendanceCount > 0
-                        and fts2.subProductName <> 'Online Individual Game'
+                        and fts2.productType <> 'Individual'
 					and fts.dimCustomerMasterId = fts2.dimCustomerMasterId
 					and fts.seasonYear = fts2.seasonYear)
 			and fts.eventDate < me.max_event_date
@@ -239,7 +239,7 @@ begin
             and fts.isRenewalEvent = 0
             and fts.dimCustomerMasterId <> -1
             and dc.inMarket ='True'
-			and fts.subProductName = 'Online Individual Game'
+			and fts.productType = 'Individual'
             and not exists (select 'true'
 					from dw.cohortPurchase fts2
 						inner join dw.dimCustomerMaster ds2
@@ -249,7 +249,7 @@ begin
                         and fts2.attendanceCount > 0
                         and fts2.dimCustomerMasterId <> -1
                         and ds2.inMarket ='True'
-                        and fts2.subProductName <> 'Online Individual Game'
+                        and fts2.productType <> 'Individual'
 					and fts.dimCustomerMasterId = fts2.dimCustomerMasterId
 					and fts.seasonYear = fts2.seasonYear)
 	option (optimize for unknown)
@@ -311,7 +311,7 @@ begin
 			when Date < seasonStartDate then year-1
 			when Date > seasonEndDate then year+1 
 		end as seasonYear
-	into #campaignSeason
+	into #Season
 	from dw.dimDate d 
 		left join dw.dimSeason s on d.year = s.seasonYear
 	where s.lkupClientId = @lkupClientId
@@ -336,7 +336,7 @@ begin
 	from dw.factMarketingActivity fma
 		inner join dw.dimMarketingActivity dma on fma.dimMarketingActivityId=dma.dimMarketingActivityId
 		inner join dw.dimCustomer dc on fma.dimCustomerId=dc.dimCustomerId
-		left join #campaignSeason cs on fma.dimDateId = cs.dimDateId
+		left join #Season cs on fma.dimDateId = cs.dimDateId
 	where fma.lkupClientId=@lkupClientId
 		--and seasonYear = @year
 	group by 
@@ -361,6 +361,27 @@ begin
 	) piv
 	order by dimCustomerMasterId, seasonYear;
 	-- END OF MARKETING
+
+
+-- start of app views 
+select aw.dimCustomerMasterId,cs.seasonYear,SUM(numViews) as numViews
+into #appviews
+from dw.cohortAppViews aw 
+left join #Season cs on aw.viewDate = cs.date
+where aw.lkupClientId =@lkupClientId
+GROUP BY aw.dimCustomerMasterId,cs.seasonYear
+-- end of app views
+
+-- start of web engagement
+
+select we.dimCustomerMasterId,cs.seasonYear,SUM(activityCount) as ActivityCount
+into #webEngagement
+from dw.cohortWebEngagement we 
+left join #Season cs on we.activityDate = cs.date
+where we.lkupClientId =@lkupClientId
+GROUP BY we.dimCustomerMasterId,cs.seasonYear
+
+-- end of web engagement
 
 	
  drop table if exists #credit_candidates;    
@@ -398,25 +419,40 @@ begin
     ) b
     where Rownum = 1
 
-    
+
      select s.seasonYear, max(cast(gameNumber as int)) NumberofGamesPerSeason 
      into #TmpNumberofGamesPerSeason
      from dw.dimevent e 
      inner join dw.dimseason s
      on e.sourceSeasonId = s.sourceSeasonId
-      where isRenewalEvent = 0
+      where e.lkupClientId= @lkupClientId
+      and isRenewalEvent = 0
       and isRegularSeason = 1
       group by s.seasonYear
 
 
-      select f.dimCustomerMasterId, e.tier as tier,f.seasonYear,COUNT(*) tierCNT
+      select  e.tier ,f.seasonYear,COUNT(distinct f.eventName) NumofGames
+into  #gamesCNT
+from [dw].[cohortPurchase] f
+join  DataScience.yankees.eventTiersSeason e 
+    on e.eventDate = cast(f.eventDate as date)      
+    and f.seasonYear = e.seasonYear     
+where f.lkupClientId = @lkupClientId
+    and f.isRegularSeason = 1
+    group by  e.tier,f.seasonYear
+
+
+      select f.dimCustomerMasterId, e.tier as tier,f.seasonYear,COUNT(*)/count(g.NumofGames) as tierCNT
 into  #cntTier
 from [dw].[cohortPurchase] f
 join dw.dimCustomerMaster dc
     on f.dimCustomerMasterId = dc.dimCustomerMasterId
 join  DataScience.yankees.eventTiersSeason e 
     on e.eventDate = cast(f.eventDate as date)      
-    and f.seasonYear = e.seasonYear     
+    and f.seasonYear = e.seasonYear   
+join #gamesCNT g 
+on g.seasonYear = f.seasonYear
+--and g.tier = f.tier  
 where f.lkupClientId = @lkupClientId
     and f.dimCustomermasterId <> -1
     and dc.inMarket='True'
@@ -437,11 +473,15 @@ where f.lkupClientId = @lkupClientId
     group by f.dimCustomerMasterId, e.tier,f.seasonYear
 
 
+
+
+
   select dimCustomerMasterId,seasonYear,tier 
 into #tierfinal
  from (
 SELECT dimCustomerMasterId, t.tier, seasonYear, tierCNT, ROW_NUMBER() OVER (partition by dimCustomerMasterId, seasonYear ORDER BY tierCNT desc, tier) as select_me
 FROM #cntTier t
+
 ) aa 
 where aa.select_me =1
 --order by seasonYear, tier 
@@ -537,6 +577,8 @@ and tf2.seasonYear = tf.seasonYear +1
 		end clickToOpenRatio,
 		
         isnull(cr.creditsRemainingAfterRefundUse,0) AS credits_after_refund,
+        ap.numViews,
+        wg.ActivityCount,
         g.NumberofGamesPerSeason,
         cg.isNextGameBuyer ,
         yt.nextYearTier
@@ -567,6 +609,13 @@ and tf2.seasonYear = tf.seasonYear +1
         left join #nextYearTier yt 
         on yt.dimCustomerMasterId = sd.dimCustomerMasterId
         and yt.seasonYear= sd.year
+        inner join #appviews ap 
+        on ap.dimCustomerMasterId = sd.dimCustomerMasterId
+        and ap.seasonYear = sd.year 
+        inner join #webEngagement wg 
+        on wg.dimCustomerMasterId = sd.dimCustomerMasterId
+        and wg.seasonYear = sd.year
+
 	order by sd.year;
 
 
@@ -589,7 +638,7 @@ and tf2.seasonYear = tf.seasonYear +1
 	drop table if exists #activities;
 	drop table if exists #temp1;
 	drop table if exists #temp2;
-	drop table if exists #campaignSeason;
+	drop table if exists #Season;
 	drop table if exists #marketoActivities;
 	drop table if exists #marketoData;
     drop table if exists #credit_candidates
@@ -603,5 +652,7 @@ and tf2.seasonYear = tf.seasonYear +1
     drop table if exists #nextYearTier
     drop table if exists #tierfinal
 end
+
+
 
 GO
