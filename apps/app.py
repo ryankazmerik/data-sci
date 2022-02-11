@@ -177,7 +177,14 @@ with section_3:
     heatmap.set_xticklabels(heatmap.get_xticklabels(), rotation=45, horizontalalignment='right')
 
     st.write(fig)
-    
+
+# SECTION 4: SCORE DISTRIBUTION
+with section_4:
+
+    df_inference.hist(column=['Score_0', 'Score_1'], figsize=(30,5), layout=(1,3));
+
+    st.write(df_inference)
+
 # STYLE HACKS
 with open('app.css', 'r') as css_file:
     css = (css_file.read())
