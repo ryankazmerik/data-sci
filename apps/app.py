@@ -147,8 +147,8 @@ with section_1:
 # SECTION 2 : METRICS
 with section_2:
 
-    results = get_predictions(df_train, df_eval)
-    metrics = get_metrics(results)
+    df_inference = get_predictions(df_train, df_eval)
+    metrics = get_metrics(df_inference)
 
     col_1, col_2, col_3, col_4, col_5 = st.columns(5)
     
@@ -181,9 +181,25 @@ with section_3:
 # SECTION 4: SCORE DISTRIBUTION
 with section_4:
 
-    df_inference.hist(column=['Score_0', 'Score_1'], figsize=(30,5), layout=(1,3));
+    col_1, col_2 = st.columns(2)
 
-    st.write(df_inference)
+    with col_1:
+        fig, ax = plt.subplots(figsize=(5,2))
+        ax.hist(df_inference["Score_0"], bins=30)
+        ax.set_title('Did Not Purchase', size=9) 
+        ax.set_ylabel('Count', fontsize = 7)
+        ax.set_xlabel('Probability', fontsize = 7)
+
+        st.pyplot(fig)
+
+    with col_2:
+        fig2, ax = plt.subplots(figsize=(5,2))
+        ax.hist(df_inference["Score_1"], bins=30)
+        ax.set_title('Did Purchase', size=9) 
+        ax.set_ylabel('Count', fontsize = 7)
+        ax.set_xlabel('Probability', fontsize = 7)
+
+        st.pyplot(fig2)
 
 # STYLE HACKS
 with open('app.css', 'r') as css_file:
