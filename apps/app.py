@@ -118,7 +118,8 @@ section_0 = st.expander("Hypothesis")
 section_1 = st.expander("Raw Dataset", expanded=False)
 section_2 = st.expander("Model Metrics", expanded=False)
 section_3 = st.expander("Association Heatmap", expanded=False)
-section_4 = st.expander("Score Distribution", expanded=True)
+section_4 = st.expander("Score Distribution", expanded=False)
+section_5 = st.expander("Feature Importances", expanded=True)
 
 # SECTION 0 : HYPOTHESIS
 with section_0:
@@ -206,4 +207,3 @@ with open('app.css', 'r') as css_file:
     css = (css_file.read())
 
 st.markdown(css, unsafe_allow_html=True)
-
