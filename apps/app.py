@@ -130,7 +130,7 @@ def get_feature_importances(model):
         by=["Importance"]
     )
 
-    df_feature_importances = df_feature_importances.iloc[0:10]
+    df_feature_importances = df_feature_importances.iloc[0:12]
 
     return df_feature_importances
 
@@ -237,10 +237,13 @@ with section_5:
     
     fig3, ax = plt.subplots()
     ax.barh(df_features["Feature"], df_features['Importance'])
-    ax.set_title('Importance by Feature', size=9) 
-    ax.set_ylabel('Feature', fontsize = 7)
-    ax.set_xlabel('Importance', fontsize = 7)
+    ax.set_title('Importance by Feature', size=12) 
+    ax.set_ylabel('Feature', fontsize=12)
+    ax.set_xlabel('Importance', fontsize=12)
     
+    for label in (ax.get_xticklabels() + ax.get_yticklabels()):
+	    label.set_fontsize(9)
+
     st.pyplot(fig3)
 
 # STYLE HACKS
