@@ -127,8 +127,10 @@ def get_feature_importances(model):
     )
 
     df_feature_importances = df_feature_importances.sort_values(
-        by=["Importance"], ascending=False
+        by=["Importance"]
     )
+
+    df_feature_importances = df_feature_importances.iloc[0:10]
 
     return df_feature_importances
 
@@ -233,12 +235,13 @@ with section_5:
     model = get_model(df_train)
     df_features = get_feature_importances(model)
     
-    feat_plot = df_features.plot.barh(
-        x='Importance', y='Feature',
-       title='Importance by Feature'
-    )
+    fig3, ax = plt.subplots()
+    ax.barh(df_features["Feature"], df_features['Importance'])
+    ax.set_title('Importance by Feature', size=9) 
+    ax.set_ylabel('Feature', fontsize = 7)
+    ax.set_xlabel('Importance', fontsize = 7)
     
-    st.write(feat_plot)
+    st.pyplot(fig3)
 
 # STYLE HACKS
 with open('app.css', 'r') as css_file:
