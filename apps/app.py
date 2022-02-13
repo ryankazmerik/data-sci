@@ -24,8 +24,8 @@ def get_data_sets():
 
     return df, df_train, df_eval
 
-def get_predictions(df_train, df_eval):
-
+def get_model(df_train):
+    
     setup(
         data= df_train, 
         target="did_purchase", 
@@ -62,8 +62,13 @@ def get_predictions(df_train, df_eval):
         fold= 2
     )
 
+    return best_model
+
+
+def get_predictions(model, df_eval):
+
     df_inference = predict_model(
-        best_model, 
+        model, 
         data=df_eval, 
         raw_score=True
     )
@@ -148,7 +153,8 @@ with section_1:
 # SECTION 2 : METRICS
 with section_2:
 
-    df_inference = get_predictions(df_train, df_eval)
+    model = get_model(df_train)
+    df_inference = get_predictions(model, df_eval)
     metrics = get_metrics(df_inference)
 
     col_1, col_2, col_3, col_4, col_5 = st.columns(5)
@@ -201,6 +207,14 @@ with section_4:
         ax.set_xlabel('Probability', fontsize = 7)
 
         st.pyplot(fig2)
+
+# SECTION 5: FEATURE IMPORTANCE
+with section_5:
+
+    model = get_model(df_train)
+    feat_plot = plot_model(model, plot="feature", display_format="streamlit")
+    
+    st.write(feat_plot)
 
 # STYLE HACKS
 with open('app.css', 'r') as css_file:
