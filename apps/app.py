@@ -54,7 +54,7 @@ def get_model(df_train):
 
     model_matrix = compare_models(
         fold= 2, 
-        include= ["lr"]
+        include= ["lightgbm"]
     )
     
     best_model = create_model(
@@ -63,7 +63,6 @@ def get_model(df_train):
     )
 
     return best_model
-
 
 def get_predictions(model, df_eval):
 
@@ -112,6 +111,26 @@ def get_metrics(df_inference):
     }
 
     return metrics
+
+def get_feature_importances(model):
+
+    feature_columns = get_config("X_train").columns
+    feature_values = model.feature_importances_  
+
+    df_feature_importances = pd.DataFrame(columns=["Feature", "Importance"])
+
+    df_feature_importances["Feature"] = feature_columns
+    df_feature_importances["Importance"] = feature_values
+
+    df_feature_importances["Importance"] = pd.to_numeric(
+        df_feature_importances["Importance"]
+    )
+
+    df_feature_importances = df_feature_importances.sort_values(
+        by=["Importance"], ascending=False
+    )
+
+    return df_feature_importances
 
 
 # SIDEBAR COMPONENTS
@@ -212,7 +231,12 @@ with section_4:
 with section_5:
 
     model = get_model(df_train)
-    feat_plot = plot_model(model, plot="feature", display_format="streamlit")
+    df_features = get_feature_importances(model)
+    
+    feat_plot = df_features.plot.barh(
+        x='Importance', y='Feature',
+       title='Importance by Feature'
+    )
     
     st.write(feat_plot)
 
