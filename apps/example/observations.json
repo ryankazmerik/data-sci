@@ -1,0 +1,278 @@
+[
+  {
+    "id": "eb88928a8da2476486fd842ebfd35128",
+    "date": "04/02/2021 17:59",
+    "initials": "RK",
+    "details": "The model identified 'driller' as a tool but this could be referring to a worker, not the object.",
+    "settings": {
+      "Model Version": "v1",
+      "Chart Type": "Percentage",
+      "Minimum Frequency": 10,
+      "Incident Type": "Injury",
+      "Activity": [],
+      "Operating Area": [],
+      "Year": [
+        2016,
+        2021
+      ]
+    }
+  },
+  {
+    "id": "52fa719c99eb4899a94c8ad3a0ed6187",
+    "date": "11/02/2021 15:01",
+    "initials": "MB",
+    "details": "Blade, exacto knife, knife, pocket knife, and utility knife all fall into the same kind of \"blade\" category.",
+    "settings": {
+      "Model Version": "v1",
+      "Chart Type": "Frequency",
+      "Minimum Frequency": 5,
+      "Incident Type": "Injury",
+      "Activity": [],
+      "Operating Area": [],
+      "Year": [
+        2012,
+        2021
+      ]
+    }
+  },
+  {
+    "id": "fce436f5be364c5095d1f6855e340cf4",
+    "date": "11/02/2021 15:03",
+    "initials": "KBoot",
+    "details": "I think if we can add the hazard ID to the ratio, that when we go down to the activity AND op area we will still have a relationship. ",
+    "settings": {
+      "Model Version": "v1",
+      "Chart Type": "Frequency",
+      "Minimum Frequency": 5,
+      "Incident Type": "Injury",
+      "Activity": [
+        "Drilling"
+      ],
+      "Operating Area": [],
+      "Year": [
+        2012,
+        2021
+      ]
+    }
+  },
+  {
+    "id": "a4cb43f2e9b3424c8bfd2048b14b8f23",
+    "date": "17/02/2021 10:11",
+    "initials": "BR",
+    "details": "As a deeper dive exercise: With some of the top frequency tools (drill, hammer, wrench) would be interesting to run themes (or extract the actions really) from the description on those records to try and get some insights on actions (e.g. slip, miss, drop, etc.)",
+    "settings": {
+      "Model Version": "v1",
+      "Chart Type": "Percentage",
+      "Minimum Frequency": 5,
+      "Activity": [],
+      "Operating Area": [],
+      "Year": [
+        2012,
+        2021
+      ]
+    }
+  },
+  {
+    "id": "b7ba7780805b4d158a663eb42b275e7e",
+    "date": "17/02/2021 10:36",
+    "initials": "KB",
+    "details": "What would it look like to include near miss? Is this a heavy lift?",
+    "settings": {
+      "Model Version": "v1",
+      "Chart Type": "Percentage",
+      "Minimum Frequency": 8,
+      "Activity": [],
+      "Operating Area": [],
+      "Year": [
+        2012,
+        2021
+      ]
+    }
+  },
+  {
+    "id": "e0981d2601504c7fa52d1eca96395100",
+    "date": "17/02/2021 10:37",
+    "initials": "JMA",
+    "details": "I would suggest consolidating tool categories (clamp vs. clamps, knife vs utility knife, wrenches vs wrench, etc). Also, consolidating Southern Operations if referred to Permian, with Texas Operations",
+    "settings": {
+      "Model Version": "v1",
+      "Chart Type": "Frequency",
+      "Minimum Frequency": 5,
+      "Activity": [],
+      "Operating Area": [],
+      "Year": [
+        2014,
+        2021
+      ]
+    }
+  },
+  {
+    "id": "e840f68f99ce43a2bcb63b700bb72869",
+    "date": "17/02/2021 10:39",
+    "initials": "KB",
+    "details": "Could we add a line at the hazard ID level? ",
+    "settings": {
+      "Model Version": "v1",
+      "Chart Type": "Percentage",
+      "Minimum Frequency": 8,
+      "Activity": [],
+      "Operating Area": [],
+      "Year": [
+        2012,
+        2021
+      ]
+    }
+  },
+  {
+    "id": "bb0b068043684f899f5af6fac640566a",
+    "date": "17/02/2021 11:21",
+    "initials": "BG",
+    "details": "It provides direction on what tools to focus on when completing site visits, developing SOP's and/or inspections.  Also, if filtered to a a discipline or area, it may fit well into on site hazard assessments.",
+    "settings": {
+      "Model Version": "v1",
+      "Chart Type": "Percentage",
+      "Minimum Frequency": 8,
+      "Activity": [],
+      "Operating Area": [],
+      "Year": [
+        2012,
+        2021
+      ]
+    }
+  },
+  {
+    "id": "657eae220ecb4dfdab6d6939e075090b",
+    "date": "18/02/2021 09:00",
+    "initials": "CS",
+    "details": "Is there value in grouping the wrench types together (only if they actually are similar tools)? Like crescent wrench, hammer wrench, pipe wrench, spanner wrench, torque wrench, valve wrench, and plain old \u201cwrench\u201d \u2013 or does the wrench category include all the other wrench types?",
+    "settings": {
+      "Model Version": "v1",
+      "Chart Type": "Percentage",
+      "Minimum Frequency": 8,
+      "Activity": [],
+      "Operating Area": [],
+      "Year": [
+        2012,
+        2021
+      ]
+    }
+  },
+  {
+    "id": "fc7655ad6f884993ad472cd257b463af",
+    "date": "18/02/2021 09:03",
+    "initials": "CS",
+    "details": "The model is including \u2018roles\u2019 (e.g. contract welder, ip\u2019s chief, ip\u2019s supervisor) and things like \u2018pain killer\u2019 so we might want to tweak the model a bit. ",
+    "settings": {
+      "Model Version": "v1",
+      "Chart Type": "Frequency",
+      "Minimum Frequency": 9,
+      "Activity": [],
+      "Operating Area": [],
+      "Year": [
+        2012,
+        2021
+      ]
+    }
+  },
+  {
+    "id": "e68df05b5ff845808e6835b3191ad47c",
+    "date": "18/02/2021 10:21",
+    "initials": "SS",
+    "details": "Filter for the Tools would be nice if you wanted to isolate 1 tool to pull data on.",
+    "settings": {
+      "Model Version": "v1",
+      "Chart Type": "Percentage",
+      "Minimum Frequency": 8,
+      "Activity": [
+        "Drilling"
+      ],
+      "Operating Area": [
+        "Canadian Operations"
+      ],
+      "Year": [
+        2012,
+        2021
+      ]
+    }
+  },
+  {
+    "id": "836659fb123946c185934325c690a8dd",
+    "date": "18/02/2021 12:38",
+    "initials": "CPF",
+    "details": "Any chance filters for more/all sections of an IMS report can be added? Right now it\u2019s showing Well, Pipeline, Facilities activity for all production, but if there\u2019s an activity/task section we can pull for production workover, chemical, compression, etc. Could be used for discipline specific trending and leadership spot checks generation. ",
+    "settings": {
+      "Model Version": "v1",
+      "Chart Type": "Frequency",
+      "Minimum Frequency": 8,
+      "Activity": [],
+      "Operating Area": [
+        "Canadian Operations"
+      ],
+      "Year": [
+        2012,
+        2021
+      ]
+    }
+  },
+  {
+    "id": "f74e7e9d157442ae806ab75670685987",
+    "date": "18/02/2021 12:47",
+    "initials": "KB",
+    "details": "Tricky when a tool is referenced in the free text field as a corrective action. Is this trained behaviour to include? ",
+    "settings": {
+      "Model Version": "v1",
+      "Chart Type": "Percentage",
+      "Minimum Frequency": 8,
+      "Activity": [
+        "Completions"
+      ],
+      "Operating Area": [
+        "Canadian Operations"
+      ],
+      "Year": [
+        2012,
+        2021
+      ]
+    }
+  },
+  {
+    "id": "b7d824c9d13e479889bf9955f9966ae2",
+    "date": "18/02/2021 12:48",
+    "initials": "KB",
+    "details": "Could data table below be narrowed when you select the stacked bar?",
+    "settings": {
+      "Model Version": "v1",
+      "Chart Type": "Percentage",
+      "Minimum Frequency": 8,
+      "Activity": [
+        "Completions"
+      ],
+      "Operating Area": [
+        "Canadian Operations"
+      ],
+      "Year": [
+        2012,
+        2021
+      ]
+    }
+  },
+  {
+    "id": "140bcac04e2a4c33ae05867900f19c7f",
+    "date": "22/02/2021 09:24",
+    "initials": "kb",
+    "details": "could results go in order of freq. rather than alphabetical?",
+    "settings": {
+      "Model Version": "v1",
+      "Chart Type": "Percentage",
+      "Minimum Frequency": 6,
+      "Activity": [],
+      "Operating Area": [
+        "Canadian Operations"
+      ],
+      "Year": [
+        2012,
+        2021
+      ]
+    }
+  }
+]
