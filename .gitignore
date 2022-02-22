@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+# Stellar Custom
+/mlb-yankees/data
+
 # Distribution / packaging
 .Python
 build/
