@@ -7,7 +7,7 @@ __pycache__/
 *.so
 
 # Stellar Custom
-/mlb-yankees/data
+notebooks/experiments/mlb-yankees/data
 
 # Distribution / packaging
 .Python
