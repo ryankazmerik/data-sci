@@ -8,6 +8,7 @@ __pycache__/
 
 # Stellar Custom
 notebooks/experiments/mlb-yankees/data
+notebooks/experiments/mlb-yankees/results
 
 # Distribution / packaging
 .Python
