@@ -7,7 +7,7 @@ __pycache__/
 *.so
 
 # Stellar Custom
-notebooks/tests
+
 
 # Distribution / packaging
 .Python
