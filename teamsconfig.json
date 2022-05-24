@@ -3,11 +3,6 @@
         "lkupclientid": 16,
         "name": "Milwaukee Admirals",
         "clientcode": "admirals",
-        "products": [
-            "Full Season",
-            "Flex Plan",
-            "Half Season"
-        ],
         "league": "AHL",
         "modelsubtype": "AHL",
         "cluster": "prod-app",
@@ -17,12 +12,6 @@
         "lkupclientid": 56,
         "name": "Tuscon Road Runners",
         "clientcode": "roadrunners",
-        "products": [
-            "Full Season",
-            "Half Season",
-            "Flex Plan",
-            "12 Game Plan"
-        ],
         "league": "AHL",
         "modelsubtype": "AHL",
         "cluster": "prod-app",
@@ -32,10 +21,6 @@
         "lkupclientid": 35,
         "name": "Calgary Stampeders",
         "clientcode": "stamps",
-        "products": [
-            "Full Season",
-            "Flex Plan"
-        ],
         "league": "CFL",
         "modelsubtype": "CFL",
         "cluster": "prod-app",
@@ -45,9 +30,6 @@
         "lkupclientid": 96,
         "name": "Florida Everblades",
         "clientcode": "echleverblades",
-        "products": [
-            "Full Season"
-        ],
         "league": "ECHL",
         "modelsubtype": "ECHL",
         "cluster": "prod-app-elbu",
@@ -57,10 +39,6 @@
         "lkupclientid": 52,
         "name": "Toledo Walleye",
         "clientcode": "toledowalleye",
-        "products": [
-            "Full Season",
-            "Partial Season"
-        ],
         "league": "ECHL",
         "modelsubtype": "ECHL",
         "cluster": "prod-app",
@@ -70,12 +48,6 @@
         "lkupclientid": 9,
         "name": "Hillsboro Hops",
         "clientcode": "hops",
-        "products": [
-            "Full Season",
-            "Half Season",
-            "Mini Plans / Flex Plans",
-            "Hospitality"
-        ],
         "league": "MILB",
         "modelsubtype": "MILB",
         "cluster": "prod-app",
@@ -85,12 +57,6 @@
         "lkupclientid": 11,
         "name": "Durham Bulls",
         "clientcode": "bulls",
-        "products": [
-            "Full Season",
-            "Group",
-            "Half Season",
-            "Mini Plan"
-        ],
         "league": "MILB",
         "modelsubtype": "MILB",
         "cluster": "prod-app",
@@ -100,12 +66,6 @@
         "lkupclientid": 12,
         "name": "Sacramento River Cats",
         "clientcode": "rivercats",
-        "products": [
-            "Full Season",
-            "Half Season",
-            "Mini Plan",
-            "Quarter Season"
-        ],
         "league": "MILB",
         "modelsubtype": "MILB",
         "cluster": "prod-app",
@@ -115,11 +75,6 @@
         "lkupclientid": 15,
         "name": "Las Vegas Aviators",
         "clientcode": "vegas51s",
-        "products": [
-            "Full Season",
-            "Half Season",
-            "Mini Plan"
-        ],
         "league": "MILB",
         "modelsubtype": "MILB",
         "cluster": "prod-app",
@@ -129,11 +84,6 @@
         "lkupclientid": 19,
         "name": "Inland Empire 66ers",
         "clientcode": "66ers",
-        "products": [
-            "Full Season",
-            "Half Season",
-            "Mini Plan"
-        ],
         "league": "MILB",
         "modelsubtype": "MILB",
         "cluster": "prod-app",
@@ -143,11 +93,6 @@
         "lkupclientid": 20,
         "name": "Great Lakes Loons",
         "clientcode": "loons",
-        "products": [
-            "Full Season",
-            "Half Season",
-            "Mini Plan"
-        ],
         "league": "MILB",
         "modelsubtype": "MILB",
         "cluster": "prod-app",
@@ -157,9 +102,6 @@
         "lkupclientid": 26,
         "name": "Lexington Legends",
         "clientcode": "legends",
-        "products": [
-            "Full Season"
-        ],
         "league": "MILB",
         "modelsubtype": "MILB",
         "cluster": "prod-app",
@@ -169,11 +111,6 @@
         "lkupclientid": 28,
         "name": "Columbia Fireflies",
         "clientcode": "fireflies",
-        "products": [
-            "Full Season",
-            "Half Season",
-            "Partial Plan"
-        ],
         "league": "MILB",
         "modelsubtype": "MILB",
         "cluster": "prod-app",
@@ -183,11 +120,6 @@
         "lkupclientid": 30,
         "name": "El Paso Chihauhaus",
         "clientcode": "elpaso",
-        "products": [
-            "Full Season",
-            "Half Season",
-            "Paw-tial Plan"
-        ],
         "league": "MILB",
         "modelsubtype": "MILB",
         "cluster": "prod-app",
@@ -197,11 +129,6 @@
         "lkupclientid": 34,
         "name": "Round Rock Express",
         "clientcode": "rrexpress",
-        "products": [
-            "Fireworks Plans",
-            "Flex Plan",
-            "Full Season"
-        ],
         "league": "MILB",
         "modelsubtype": "MILB",
         "cluster": "prod-app",
@@ -211,11 +138,6 @@
         "lkupclientid": 40,
         "name": "Reno Aces",
         "clientcode": "renoaces",
-        "products": [
-            "Full Season",
-            "Half Season",
-            "Mini Plan"
-        ],
         "league": "MILB",
         "modelsubtype": "MILB",
         "cluster": "prod-app",
@@ -225,10 +147,6 @@
         "lkupclientid": 43,
         "name": "Omaha Storm Chasers",
         "clientcode": "stormchasers",
-        "products": [
-            "Full Season",
-            "Partial Season"
-        ],
         "league": "MILB",
         "modelsubtype": "MILB",
         "cluster": "prod-app",
@@ -238,10 +156,6 @@
         "lkupclientid": 44,
         "name": "Hartford Yard Goats",
         "clientcode": "hartfordyardgoats",
-        "products": [
-            "Full Season",
-            "Mini Plan"
-        ],
         "league": "MILB",
         "modelsubtype": "MILB",
         "cluster": "prod-app",
@@ -251,13 +165,6 @@
         "lkupclientid": 47,
         "name": "Oklahoma City Dodgers",
         "clientcode": "okcdodgers",
-        "products": [
-            "Full Season",
-            "Half Season",
-            "Mini Plan",
-            "Partial Season",
-            "Friends and Family 4 Pack"
-        ],
         "league": "MILB",
         "modelsubtype": "MILB",
         "cluster": "prod-app",
@@ -267,12 +174,6 @@
         "lkupclientid": 48,
         "name": "Greenville Drive",
         "clientcode": "drive",
-        "products": [
-            "Full Season",
-            "Half Season",
-            "Suite Lease",
-            "Weekend"
-        ],
         "league": "MILB",
         "modelsubtype": "MILB",
         "cluster": "prod-app",
@@ -282,12 +183,6 @@
         "lkupclientid": 49,
         "name": "Gwinnett Stripers",
         "clientcode": "stripers",
-        "products": [
-            "Full Season",
-            "Half Season",
-            "Partial Season",
-            "Voucher"
-        ],
         "league": "MILB",
         "modelsubtype": "MILB",
         "cluster": "prod-app",
@@ -297,10 +192,6 @@
         "lkupclientid": 51,
         "name": "Kane County Cougars",
         "clientcode": "kanecounty",
-        "products": [
-            "Full Season",
-            "Package"
-        ],
         "league": "MILB",
         "modelsubtype": "MILB",
         "cluster": "prod-app",
@@ -310,10 +201,6 @@
         "lkupclientid": 59,
         "name": "Toledo Mud Hens",
         "clientcode": "toledomudhens",
-        "products": [
-            "Full Season",
-            "Partial Season"
-        ],
         "league": "MILB",
         "modelsubtype": "MILB",
         "cluster": "prod-app",
@@ -323,10 +210,6 @@
         "lkupclientid": 100,
         "name": "Portland Sea Dogs",
         "clientcode": "milbseadogs",
-        "products": [
-            "Full Season",
-            "Partial Season"
-        ],
         "league": "MILB",
         "modelsubtype": "MILB",
         "cluster": "prod-app-elbu",
@@ -336,13 +219,6 @@
         "lkupclientid": 98,
         "name": "Wichita WindSurge",
         "clientcode": "milbwindsurge",
-        "products": [
-            "Full Season",
-            "30-59 Game Plan",
-            "20-29 Game Plan",
-            "10-19 Game Plan",
-            "< 10 Game Plan"
-        ],
         "league": "MILB",
         "modelsubtype": "MILB",
         "cluster": "prod-app-elbu",
@@ -352,11 +228,6 @@
         "lkupclientid": 45,
         "name": "Tampa Bay Rays",
         "clientcode": "rays",
-        "products": [
-            "Full Season",
-            "Half Season",
-            "Partial Season"
-        ],
         "league": "MLB",
         "modelsubtype": "MLB-Rays",
         "cluster": "prod-app",
@@ -366,10 +237,6 @@
         "lkupclientid": 13,
         "name": "Houston Dynamo",
         "clientcode": "dynamo",
-        "products": [
-            "Full Season",
-            "Partial Plan"
-        ],
         "league": "MLS",
         "modelsubtype": "MLS-Dynamo",
         "cluster": "prod-app",
@@ -379,11 +246,6 @@
         "lkupclientid": 6,
         "name": "LA Galaxy",
         "clientcode": "galaxy",
-        "products": [
-            "Full Season",
-            "Mini Plan",
-            "Partial Plan"
-        ],
         "league": "MLS",
         "modelsubtype": "MLS-Galaxy",
         "cluster": "prod-app",
@@ -393,11 +255,6 @@
         "lkupclientid": 31,
         "name": "Sacramento Republic",
         "clientcode": "sacfc",
-        "products": [
-            "Full Season",
-            "Mini /Flex Plan",
-            "Half Season"
-        ],
         "league": "MLS",
         "modelsubtype": "MLS-Republic",
         "cluster": "prod-app",
@@ -407,12 +264,6 @@
         "lkupclientid": 5,
         "name": "Portland Trail Blazers",
         "clientcode": "blazers",
-        "products": [
-            "Full Season",
-            "Half Season",
-            "Quarter Season",
-            "Mini Plan"
-        ],
         "league": "NBA",
         "modelsubtype": "NBA-Blazers",
         "cluster": "prod-app",
@@ -422,12 +273,6 @@
         "lkupclientid": 7,
         "name": "Vancouver Canucks",
         "clientcode": "canucks",
-        "products": [
-            "Full Season",
-            "Half Season",
-            "Mini Pack",
-            "Quarter"
-        ],
         "league": "NHL",
         "modelsubtype": "NHL-Canucks",
         "cluster": "prod-app",
@@ -437,13 +282,6 @@
         "lkupclientid": 55,
         "name": "Arizona Coyotes",
         "clientcode": "coyotes",
-        "products": [
-            "Full Season",
-            "Flex Plan",
-            "Half Season",
-            "Mini Plan",
-            "Partial Season"
-        ],
         "league": "NHL",
         "modelsubtype": "NHL-Coyotes",
         "cluster": "prod-app",
@@ -453,12 +291,6 @@
         "lkupclientid": 36,
         "name": "Calgary Flames",
         "clientcode": "flames",
-        "products": [
-            "Full Season",
-            "Half Season",
-            "Flex Plan",
-            "Mini Plan"
-        ],
         "league": "NHL",
         "modelsubtype": "NHL-Flames",
         "cluster": "prod-app",
@@ -468,10 +300,6 @@
         "lkupclientid": 93,
         "name": "Florida Panthers",
         "clientcode": "nhlpanthers",
-        "products": [
-            "Full Season",
-            "Half Season"
-        ],
         "league": "NHL",
         "modelsubtype": "NHL-Panthers",
         "cluster": "prod-app",
@@ -481,10 +309,6 @@
         "lkupclientid": 33,
         "name": "Las Vegas Golden Knights",
         "clientcode": "vgk",
-        "products": [
-            "Full Season",
-            "Partial"
-        ],
         "league": "NHL",
         "modelsubtype": "NHL-VGK",
         "cluster": "prod-app",
@@ -494,9 +318,6 @@
         "lkupclientid": 8,
         "name": "Calgary Roughnecks",
         "clientcode": "roughnecks",
-        "products": [
-            "Full Season"
-        ],
         "league": "NLL",
         "modelsubtype": "NLL",
         "cluster": "prod-app",
@@ -506,10 +327,6 @@
         "lkupclientid": 99,
         "name": "El Paso Locomotive",
         "clientcode": "usllocomotive",
-        "products": [
-            "Full Season",
-            "Flex Plan"
-        ],
         "league": "USL",
         "modelsubtype": "USL",
         "cluster": "prod-app-elbu",
@@ -519,10 +336,6 @@
         "lkupclientid": 37,
         "name": "Calgary Hitmen",
         "clientcode": "hitmen",
-        "products": [
-            "Full Season",
-            "Flex Plan"
-        ],
         "league": "WHL",
         "modelsubtype": "WHL",
         "cluster": "prod-app",
