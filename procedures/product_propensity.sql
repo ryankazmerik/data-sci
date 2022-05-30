@@ -25,5 +25,5 @@ IAM_ROLE 'arn:aws:iam::173696899631:role/datascience-redshift-etl'
 FORMAT PARQUET
 
 
-CALL dw.getproductpropensitymodeldata(11, 2010, 2021, 'rkcursor');
+CALL stlrmilb.dw.getproductpropensitymodeldata(11, 2010, 2021, 'rkcursor');
 FETCH ALL FROM rkcursor;
