@@ -5,5 +5,5 @@ ORDER BY scoredate DESC
 
 
 
-CALL dw.getretentionmodeldata(11, 2010, 2021, 'rkcursor');
-FETCH ALL FROM rkcursor;
+CALL dw.getretentionmodeldata(11, 2010, 2021, 'temp_cursor');
+FETCH ALL FROM temp_cursor;
