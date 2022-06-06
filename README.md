@@ -229,7 +229,7 @@ After the AWS CLI is installed you want to set up the profiles. When you set up 
 8. Type in `json` -> hit enter
 9. Type in Stellaralgo-DataScienceAdmin (or Explore-US-DataScienceAdmin if you chose that profile) -> hit enter
 
-The prompt should be done now, you can verify this worked by typing in the terminal `cat ~/.aws/config` and it should print out your profile and data like the following:
+The prompt should be done now, you can verify this worked by typing in the terminal `cat ~/.aws/config` and it should print out your profile and data like the following (with only one profile though. Complete this again for the other profile):
 ```
 [profile Explore-US-DataScienceAdmin]
 sso_start_url = https://stellaralgo.awsapps.com/start
@@ -238,6 +238,7 @@ sso_account_id = <account id here>
 sso_role_name = StellarDataScienceAdmin
 region = us-east-1
 output = json
+
 [profile Stellaralgo-DataScienceAdmin]
 sso_start_url = https://stellaralgo.awsapps.com/start#/
 sso_region = us-east-1
