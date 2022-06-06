@@ -14,6 +14,12 @@
 You know, for data science.
 
 ## Style Guidelines
+This covers the main style guidelines for work in the Data-Sci repositories. If there is something not covered here then please reach out to someone or refer to [The PEP8 Guidelines](https://pep8.org/)
+
+>❗ Note that the styles in this README overrule the styles in the PEP8 Guidelines.
+
+<br/>
+
 All variables should be named using underscores (no camelCase):
 
 <pre>
@@ -68,6 +74,65 @@ Use the print-f standard for all print messages:
 <pre>
 print(f"The Calgary Flames have {num_fans} in their fan universe.")
 </pre><br/>
+
+
+When writing functions declare if they are private or public using an underscore as a prefix. This does not change how they are *actually* accessed, it is a suggestion to other programmers (in Java private functions can't be accessed outside the class, in Python its a suggestion). Example:
+
+```python
+# Private
+def _my_private_function():
+    print('This should be called within this module.')
+
+# Public
+def my_public_function():
+    print('This can be called from outside this module.')
+```
+
+Type hinting should be added to functions to help describe what the variable should be or what it is. These can be added by writing a variable in the function parameter with a colon and the data type; the return value is typed with an arrow and the data type at the end of the function. 
+
+This has the following benefits:
+* Lets users easily understand parameters & return values without complex names
+* Has integration with VSCode to show code suggestions. For example, if you have a parameter that is a dict it will show the functions available for dicts, without typing it wouldn't show anything
+
+Type hinting can be done by following the example below:
+
+```python
+def my_function(param_a: str, param_b: int, param_c:Dict[str, int]) -> bool:
+    print(f'You can access the variables as you normally would: {param_a}')
+    return True
+```
+
+White space should be added to the code to match the below requirements:
+1. after a function is defined / after the docstring of a function
+2. before a function is defined
+3. after a control statement (if, while, etc)
+4. before a control statement
+5. before a return statement
+6. between logical groupings of code (if x, y, z work together then they should be grouped, if not made into a function)
+
+See the example below for white space:
+```python
+import pandas as pd
+
+MY_GLOBAL_VAR = 'Hello world'
+
+def my_function():
+
+    print("hi")
+    my_var = 123
+    
+    return my_var
+
+# This is a logical grouping, with white space above the comment.
+conn = my_db_connection()
+result = conn.execute("select * from my_db.my_table")
+print(result)
+
+if True:
+    
+    print("True")
+
+```
 
 
 # Onboarding
