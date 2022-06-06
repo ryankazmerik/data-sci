@@ -9,6 +9,10 @@
     - [AWS CLI Setup](#aws-cli-setup)
     - [Docker/Terraform/Pyodbc Setup](#dockerterraformpyodbc-setup)
   - [Challenges](#challenges)
+    - [RedShift Challenge](#redshift-challenge)
+    - [S3 Challenge](#s3-challenge)
+    - [SSM Challenge](#ssm-challenge)
+    - [Lambda Challenge](#lambda-challenge)
 
 # data-sci
 You know, for data science.
@@ -214,10 +218,87 @@ Optional Extensions:
 * njpwerner.autodocstring
 
 ### AWS CLI Setup
+After the AWS CLI is installed you want to set up the profiles. When you set up a profile you can specify its name in boto3 to connect using that profile. For example, we will set up in this section a profile for StellarAlgo and for Explore-US to access resources in each.
 
+1. In terminal type `aws configure sso` -> hit enter
+2. Type in `https://stellaralgo.awsapps.com/start#/` -> hit enter
+3. Type in `us-east-1` -> hit enter
+4. Complete auth in the browser window it opened
+5. Choose your profile (choose Stellaralgo for now)
+6. Choose your role (Choose DataScienceAdmin)
+7. Type in `us-east-1` -> hit enter
+8. Type in `json` -> hit enter
+9. Type in Stellaralgo-DataScienceAdmin (or Explore-US-DataScienceAdmin if you chose that profile) -> hit enter
+
+The prompt should be done now, you can verify this worked by typing in the terminal `cat ~/.aws/config` and it should print out your profile and data like the following:
+```
+[profile Explore-US-DataScienceAdmin]
+sso_start_url = https://stellaralgo.awsapps.com/start
+sso_region = us-east-1
+sso_account_id = <account id here>
+sso_role_name = StellarDataScienceAdmin
+region = us-east-1
+output = json
+[profile Stellaralgo-DataScienceAdmin]
+sso_start_url = https://stellaralgo.awsapps.com/start#/
+sso_region = us-east-1
+sso_account_id = <account id here>
+sso_role_name = StellarDataScienceAdmin
+region = us-east-1
+output = json
+```
+If any of the above is different then you can update these by editing the file with vim.
 
 ### Docker/Terraform/Pyodbc Setup
+>This assumes you have installed Docker and the Container extension in the above sections.
 
+Go to the [infrastructure-utilities](https://github.com/stellaralgo/infrastructure-utilities) repo and pull it to your repo folder (or just download as a zip) then extract the two zip files. These two zip files can be used to run docker containers for two separate purposes. The purposes are:
+1. **Stellar Developer Dev Container**. This is to access Pyodbc from an M1 Mac.
+2. **Stellar Infrastructure Dev Container**. This is to work on Terraform and Docker projects.
+
+To run either of these you must move the unzipped folder called `.devcontainer` to the root folder of a project you want to work on. Then when you open the root folder of the project in VSCode you will see a prompt on the bottom right asking to open the project as a container. If you confirm it will startup the container and let you work within that environment.
+
+Further instructions on working within and activating these environments are available in the folder `.devcontainer`.
+
+I set mine up to have the infrastructure zip in my repos folder and the dev zip in my documents folder (since its less used). (My folder structure goes: `Documents>Repos>{data-sci, data-sci-product-propensity, etc}`)
 
 ## Challenges
 
+### RedShift Challenge
+We have a database in our qa-app cluster, ds schema, called dummytable. The challenge is to create a notebook in your sandbox that does the following:
+
+* Read the records from this table and display in a pandas dataframe
+* Create a new record in the table, following the format of the other records, then display only the new record in a dataframe
+* Update an existing record, then display the updated record in a dataframe
+* Delete the new record you created, and display all records in a dataframe to ensure it was deleted.
+* Be sure to add some markdown documentation, and inline code documentation to describe what your code is doing.
+* Once finished, push up to our data-sci git repo
+
+
+### S3 Challenge
+Create an S3 bucket our Explore-US environment: s3://ai-experimentation-td4np7/{your name without the curly brackets}-challenge/
+
+* The challenge is to create a notebook in your sandbox that does the following:
+* List the filename of each file in your bucket
+* Upload a json file into the bucket, then read the bucket and display the new filename
+* Read that file out of the bucket and display the contents.
+* Be sure to add some markdown documentation, and inline code documentation to describe what your code is doing.
+* Once finished, push up to our data-sci git repo
+
+
+### SSM Challenge
+There is an SSM parameter in our Explore-US environment called: /customer/model-retention/ai/db-connections/data-sci-retention/database-read
+
+The challenge is to create a notebook in your sandbox that does the following:
+* Read the value of the SSM parameter
+* Use the values in the SSM parameter to form a connection string to the MSSQL database listed in the parameter
+* Read the contents of the ds.customerScores table into a dataframe
+
+
+### Lambda Challenge
+Before you start this challenge, upload a json file into your challenge folder in this bucket: s3://ai-experimentation-td4np7
+
+The challenge is to create a new lambda that uses the ‘test-retention-role’ in our Explore-US environment that does the following:
+* Create two functions, one called convert_to_parquet and one called convert_to_csv
+* Each function should read the json file from the S3 bucket, convert it to the appropriate type (parquet or csv), and then write the file back to the bucket in the new file format.
+* Then create a test event that passes in the file type and path to the s3 bucket.
