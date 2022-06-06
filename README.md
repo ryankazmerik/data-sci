@@ -1,4 +1,4 @@
-# The Stellar Algo Data Science Super Fantastic Readme
+# The StellarAlgo Data Science Super Fantastic Readme
 You know, for data science...
 
 - [Style Guidelines](#style-guidelines)
