@@ -12,3 +12,6 @@ FORMAT PARQUET
 
 CALL stlrmls.dw.geteventpropensityscoring(53, cast('2022-05-23' as date));
 SELECT * from result_set;
+
+CALL stlryankees.ds.geteventpropensitymodelinference(53, cast('2022-05-23' as date), 'temp_cursor');
+FETCH ALL FROM temp_cursor;
