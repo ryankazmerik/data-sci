@@ -1,4 +1,4 @@
-- [data-sci](#data-sci)
+- [data-sci](#the-stellar-algo-data-science-super-fantastic-readme)
   - [Style Guidelines](#style-guidelines)
 - [Onboarding](#onboarding)
   - [Setup](#setup)
@@ -14,8 +14,8 @@
     - [SSM Challenge](#ssm-challenge)
     - [Lambda Challenge](#lambda-challenge)
 
-# data-sci
-You know, for data science.
+# The Stellar Algo Data Science Super Fantastic Readme
+You know, for data science...
 
 ## Style Guidelines
 This covers the main style guidelines for work in the Data-Sci repositories. If there is something not covered here then please reach out to someone or refer to [The PEP8 Guidelines](https://pep8.org/)
