@@ -4,6 +4,7 @@ import json
 import pandas as pd
 import pyodbc
 import psycopg2
+import redshift_connector
 
 from shared_utilities import aws_helpers
 
@@ -41,18 +42,7 @@ def get_mssql_connection(environment):
     return cnxn
 
 
-def get_redshift_awswrangler_data_api_connection(cluster_id, database, db_user):
-
-    cnxn = wr.data_api.redshift.connect(
-        cluster_id=cluster_id,
-        database=database,
-        db_user=db_user
-    )
-
-    return cnxn
-
-
-def get_redshift_awswrangler_temp_connection(cluster_id, database, db_user="admin"):
+def get_redshift_awswrangler_temp_connection(cluster_id: str, database: str, db_user: str = "admin") -> redshift_connector.Connection:
 
     cnxn = wr.redshift.connect_temp(
         cluster_identifier=cluster_id,
@@ -63,7 +53,8 @@ def get_redshift_awswrangler_temp_connection(cluster_id, database, db_user="admi
     return cnxn
 
 
-def get_redshift_psycopg2_connection(cluster_id, database, db_user, cluster_endpoint) -> psycopg2._psycopg.connection:
+def get_redshift_psycopg2_connection(cluster_id: str, database: str, db_user: str, cluster_endpoint: str) -> psycopg2._psycopg.connection:
+
     redshift_client = boto3.client("redshift")
     cluster_credentials = redshift_client.get_cluster_credentials(
         ClusterIdentifier=cluster_id,
@@ -79,6 +70,7 @@ def get_redshift_psycopg2_connection(cluster_id, database, db_user, cluster_endp
         password=cluster_credentials["DbPassword"],
         database=database,
     )
+
     return database_connection
 
 
@@ -106,54 +98,23 @@ def get_event_propensity_model_dataset(environment, start_year, end_year):
     return "TODO: Implement this helper"
 
 
-def get_product_propensity_model_dataset(cluster_id, database, lkupclientid, start_year, end_year, temp_cursor_name, cluster_endpoint, cluster_name = "qa-app", db_user="admin"):
+def get_product_propensity_model_dataset(cluster_id: str, database: str, lkupclientid: int, start_year: int, end_year: int, temp_cursor_name: str) -> pd.DataFrame:
 
-    cnxn = get_redshift_psycopg2_connection(cluster_id, database, db_user, cluster_endpoint)
-    
     stored_procedure_query = f"""CALL {database}.ds.getproductpropensitymodeldata({lkupclientid}, {start_year}, {end_year}, '{temp_cursor_name}');"""
-    print(stored_procedure_query)
+    conn = get_redshift_awswrangler_temp_connection(cluster_id, database)
 
-    cursor = cnxn.cursor()
-    cursor.execute(stored_procedure_query)
+    with conn.cursor() as cursor:
 
-    temp_cursor = cnxn.cursor('temp_cursor')
-    data = temp_cursor.fetchall()
+        cursor.execute(stored_procedure_query)
+        cursor.execute(f"FETCH ALL FROM {temp_cursor_name};")
+        data = cursor.fetchall()
+        cols = [row[0] for row in cursor.description]
+        df_results = pd.DataFrame(data=data, columns=cols)
 
-    cols = [row[0] for row in temp_cursor.description]
-    df_results = pd.DataFrame(data=data, columns=cols)
-    print(df_results)
-
-    cnxn.commit()
-    cnxn.close()
+    conn.close()
 
     return df_results
 
-
-
-def get_product_propensity_model_dataset_with_wrangler_temp(cluster_id, database, lkupclientid, start_year, end_year, temp_cursor_name, cluster_endpoint, cluster_name = "qa-app", db_user="admin"):
-
-    stored_procedure_query = f"""CALL {database}.ds.getproductpropensitymodeldata({lkupclientid}, {start_year}, {end_year}, '{temp_cursor_name}');"""
-    print(stored_procedure_query)
-
-    conn = get_redshift_awswrangler_temp_connection(cluster_id, database)
-    with conn.cursor() as cursor:
-        cursor.execute(stored_procedure_query)
-        data = cursor.fetchall()
-        print(data)
-    conn.close()
-
-
-def get_product_propensity_model_dataset_with_wrangler(cluster_id, database, lkupclientid, start_year, end_year, temp_cursor_name, cluster_endpoint, cluster_name = "qa-app", db_user="admin"):
-
-    stored_procedure_query = f"""CALL {database}.ds.getproductpropensitymodeldata({lkupclientid}, {start_year}, {end_year}, '{temp_cursor_name}');"""
-    print(stored_procedure_query)
-
-    conn = wr.redshift.connect(secret_id="app_redshift_qa")
-    with conn.cursor() as cursor:
-        cursor.execute(stored_procedure_query)
-        data = cursor.fetchall()
-        print(data)
-    conn.close()
 
 #if __name__ == "__main__":
 
