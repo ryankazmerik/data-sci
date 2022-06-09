@@ -74,19 +74,22 @@ def get_redshift_psycopg2_connection(cluster_id: str, database: str, db_user: st
     return database_connection
 
 
-def get_retention_model_dataset(cluster_id, database, lkupclientid, start_year, end_year, temp_cursor_name, db_user="admin"):
-    
-    #get_retention_model_dataset should call this proc in RedShift:
-    # ds.getretentionmodeldata(11, 2010, 2021, 'temp_cursor');
-    # Where params are: lkupclientid, start_year, end_year, temp cursor name
-    #Return a dataframe
+def get_retention_model_dataset(cluster_id, database, lkupclientid, start_year, end_year, temp_cursor_name):
 
-    # call SP to get full retention model dataset
+    stored_procedure_query = f"""CALL {database}.ds.getretentionmodeldata({lkupclientid}, {start_year}, {end_year}, '{temp_cursor_name}');"""
+    conn = get_redshift_awswrangler_temp_connection(cluster_id, database)
 
-    # filter by start year and end year
-    #?????????? Does this mean sort by? Or something else? The stored proc would already be *filtered* by those, but not sorted
+    with conn.cursor() as cursor:
 
-    return "TODO: Implement this helper"
+        cursor.execute(stored_procedure_query)
+        cursor.execute(f"FETCH ALL FROM {temp_cursor_name};")
+        data = cursor.fetchall()
+        cols = [row[0] for row in cursor.description]
+        df_results = pd.DataFrame(data=data, columns=cols)
+
+    conn.close()
+
+    return df_results
 
 
 def get_event_propensity_model_dataset(environment, start_year, end_year):
