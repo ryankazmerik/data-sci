@@ -1,9 +1,10 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
     name="shared_utilities",
     version="0.3",
-    packages=["shared_utilities"],
+    packages=find_packages(where="shared_utilities"),
+    package_dir={"": "shared_utilities"},
     install_requires=[
         "boto3"
     ]
