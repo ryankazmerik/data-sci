@@ -107,6 +107,13 @@ def my_function(param_a: str, param_b: int, param_c:Dict[str, int]) -> bool:
     return True
 ```
 
+Docstring should be added to the line after a `def` so that users can understand what a function does or any stipulations with the function. As mentioned in [PEP 8](https://pep8.org/#documentation-strings), they are good to add for public functions, but not necessary for private functions. If the function is truly self-documenting then it can be omitted or parts of it can be omitted (if parameters are self-documenting, then don't describe them in the docstring).
+
+The largest benefit to adding docstring is if you are coding in VSCode, the intellisense will show you the docstring as you type. This can help when a docstring includes important details or examples of code for implementing a function.
+
+If you are writing a single comment (`#`) below/above a function, consider just making it a one-line docstring (`"""my docstring"""`) to support intellisense.
+
+
 White space should be added to the code to match the below requirements:
 1. after a function is defined / after the docstring of a function
 2. before a function is defined
