@@ -1,7 +1,8 @@
 # The StellarAlgo Data Science Super Fantastic Readme
 You know, for data science...
 
-- [Style Guidelines](#style-guidelines)
+- [The StellarAlgo Data Science Super Fantastic Readme](#the-stellaralgo-data-science-super-fantastic-readme)
+  - [Style Guidelines](#style-guidelines)
 - [Onboarding](#onboarding)
   - [Setup](#setup)
     - [Installs](#installs)
@@ -10,6 +11,7 @@ You know, for data science...
     - [Visual Studio Code (VSCode) Setup](#visual-studio-code-vscode-setup)
     - [AWS CLI Setup](#aws-cli-setup)
     - [Docker/Terraform/Pyodbc Setup](#dockerterraformpyodbc-setup)
+    - [Shared Utilities Package](#shared-utilities-package)
   - [Challenges](#challenges)
     - [RedShift Challenge](#redshift-challenge)
     - [S3 Challenge](#s3-challenge)
@@ -261,6 +263,21 @@ To run either of these you must move the unzipped folder called `.devcontainer` 
 Further instructions on working within and activating these environments are available in the folder `.devcontainer`.
 
 I set mine up to have the infrastructure zip in my repos folder and the dev zip in my documents folder (since its less used). (My folder structure goes: `Documents>Repos>{data-sci, data-sci-product-propensity, etc}`)
+
+### Shared Utilities Package
+In the `data-sci` repo there is a folder called `shared_utilities/shared_utilities` which contains Python files with common code that can be reused across notebooks. This package is designed to be used for local notebook usage, not for running pipelines like the `data-sci-toolkit` repo.
+
+To use the `shared_utilities` package you can follow the steps in the terminal:
+1. `cd` to the `data-sci` root folder
+2. `pip install -e ./`
+3. In a file you want to use the helper: 
+```python
+from shared_utilities import helpers
+
+print(helpers.hello_world())
+```
+
+The `-e` in the install means that the package will be installed in "editable" mode. This is a feature where you can use a package while actively developing it. In our case, it lets us use the package without relative imports and if anyone makes a change we don't need to rebuild or install the package.
 
 ## Challenges
 
