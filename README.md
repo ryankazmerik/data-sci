@@ -8,6 +8,7 @@ You know, for data science...
     - [Installs](#installs)
     - [Git & Repo & Folder Setup](#git--repo--folder-setup)
     - [Conda (Python) Setup](#conda-python-setup)
+    - [PyODBC For M1 Mac](#pyodbc-for-m1-mac)
     - [Visual Studio Code (VSCode) Setup](#visual-studio-code-vscode-setup)
     - [AWS CLI Setup](#aws-cli-setup)
     - [Docker/Terraform/Pyodbc Setup](#dockerterraformpyodbc-setup)
@@ -205,6 +206,21 @@ This is similar to Python's venv library. It creates a new folder with a copy of
 Generally we work in the `stellar` environment, but you can create a new environment anytime you want a spearate Python environment for a project.
 
 When in a Jupyter notebook ensure that the top-right of the notebook says its running in your conda environment.
+
+### PyODBC For M1 Mac
+This seems to be a working solution to install Pyodbc on Mac with M1 Chips. Note that the steps below are what I did in order to get Pycaret working, which happened to also require getting PyODBC working. I think steps 1 and 2 are only needed for Pycaret, so you might be able to skip to steps 3-5 for just Pyodbc.
+
+Steps:
+1. `brew install cmake libomp`
+2. pip install xgboost --no-binary xgboost -v
+3. [Follow the steps here for ODBC 17, which are listed as sub tasks below](https://docs.microsoft.com/th-th/sql/connect/odbc/linux-mac/install-microsoft-odbc-driver-sql-server-macos?view=sql-server-2017)
+   1. `brew tap microsoft/mssql-release https://github.com/Microsoft/homebrew-mssql-release`
+   2. `brew update`
+   3. `HOMEBREW_NO_ENV_FILTERING=1 ACCEPT_EULA=Y brew install msodbcsql17 mssql-tools`
+4. `ls /opt/homebrew/Cellar/unixodbc/` to see version to write in step 5
+5. `CPPFLAGS='-I/opt/homebrew/Cellar/unixodbc/2.3.11/include' LDFLAGS='-L/opt/homebrew/Cellar/unixodbc/2.3.11/lib' pip install`
+
+You should now be able to 
 
 ### Visual Studio Code (VSCode) Setup
 The VSCode setup is largely adding extensions that we use to collaborate and work in the environment. 
