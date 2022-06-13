@@ -4,6 +4,7 @@ import json
 import pandas as pd
 import pyodbc
 import psycopg2
+import redshift_connector
 
 from shared_utilities import aws_helpers
 
@@ -15,6 +16,10 @@ def hello_world():
 
 
 def get_mssql_connection(environment):
+    """Return a pyodbc connection to MSSQL.
+
+    https://github.com/mkleehammer/pyodbc
+    """
 
     if environment == "QA":
         env = "LEGACY-MSSQL-QA-VPC-WRITE"
@@ -41,18 +46,11 @@ def get_mssql_connection(environment):
     return cnxn
 
 
-def get_redshift_awswrangler_data_api_connection(cluster_id, database, db_user):
+def get_redshift_awswrangler_temp_connection(cluster_id: str, database: str, db_user: str = "admin") -> redshift_connector.Connection:
+    """Return a redshift_connector temporary connection (No password required). This has different functionality than psycopg2, such as not having named cursors.
 
-    cnxn = wr.data_api.redshift.connect(
-        cluster_id=cluster_id,
-        database=database,
-        db_user=db_user
-    )
-
-    return cnxn
-
-
-def get_redshift_awswrangler_temp_connection(cluster_id, database, db_user="admin"):
+    https://github.com/aws/amazon-redshift-python-driver
+    """
 
     cnxn = wr.redshift.connect_temp(
         cluster_identifier=cluster_id,
@@ -63,7 +61,12 @@ def get_redshift_awswrangler_temp_connection(cluster_id, database, db_user="admi
     return cnxn
 
 
-def get_redshift_psycopg2_connection(cluster_id, database, db_user, cluster_endpoint) -> psycopg2._psycopg.connection:
+def get_redshift_psycopg2_connection(cluster_id: str, database: str, db_user: str, cluster_endpoint: str) -> psycopg2._psycopg.connection:
+    """Returns a psycopg2 connection, requires full database connection details (user, pass, cluster, database, port, etc).
+
+    https://github.com/psycopg/psycopg2
+    """
+
     redshift_client = boto3.client("redshift")
     cluster_credentials = redshift_client.get_cluster_credentials(
         ClusterIdentifier=cluster_id,
@@ -72,29 +75,48 @@ def get_redshift_psycopg2_connection(cluster_id, database, db_user, cluster_endp
         DbGroups=["admin_group"],
         AutoCreate=True,
     )
-    database_connection = psycopg2.connect(
+    cnxn = psycopg2.connect(
         host=cluster_endpoint,
         port=5439,
         user=cluster_credentials["DbUser"],
         password=cluster_credentials["DbPassword"],
         database=database,
     )
-    return database_connection
+
+    return cnxn
 
 
-def get_retention_model_dataset(cluster_id, database, lkupclientid, start_year, end_year, temp_cursor_name, db_user="admin"):
+def _execute_and_fetch_stored_proc_with_redshift_connector(conn: redshift_connector.Connection, stored_procedure_query, temp_cursor_name):
+    """Runs a stored proc and fetches the return value from its temp cursor. 
     
-    #get_retention_model_dataset should call this proc in RedShift:
-    # ds.getretentionmodeldata(11, 2010, 2021, 'temp_cursor');
-    # Where params are: lkupclientid, start_year, end_year, temp cursor name
-    #Return a dataframe
+    This function is exlcusively for the redshift_connector, this will not work for pyodbc.
+    """
+    
+    with conn.cursor() as cursor:
 
-    # call SP to get full retention model dataset
+        cursor.execute(stored_procedure_query)
+        cursor.execute(f"FETCH ALL FROM {temp_cursor_name};")
+        data = cursor.fetchall()
+        cols = [row[0] for row in cursor.description]
+        df_results = pd.DataFrame(data=data, columns=cols)
+        
+    return df_results
 
-    # filter by start year and end year
-    #?????????? Does this mean sort by? Or something else? The stored proc would already be *filtered* by those, but not sorted
 
-    return "TODO: Implement this helper"
+def get_retention_model_dataset(cluster_id: str, database: str, lkupclientid: int, start_year: int, end_year: int, temp_cursor_name: str) -> pd.DataFrame:
+    """Runs and returns the results of the following stored procedure: 
+    
+    `{database}.ds.getretentionmodeldata({lkupclientid}, {start_year}, {end_year}, {temp_cursor_name})`
+    """    
+
+    stored_procedure_query = f"""CALL {database}.ds.getretentionmodeldata({lkupclientid}, {start_year}, {end_year}, '{temp_cursor_name}');"""
+    conn = get_redshift_awswrangler_temp_connection(cluster_id, database)
+
+    df_results = _execute_and_fetch_stored_proc_with_redshift_connector(conn, stored_procedure_query, temp_cursor_name)
+
+    conn.close()
+
+    return df_results
 
 
 def get_event_propensity_model_dataset(environment, start_year, end_year):
@@ -106,54 +128,21 @@ def get_event_propensity_model_dataset(environment, start_year, end_year):
     return "TODO: Implement this helper"
 
 
-def get_product_propensity_model_dataset(cluster_id, database, lkupclientid, start_year, end_year, temp_cursor_name, cluster_endpoint, cluster_name = "qa-app", db_user="admin"):
-
-    cnxn = get_redshift_psycopg2_connection(cluster_id, database, db_user, cluster_endpoint)
+def get_product_propensity_model_dataset(cluster_id: str, database: str, lkupclientid: int, start_year: int, end_year: int, temp_cursor_name: str) -> pd.DataFrame:
+    """Runs and returns the results of the following stored procedure: 
     
+    `{database}.ds.getproductpropensitymodeldata({lkupclientid}, {start_year}, {end_year}, {temp_cursor_name})`
+    """    
+
     stored_procedure_query = f"""CALL {database}.ds.getproductpropensitymodeldata({lkupclientid}, {start_year}, {end_year}, '{temp_cursor_name}');"""
-    print(stored_procedure_query)
+    conn = get_redshift_awswrangler_temp_connection(cluster_id, database)
 
-    cursor = cnxn.cursor()
-    cursor.execute(stored_procedure_query)
+    df_results = _execute_and_fetch_stored_proc_with_redshift_connector(conn, stored_procedure_query, temp_cursor_name)
 
-    temp_cursor = cnxn.cursor('temp_cursor')
-    data = temp_cursor.fetchall()
-
-    cols = [row[0] for row in temp_cursor.description]
-    df_results = pd.DataFrame(data=data, columns=cols)
-    print(df_results)
-
-    cnxn.commit()
-    cnxn.close()
+    conn.close()
 
     return df_results
 
-
-
-def get_product_propensity_model_dataset_with_wrangler_temp(cluster_id, database, lkupclientid, start_year, end_year, temp_cursor_name, cluster_endpoint, cluster_name = "qa-app", db_user="admin"):
-
-    stored_procedure_query = f"""CALL {database}.ds.getproductpropensitymodeldata({lkupclientid}, {start_year}, {end_year}, '{temp_cursor_name}');"""
-    print(stored_procedure_query)
-
-    conn = get_redshift_awswrangler_temp_connection(cluster_id, database)
-    with conn.cursor() as cursor:
-        cursor.execute(stored_procedure_query)
-        data = cursor.fetchall()
-        print(data)
-    conn.close()
-
-
-def get_product_propensity_model_dataset_with_wrangler(cluster_id, database, lkupclientid, start_year, end_year, temp_cursor_name, cluster_endpoint, cluster_name = "qa-app", db_user="admin"):
-
-    stored_procedure_query = f"""CALL {database}.ds.getproductpropensitymodeldata({lkupclientid}, {start_year}, {end_year}, '{temp_cursor_name}');"""
-    print(stored_procedure_query)
-
-    conn = wr.redshift.connect(secret_id="app_redshift_qa")
-    with conn.cursor() as cursor:
-        cursor.execute(stored_procedure_query)
-        data = cursor.fetchall()
-        print(data)
-    conn.close()
 
 #if __name__ == "__main__":
 

@@ -1,15 +1,18 @@
 # The StellarAlgo Data Science Super Fantastic Readme
 You know, for data science...
 
-- [Style Guidelines](#style-guidelines)
+- [The StellarAlgo Data Science Super Fantastic Readme](#the-stellaralgo-data-science-super-fantastic-readme)
+  - [Style Guidelines](#style-guidelines)
 - [Onboarding](#onboarding)
   - [Setup](#setup)
     - [Installs](#installs)
     - [Git & Repo & Folder Setup](#git--repo--folder-setup)
     - [Conda (Python) Setup](#conda-python-setup)
+    - [PyODBC For M1 Mac](#pyodbc-for-m1-mac)
     - [Visual Studio Code (VSCode) Setup](#visual-studio-code-vscode-setup)
     - [AWS CLI Setup](#aws-cli-setup)
     - [Docker/Terraform/Pyodbc Setup](#dockerterraformpyodbc-setup)
+    - [Shared Utilities Package](#shared-utilities-package)
   - [Challenges](#challenges)
     - [RedShift Challenge](#redshift-challenge)
     - [S3 Challenge](#s3-challenge)
@@ -105,6 +108,13 @@ def my_function(param_a: str, param_b: int, param_c:Dict[str, int]) -> bool:
     return True
 ```
 
+Docstring should be added to the line after a `def` so that users can understand what a function does or any stipulations with the function. As mentioned in [PEP 8](https://pep8.org/#documentation-strings), they are good to add for public functions, but not necessary for private functions. If the function is truly self-documenting then it can be omitted or parts of it can be omitted (if parameters are self-documenting, then don't describe them in the docstring).
+
+The largest benefit to adding docstring is if you are coding in VSCode, the intellisense will show you the docstring as you type. This can help when a docstring includes important details or examples of code for implementing a function.
+
+If you are writing a single comment (`#`) below/above a function, consider just making it a one-line docstring (`"""my docstring"""`) to support intellisense.
+
+
 White space should be added to the code to match the below requirements:
 1. after a function is defined / after the docstring of a function
 2. before a function is defined
@@ -197,6 +207,21 @@ Generally we work in the `stellar` environment, but you can create a new environ
 
 When in a Jupyter notebook ensure that the top-right of the notebook says its running in your conda environment.
 
+### PyODBC For M1 Mac
+This seems to be a working solution to install Pyodbc on Mac with M1 Chips. Note that the steps below are what I did in order to get Pycaret working, which happened to also require getting PyODBC working. I think steps 1 and 2 are only needed for Pycaret, so you might be able to skip to steps 3-5 for just Pyodbc.
+
+Steps:
+1. `brew install cmake libomp`
+2. pip install xgboost --no-binary xgboost -v
+3. [Follow the steps here for ODBC 17, which are listed as sub tasks below](https://docs.microsoft.com/th-th/sql/connect/odbc/linux-mac/install-microsoft-odbc-driver-sql-server-macos?view=sql-server-2017)
+   1. `brew tap microsoft/mssql-release https://github.com/Microsoft/homebrew-mssql-release`
+   2. `brew update`
+   3. `HOMEBREW_NO_ENV_FILTERING=1 ACCEPT_EULA=Y brew install msodbcsql17 mssql-tools`
+4. `ls /opt/homebrew/Cellar/unixodbc/` to see version to write in step 5
+5. `CPPFLAGS='-I/opt/homebrew/Cellar/unixodbc/2.3.11/include' LDFLAGS='-L/opt/homebrew/Cellar/unixodbc/2.3.11/lib' pip install`
+
+You should now be able to 
+
 ### Visual Studio Code (VSCode) Setup
 The VSCode setup is largely adding extensions that we use to collaborate and work in the environment. 
 
@@ -261,6 +286,21 @@ To run either of these you must move the unzipped folder called `.devcontainer` 
 Further instructions on working within and activating these environments are available in the folder `.devcontainer`.
 
 I set mine up to have the infrastructure zip in my repos folder and the dev zip in my documents folder (since its less used). (My folder structure goes: `Documents>Repos>{data-sci, data-sci-product-propensity, etc}`)
+
+### Shared Utilities Package
+In the `data-sci` repo there is a folder called `shared_utilities/shared_utilities` which contains Python files with common code that can be reused across notebooks. This package is designed to be used for local notebook usage, not for running pipelines like the `data-sci-toolkit` repo.
+
+To use the `shared_utilities` package you can follow the steps in the terminal:
+1. `cd` to the `data-sci` root folder
+2. `pip install -e ./`
+3. In a file you want to use the helper: 
+```python
+from shared_utilities import helpers
+
+print(helpers.hello_world())
+```
+
+The `-e` in the install means that the package will be installed in "editable" mode. This is a feature where you can use a package while actively developing it. In our case, it lets us use the package without relative imports and if anyone makes a change we don't need to rebuild or install the package.
 
 ## Challenges
 
