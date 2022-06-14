@@ -9,13 +9,13 @@ st.set_page_config(
     page_icon="baseball",
     layout="wide",
 )
-st.title("Event Propensity Model")
+st.title("StellarAlgo Data Science - (Model Name)")
 
 
 @st.cache()
 def get_data_sets():
 
-    df = pd.read_parquet("yankees-data-export-event.parquet")
+    df = pd.read_parquet("yankees-data.parquet")
 
     df = df.sample(frac=0.01)
 
@@ -125,24 +125,11 @@ st.sidebar.markdown("### Choose the Model:")
 
 st.sidebar.markdown("### Filter the Dataset:")
 
-section_0 = st.expander("Hypothesis")
-section_1 = st.expander("Raw Dataset", expanded=False)
+section_1 = st.expander("Raw Dataset", expanded=True)
 section_2 = st.expander("Model Metrics", expanded=False)
 section_3 = st.expander("Association Heatmap", expanded=False)
 section_4 = st.expander("Score Distribution", expanded=False)
-section_5 = st.expander("Feature Importances", expanded=True)
-
-# SECTION 0 : HYPOTHESIS
-with section_0:
-
-    st.markdown(
-        """
-        We think that by using previous buyer behaviour including ticketing, marketing and web data, 
-        we can make a prediction on whether the fan will purchase a ticket for the next game or not.
-        
-        Authors: Matt Bahler, Pat Faith, Ryan Kazmerik, Joey Lai, Nakisa Rad, Shawn Sutherland	
-    """
-    )
+section_5 = st.expander("Feature Importances", expanded=False)
 
 # SECTION 1 : DATASET
 with section_1:
