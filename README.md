@@ -9,6 +9,7 @@ You know, for data science...
     - [Git & Repo & Folder Setup](#git--repo--folder-setup)
     - [Conda (Python) Setup](#conda-python-setup)
     - [PyODBC For M1 Mac](#pyodbc-for-m1-mac)
+    - [Pycaret for M1 Mac](#pycaret-for-m1-mac)
     - [Visual Studio Code (VSCode) Setup](#visual-studio-code-vscode-setup)
     - [AWS CLI Setup](#aws-cli-setup)
     - [Docker/Terraform/Pyodbc Setup](#dockerterraformpyodbc-setup)
@@ -220,7 +221,81 @@ Steps:
 4. `ls /opt/homebrew/Cellar/unixodbc/` to see version to write in step 5
 5. `CPPFLAGS='-I/opt/homebrew/Cellar/unixodbc/2.3.11/include' LDFLAGS='-L/opt/homebrew/Cellar/unixodbc/2.3.11/lib' pip install`
 
-You should now be able to 
+
+### Pycaret for M1 Mac
+You may need a new conda environment for this, as its going to be installing lots of packages in specific ways which may get conflicts from your pre-existing packages.
+
+[Essentially follow this tutorial for workaround #1](https://pareekshithkatti.medium.com/setting-up-python-for-data-science-on-m1-mac-ced8a0d05911).
+
+Steps:
+1. `pip install --no-dependencies pycaret`
+2. Create a pycaret_requirements.txt file w/ the contents from the list below in this section
+3. `cat pycaret_requirements.txt | xargs -n 1 conda install`
+4. The tutorial stopped working after step 3 for me. I ended up making another requirements.txt (see below) and `pip install -r requirements.txt`
+5. I then ran step 3 above again
+   * This seemed to work. Maybe you could do step 3 and 4 in opposite orders.
+
+**List for step 2 above:**
+pandas
+scipy
+numpy
+seaborn
+matplotlib
+IPython
+joblib
+scikit-learn
+ipywidgets
+yellowbrick>=1.0.1
+lightgbm>=2.3.1
+plotly>=4.4.1
+wordcloud
+textblob
+cufflinks>=0.17.0
+umap-learn
+pyLDAvis
+gensim
+spacy
+nltk
+mlxtend>=0.17.0
+pyod
+pandas-profiling>=2.8.0
+kmodes>=0.10.1
+mlflow
+imbalanced-learn
+scikit-plot #for lift and gain charts
+Boruta
+numba
+
+**List for step 4 above:**
+pandas
+seaborn
+matplotlib
+IPython 
+joblib
+scikit-learn==0.23.2 
+ipywidgets 
+yellowbrick>=1.0.1 
+lightgbm>=2.3.1 
+plotly>=4.4.1 
+wordcloud 
+textblob 
+cufflinks>=0.17.0 
+umap-learn 
+pyLDAvis 
+gensim<4.0.0 
+spacy<2.4.0 
+nltk 
+mlxtend>=0.17.0 
+pyod 
+pandas-profiling>=2.8.0 
+kmodes>=0.10.1 
+mlflow 
+imbalanced-learn==0.7.0 
+scikit-plot 
+Boruta 
+pyyaml<6.0.0 
+numba<0.55
+
 
 ### Visual Studio Code (VSCode) Setup
 The VSCode setup is largely adding extensions that we use to collaborate and work in the environment. 
