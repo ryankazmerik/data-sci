@@ -1,0 +1,13 @@
+{
+    "algorithm": "lightgbm",
+    "featureimportances": "[{\"feature\":\"phonecall\",\"importance\":0.15,\"rank\":1},{\"feature\":\"source_tenure\",\"importance\":0.15,\"rank\":2},{\"feature\":\"totalSpent\",\"importance\":0.12,\"rank\":3},{\"feature\":\"clickToSendRatio\",\"importance\":0.1,\"rank\":4},{\"feature\":\"openToSendRatio\",\"importance\":0.09,\"rank\":5},{\"feature\":\"attendancePercent\",\"importance\":0.08,\"rank\":6},{\"feature\":\"clickToOpenRatio\",\"importance\":0.06,\"rank\":7},{\"feature\":\"recency\",\"importance\":0.04,\"rank\":8},{\"feature\":\"missed_games_1\",\"importance\":0.03,\"rank\":9},{\"feature\":\"inperson_contact\",\"importance\":0.03,\"rank\":10},{\"feature\":\"missed_games_over_2\",\"importance\":0.03,\"rank\":11},{\"feature\":\"missed_games_2\",\"importance\":0.02,\"rank\":12},{\"feature\":\"recentDate_month_3\",\"importance\":0.02,\"rank\":13},{\"feature\":\"recentDate_weekday_6\",\"importance\":0.01,\"rank\":14},{\"feature\":\"recentDate_month_10\",\"importance\":0.01,\"rank\":15},{\"feature\":\"recentDate_is_month_end_1\",\"importance\":0.01,\"rank\":16},{\"feature\":\"recentDate_month_9\",\"importance\":0.01,\"rank\":17},{\"feature\":\"recentDate_month_7\",\"importance\":0.01,\"rank\":18},{\"feature\":\"recentDate_month_8\",\"importance\":0.01,\"rank\":19},{\"feature\":\"recentDate_month_1\",\"importance\":0.01,\"rank\":20},{\"feature\":\"recentDate_weekday_2\",\"importance\":0.01,\"rank\":21},{\"feature\":\"recentDate_month_6\",\"importance\":0.0,\"rank\":22},{\"feature\":\"recentDate_month_5\",\"importance\":0.0,\"rank\":23},{\"feature\":\"recentDate_weekday_5\",\"importance\":0.0,\"rank\":24},{\"feature\":\"recentDate_month_2\",\"importance\":0.0,\"rank\":25},{\"feature\":\"recentDate_is_month_start_1\",\"importance\":0.0,\"rank\":26},{\"feature\":\"recentDate_month_4\",\"importance\":0.0,\"rank\":27},{\"feature\":\"recentDate_weekday_1\",\"importance\":0.0,\"rank\":28},{\"feature\":\"distToVenue\",\"importance\":0.0,\"rank\":29}]",
+    "teams": [
+        {
+            "dbname": "stlrmls",
+            "mssql_dbname": "stlrMLS",
+            "clientcode": "sacfc",
+            "lkupclientid": "31",
+            "year": 2022
+        }
+    ]
+}
