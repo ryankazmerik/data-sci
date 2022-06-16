@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 import pandas as pd
-import pyodbc
 import seaborn as sns
 import streamlit as st
 
@@ -10,7 +9,7 @@ st.set_page_config(
     page_icon="baseball",
     layout="wide",
 )
-st.title("Event Propensity Model")
+st.title("Retention Model")
 
 
 @st.cache()
@@ -18,7 +17,7 @@ def get_data_sets():
 
     df = pd.read_parquet("yankees-data-export-event.parquet")
 
-    df = df.sample(frac=0.01)
+    df = df.sample(frac=0.001)
 
     df_train = df.sample(frac=0.85, random_state=786)
     df_eval = df.drop(df_train.index)
@@ -29,7 +28,7 @@ def get_data_sets():
     return df, df_train, df_eval
 
 
-def get_model(df_train):
+def get_model(df_train, model_type):
 
     setup(
         data=df_train,
@@ -57,7 +56,7 @@ def get_model(df_train):
         ],
     )
 
-    model_matrix = compare_models(fold=2, include=["lightgbm"])
+    model_matrix = compare_models(fold=2, include=[model_type])
 
     best_model = create_model(model_matrix, fold=2)
 
@@ -122,47 +121,43 @@ def get_feature_importances(model):
 
 
 # SIDEBAR COMPONENTS
-st.sidebar.markdown("### Choose the Model:")
+st.sidebar.markdown("### Select Options:")
 
-st.sidebar.markdown("### Filter the Dataset:")
+dataset_type = st.sidebar.radio('Dataset:',
+    ('dataset 1', 'dataset 2', 'dataset 3'))
 
-section_0 = st.expander("Hypothesis")
-section_1 = st.expander("Raw Dataset", expanded=False)
-section_2 = st.expander("Model Metrics", expanded=False)
-section_3 = st.expander("Association Heatmap", expanded=False)
-section_4 = st.expander("Score Distribution", expanded=False)
-section_5 = st.expander("Feature Importances", expanded=True)
+model_type = st.sidebar.selectbox('Algorithm:',
+     ('lightgbm', 'lr', 'rf'))
+
+#st.sidebar.markdown("### Filter the Dataset:")
+
+section_1 = st.expander("Hypothesis", expanded=True)
+section_2 = st.expander("Raw Dataset", expanded=False)
+section_3 = st.expander("Model Metrics", expanded=True)
+section_4 = st.expander("Score Distribution", expanded=True)
 
 # SECTION 0 : HYPOTHESIS
-with section_0:
+with section_1:
 
     st.markdown(
         """
-        We think that by using previous buyer behaviour including ticketing, marketing and web data, 
-        we can make a prediction on whether the fan will purchase a ticket for the next game or not.
-        
-        Authors: Matt Bahler, Pat Faith, Ryan Kazmerik, Joey Lai, Nakisa Rad, Shawn Sutherland	
+        Tell the user a bit about how to use this Streamlit app.	
     """
     )
 
-# SECTION 1 : DATASET
-with section_1:
+# SECTION 2 : DATASET
+with section_2:
 
     df, df_train, df_eval = get_data_sets()
     st.write(df)
 
-    col_1, col_2, col_3, col_4, col_5, col_6, col_7, col_8 = st.columns(8)
+    st.write("Data used for training:", df_train.shape)
+    st.write("Data used for evaluation:", df_eval.shape)
 
-    with col_1:
-        st.write("Data used for training:", df_train.shape)
+# SECTION 3 : METRICS
+with section_3:
 
-    with col_2:
-        st.write("Data used for evaluation:", df_eval.shape)
-
-# SECTION 2 : METRICS
-with section_2:
-
-    model = get_model(df_train)
+    model = get_model(df_train, model_type)
     df_inference = get_predictions(model, df_eval)
     metrics = get_metrics(df_inference)
 
@@ -183,18 +178,6 @@ with section_2:
     with col_5:
         st.metric(label="AUC", value=metrics["AUC"], delta="1.2 °F")
 
-# SECTION 3: ASSOCIATION
-with section_3:
-
-    fig, ax = plt.subplots(figsize=(10, 4))
-    sns.set(font_scale=0.6)
-
-    heatmap = sns.heatmap(df_train.corr(), ax=ax, cmap="coolwarm")
-    heatmap.set_xticklabels(
-        heatmap.get_xticklabels(), rotation=45, horizontalalignment="right"
-    )
-
-    st.write(fig)
 
 # SECTION 4: SCORE DISTRIBUTION
 with section_4:
@@ -218,23 +201,6 @@ with section_4:
         ax.set_xlabel("Probability", fontsize=7)
 
         st.pyplot(fig2)
-
-# SECTION 5: FEATURE IMPORTANCE
-with section_5:
-
-    model = get_model(df_train)
-    df_features = get_feature_importances(model)
-
-    fig3, ax = plt.subplots()
-    ax.barh(df_features["Feature"], df_features["Importance"])
-    ax.set_title("Importance by Feature", size=12)
-    ax.set_ylabel("Feature", fontsize=12)
-    ax.set_xlabel("Importance", fontsize=12)
-
-    for label in ax.get_xticklabels() + ax.get_yticklabels():
-        label.set_fontsize(9)
-
-    st.pyplot(fig3)
 
 # STYLE HACKS
 with open("app.css", "r") as css_file:
