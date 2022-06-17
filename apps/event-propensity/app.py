@@ -9,7 +9,7 @@ st.set_page_config(
     page_icon="baseball",
     layout="wide",
 )
-st.title("StellarAlgo Data Science - (Model Name)")
+st.title("StellarAlgo Data Science - Retention Model")
 
 
 @st.cache()
@@ -31,30 +31,28 @@ def get_data_sets():
 def get_model(df_train):
 
     setup(
-        data=df_train,
-        target="did_purchase",
-        train_size=0.80,
+        data= df_train, 
+        target="isNextYear_Buyer", 
+        train_size = 0.85,
         data_split_shuffle=True,
-        categorical_features=["inMarket"],
-        date_features=["eventDate"],
-        ignore_features=[
-            "dimCustomerMasterId",
-            "eventName",
-            "minDaysOut",
-            "maxDaysOut",
-        ],
+        ignore_features=["dimCustomerMasterId","productGrouping","year"],
         silent=True,
         verbose=False,
         numeric_features=[
-            "distanceToVenue",
-            "events_purchased",
-            "frequency_eventDay",
-            "frequency_opponent",
-            "frequency_eventTime",
-            "recent_clickRate",
-            "recent_openRate",
-        ],
-    )
+            "attendancePercent",
+            "clickToOpenRatio", 
+            "clickToSendRatio", 
+            "distToVenue",
+            "inperson_contact", 
+            "missed_games_1",
+            "missed_games_2",
+            "missed_games_over_2",
+            "openToSendRatio",
+            "recency",
+            "source_tenure",
+            "totalSpent"
+    ]
+)
 
     model_matrix = compare_models(fold=2, include=["lightgbm"])
 
@@ -73,19 +71,19 @@ def get_predictions(model, df_eval):
 def get_metrics(df_inference):
 
     accuracy = pycaret.utils.check_metric(
-        df_inference["did_purchase"], df_inference["Label"], metric="Accuracy"
+        df_inference["isNextYear_Buyer"], df_inference["Label"], metric="Accuracy"
     )
     precision = pycaret.utils.check_metric(
-        df_inference["did_purchase"], df_inference["Label"], metric="Precision"
+        df_inference["isNextYear_Buyer"], df_inference["Label"], metric="Precision"
     )
     recall = pycaret.utils.check_metric(
-        df_inference["did_purchase"], df_inference["Label"], metric="Recall"
+        df_inference["isNextYear_Buyer"], df_inference["Label"], metric="Recall"
     )
     f1 = pycaret.utils.check_metric(
-        df_inference["did_purchase"], df_inference["Label"], metric="F1"
+        df_inference["isNextYear_Buyer"], df_inference["Label"], metric="F1"
     )
     auc = pycaret.utils.check_metric(
-        df_inference["did_purchase"], df_inference["Label"], metric="AUC"
+        df_inference["isNextYear_Buyer"], df_inference["Label"], metric="AUC"
     )
 
     metrics = {
