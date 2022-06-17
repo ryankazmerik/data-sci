@@ -6,7 +6,7 @@ import streamlit as st
 from pycaret.classification import *
 
 st.set_page_config(
-    page_icon="baseball",
+    page_icon="MILB",
     layout="wide",
 )
 st.title("Retention Model")
@@ -15,7 +15,7 @@ st.title("Retention Model")
 @st.cache()
 def get_data_sets():
 
-    df = pd.read_parquet("yankees-data-export-event.parquet")
+    df = pd.read_parquet("Prod_Retention_Redshift_Bulls.parquet")
 
     df = df.sample(frac=0.001)
 
@@ -31,30 +31,24 @@ def get_data_sets():
 def get_model(df_train, model_type):
 
     setup(
-        data=df_train,
-        target="did_purchase",
-        train_size=0.80,
-        data_split_shuffle=True,
-        categorical_features=["inMarket"],
-        date_features=["eventDate"],
-        ignore_features=[
-            "dimCustomerMasterId",
-            "eventName",
-            "minDaysOut",
-            "maxDaysOut",
-        ],
-        silent=True,
-        verbose=False,
-        numeric_features=[
-            "distanceToVenue",
-            "events_purchased",
-            "frequency_eventDay",
-            "frequency_opponent",
-            "frequency_eventTime",
-            "recent_clickRate",
-            "recent_openRate",
-        ],
-    )
+    data= df_train, 
+    target='isnextyear_buyer', 
+    train_size = 0.80,
+    data_split_shuffle=True,
+    silent=True,
+    ignore_features=['dimcustomermasterid'],
+    numeric_features=[
+        "attendancepercent",
+        "disttovenue",
+        "missed_games_1",
+        "missed_games_2",
+        "missed_games_over_2",
+        "recency",
+        "renewedbeforedays",
+        "source_tenure",
+        "totalspent"
+    ]
+)
 
     model_matrix = compare_models(fold=2, include=[model_type])
 
@@ -73,19 +67,19 @@ def get_predictions(model, df_eval):
 def get_metrics(df_inference):
 
     accuracy = pycaret.utils.check_metric(
-        df_inference["did_purchase"], df_inference["Label"], metric="Accuracy"
+        df_inference["isnextyear_buyer"], df_inference["Label"], metric="Accuracy"
     )
     precision = pycaret.utils.check_metric(
-        df_inference["did_purchase"], df_inference["Label"], metric="Precision"
+        df_inference["isnextyear_buyer"], df_inference["Label"], metric="Precision"
     )
     recall = pycaret.utils.check_metric(
-        df_inference["did_purchase"], df_inference["Label"], metric="Recall"
+        df_inference["isnextyear_buyer"], df_inference["Label"], metric="Recall"
     )
     f1 = pycaret.utils.check_metric(
-        df_inference["did_purchase"], df_inference["Label"], metric="F1"
+        df_inference["isnextyear_buyer"], df_inference["Label"], metric="F1"
     )
     auc = pycaret.utils.check_metric(
-        df_inference["did_purchase"], df_inference["Label"], metric="AUC"
+        df_inference["isnextyear_buyer"], df_inference["Label"], metric="AUC"
     )
 
     metrics = {
