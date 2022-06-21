@@ -10,3 +10,17 @@ FETCH ALL FROM temp_cursor;
 
 CALL ds.getretentionmodeldata(31, 2021, 2022, 'temp_cursor');
 FETCH ALL FROM temp_cursor;
+
+
+select * 
+from dw.customerretentionscores c 
+where lkupclientid = 31
+and scoredate = '2022-06-20'
+
+select count(distinct dimcustomermasterid)
+from dw.cohortretentionscore c 
+where date_effective_end  is null
+and lkupclientid  = 31
+and seasonyear = 2022
+and score between 0 and 5
+;
