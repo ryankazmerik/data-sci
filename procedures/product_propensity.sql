@@ -23,3 +23,8 @@ FETCH ALL FROM rkcursor;
 
 CALL stlrlagalaxy.ds.getproductpropensitymodeldata(6, 2021, 2022, 'temp_cursor');
 FETCH ALL FROM temp_cursor;
+
+
+SELECT * FROM stlrlagalaxy.dw.cohortretentionscore;
+
+SELECT * FROM stlrlagalaxy.dw.customerretentionscores;
