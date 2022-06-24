@@ -15,7 +15,7 @@ FETCH ALL FROM temp_cursor;
 select * 
 from dw.customerretentionscores c 
 where lkupclientid = 31
-and scoredate = '2022-06-20'
+and scoredate = '2022-06-22'
 
 select count(distinct dimcustomermasterid)
 from dw.cohortretentionscore c 
