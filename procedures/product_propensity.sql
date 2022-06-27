@@ -24,7 +24,18 @@ FETCH ALL FROM rkcursor;
 CALL stlrlagalaxy.ds.getproductpropensitymodeldata(6, 2021, 2022, 'temp_cursor');
 FETCH ALL FROM temp_cursor;
 
+CALL stlrflames.ds.getproductpropensitymodeldata(36, 2021, 2022, 'temp_cursor');
+FETCH ALL FROM temp_cursor;
+
+CALL stlrwhl.ds.getproductpropensitymodeldata(37, 2019, 2020, 'temp_cursor');
+FETCH ALL FROM temp_cursor;
+
+CALL stlrnll.ds.getproductpropensitymodeldata(8, 2021, 2022, 'temp_cursor');
+FETCH ALL FROM temp_cursor;
+
 
 SELECT * FROM stlrlagalaxy.dw.cohortretentionscore;
 
-SELECT * FROM stlrlagalaxy.dw.customerretentionscores;
+SELECT * FROM stlrlagalaxy.dw.customerretentionscores
+ORDER BY scoredate desc
+LIMIT 100;
