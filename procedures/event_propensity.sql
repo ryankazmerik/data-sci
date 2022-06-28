@@ -15,3 +15,6 @@ SELECT * from result_set;
 
 CALL stlryankees.ds.geteventpropensitymodelinference(53, cast('2022-05-23' as date), 'temp_cursor');
 FETCH ALL FROM temp_cursor;
+
+CALL ds.geteventpropensitytrainingdata(35, 2022, 2023, 'rkcursor');
+FETCH ALL FROM rkcursor;
