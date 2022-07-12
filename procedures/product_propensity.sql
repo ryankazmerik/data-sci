@@ -39,3 +39,6 @@ SELECT * FROM stlrlagalaxy.dw.cohortretentionscore;
 SELECT * FROM stlrlagalaxy.dw.customerretentionscores
 ORDER BY scoredate desc
 LIMIT 100;
+
+
+SELECT * FROM ds.customerproductpropensityscores;
