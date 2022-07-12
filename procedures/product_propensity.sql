@@ -21,7 +21,7 @@ CALL stlrmilb.ds.getproductpropensitymodeldata(11, 2010, 2021, 'rkcursor');
 FETCH ALL FROM rkcursor;
 
 
-CALL stlrlagalaxy.ds.getproductpropensitymodeldata(6, 2021, 2022, 'temp_cursor');
+CALL stlrlagalaxy.ds.getproductpropensityscoringdata(6, '2018-01-01', '2020-01-01', 'temp_cursor');
 FETCH ALL FROM temp_cursor;
 
 CALL stlrflames.ds.getproductpropensitymodeldata(36, 2021, 2022, 'temp_cursor');
