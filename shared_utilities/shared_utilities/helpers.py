@@ -169,26 +169,29 @@ def get_train_eval_split(df: pd.DataFrame, random_state: int, train_fraction: fl
     return df_train, df_eval
 
 
-def create_histogram(data: pd.Series, bins: int, x_label: str = None, y_label: str = None, title: str = None) -> None:
+def create_histogram(data: pd.Series, bins: int, x_label, y_label, title: str, **kwargs) -> None:
     """Generates a histogram from the provided DataFrame column (series) and displays it.
+
+    Title and labels are required, but if you want to add extra arguments for the histogram from the docs its easy to pass, see the example below.
+
+    Histogram docs for reference: https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.hist.html
 
     Example:
     ```
-    helpers.create_histogram(my_df["my_column"], 10)
+    # Range isn't in the params of this function, but **kwargs lets us pass it to the histogram function.
+    helpers.create_histogram(my_df["my_column"], 10, range=(1, 2))
     ```
 
     Args:
         data (pd.Series): Series (df column) with your data to plot.
         bins (int): Number of bins to display data as.
-        x_label (str, optional): X Axis Label. Defaults to None.
-        y_label (str, optional): Y Axis Label. Defaults to None
-        title (str, optional): Title for chart. Defaults to None.
-    """
+        x_label (str): X Axis Label.
+        y_label (str): Y Axis Label.
+        title (str): Title for chart.
 
-    if title is None:
-        title = f"Histogram of {x_label}"
+    """
     
-    plt.hist(data, bins=bins, edgecolor='black')
+    plt.hist(data, bins=bins, edgecolor='black', **kwargs)
     plt.title(title)
     plt.ylabel(y_label)
     plt.xlabel(x_label)
