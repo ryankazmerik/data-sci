@@ -1,6 +1,8 @@
+from typing import Tuple
 import awswrangler as wr
 import boto3
 import json
+import matplotlib.pyplot as plt
 import pandas as pd
 import pyodbc
 import psycopg2
@@ -14,16 +16,16 @@ def hello_world():
     return msg
 
 
-def get_mssql_connection(environment):
+def get_mssql_connection(environment: str, database: str):
     """Return a pyodbc connection to MSSQL.
 
     https://github.com/mkleehammer/pyodbc
     """
 
-    if environment == "QA":
+    if environment == "qa" or environment == "QA":
         env = "LEGACY-MSSQL-QA-VPC-WRITE"
         serv = "52.44.171.130"
-    elif environment == "PRD":
+    elif environment == "prd" or environment == "PRD" or environment == "prod" or environment == "PROD":
         env = "LEGACY-MSSQL-PROD-PRODUCT-WRITE"
         serv = "34.206.73.189"
 
@@ -34,52 +36,50 @@ def get_mssql_connection(environment):
     )["Parameter"]["Value"]
     sql_connection = json.loads(response)
 
-    cnxn = pyodbc.connect(
+    print(sql_connection)
+
+    """ cnxn = pyodbc.connect(
         "DRIVER={ODBC Driver 17 for SQL Server}"
         + ";SERVER="+serv
-        + ";DATABASE="+sql_connection["database"]
+        + ";DATABASE="+database
         + ";UID="+sql_connection["username"]
         + ";PWD="+sql_connection["password"]
-    )
+    ) """
 
-    return cnxn
-
-
-def get_redshift_awswrangler_temp_connection(cluster_id: str, database: str, db_user: str = "admin") -> redshift_connector.Connection:
-    """Return a redshift_connector temporary connection (No password required). This has different functionality than psycopg2, such as not having named cursors.
-
-    https://github.com/aws/amazon-redshift-python-driver
-    """
-
-    cnxn = wr.redshift.connect_temp(
-        cluster_identifier=cluster_id,
-        database=database,
-        user=db_user
-    )
-
-    return cnxn
+    return "MS CONNECT" #cnxn
 
 
-def get_redshift_psycopg2_connection(cluster_id: str, database: str, db_user: str, cluster_endpoint: str) -> psycopg2._psycopg.connection:
+def get_redshift_connection(cluster: str, database: str) -> psycopg2._psycopg.connection:
     """Returns a psycopg2 connection, requires full database connection details (user, pass, cluster, database, port, etc).
 
     https://github.com/psycopg/psycopg2
     """
 
-    redshift_client = boto3.client("redshift")
-    cluster_credentials = redshift_client.get_cluster_credentials(
-        ClusterIdentifier=cluster_id,
-        DbUser=db_user,
+    session = boto3.session.Session(profile_name='Stellaralgo-DataScienceAdmin')
+    client = session.client('redshift')
+
+    if cluster == 'qa-app':
+        endpoint = 'qa-app.ctjussvyafp4.us-east-1.redshift.amazonaws.com'
+    elif cluster == 'prod-app':
+        endpoint = 'prod-app.ctjussvyafp4.us-east-1.redshift.amazonaws.com'
+    elif cluster == 'qa-app-elbu':
+        endpoint = 'qa-app-elbu.ctjussvyafp4.us-east-1.redshift.amazonaws.com'
+    elif cluster == 'prod-app-elbu':
+        endpoint == 'prod-app-elbu.ctjussvyafp4.us-east-1.redshift.amazonaws.com'
+
+    cluster_credentials = client.get_cluster_credentials(
+        ClusterIdentifier=cluster,
+        DbUser='admin',
         DbName=database,
         DbGroups=["admin_group"],
-        AutoCreate=True,
+        AutoCreate=True
     )
     cnxn = psycopg2.connect(
-        host=cluster_endpoint,
+        host=endpoint,
         port=5439,
         user=cluster_credentials["DbUser"],
         password=cluster_credentials["DbPassword"],
-        database=database,
+        database=database
     )
 
     return cnxn
@@ -143,6 +143,62 @@ def get_product_propensity_model_dataset(cluster_id: str, database: str, lkupcli
     return df_results
 
 
+def get_train_eval_split(df: pd.DataFrame, random_state: int, train_fraction: float = 0.85) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    """Splits a given DataFrame into train and eval DataFrames.
+
+    Example:
+    ```
+    df_train, df_eval = helpers.get_train_eval_split(full_df, 123)
+    ```
+
+    Args:
+        df (pd.DataFrame): DataFrame to be split.
+        random_state (int): Seed to randomize the split functions output.
+        train_fraction (float, optional): The size of the training DataFrame after splitting. Defaults to 0.85.
+
+    Returns:
+        Tuple[pd.DataFrame, pd.DataFrame]: The split DataFrames.
+    """
+    
+    df_train = df.sample(frac=train_fraction, random_state=random_state)
+    df_eval = df.drop(df_train.index)
+
+    df_train.reset_index(drop=True, inplace=True)
+    df_eval.reset_index(drop=True, inplace=True)
+
+    return df_train, df_eval
+
+
+def create_histogram(data: pd.Series, bins: int, x_label: str, y_label: str, title: str, **kwargs) -> None:
+    """Generates a histogram from the provided DataFrame column (series) and displays it.
+
+    Title and labels are required, but if you want to add extra arguments for the histogram from the docs its easy to pass, see the example below.
+
+    Histogram docs for reference: https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.hist.html
+
+    Example:
+    ```
+    # Range isn't in the params of this function, but **kwargs lets us pass it to the histogram function.
+    helpers.create_histogram(my_df["my_column"], 10, range=(1, 2))
+    ```
+
+    Args:
+        data (pd.Series): Series (df column) with your data to plot.
+        bins (int): Number of bins to display data as.
+        x_label (str): X Axis Label.
+        y_label (str): Y Axis Label.
+        title (str): Title for chart.
+
+    """
+    
+    plt.hist(data, bins=bins, edgecolor='black', **kwargs)
+    plt.title(title)
+    plt.ylabel(y_label)
+    plt.xlabel(x_label)
+
+    plt.show()
+
+
 def _get_ssm_parameter_value(parameter_name: str):
 
     ssm_client = boto3.client("ssm")
@@ -174,6 +230,7 @@ def get_cluster_name(lkupclientid: int) -> str:
         cluster_name += "-elbu"
 
     return cluster_name
+
 
 def assume_iam_role(role_arn: str):
 
