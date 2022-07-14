@@ -1,6 +1,8 @@
+from typing import Tuple
 import awswrangler as wr
 import boto3
 import json
+import matplotlib.pyplot as plt
 import pandas as pd
 import pyodbc
 import psycopg2
@@ -139,6 +141,59 @@ def get_product_propensity_model_dataset(cluster_id: str, database: str, lkupcli
     conn.close()
 
     return df_results
+
+
+def get_train_eval_split(df: pd.DataFrame, random_state: int, train_fraction: float = 0.85) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    """Splits a given DataFrame into train and eval DataFrames.
+
+    Example:
+    ```
+    df_train, df_eval = helpers.get_train_eval_split(full_df, 123)
+    ```
+
+    Args:
+        df (pd.DataFrame): DataFrame to be split.
+        random_state (int): Seed to randomize the split functions output.
+        train_fraction (float, optional): The size of the training DataFrame after splitting. Defaults to 0.85.
+
+    Returns:
+        Tuple[pd.DataFrame, pd.DataFrame]: The split DataFrames.
+    """
+    
+    df_train = df.sample(frac=train_fraction, random_state=random_state)
+    df_eval = df.drop(df_train.index)
+
+    df_train.reset_index(drop=True, inplace=True)
+    df_eval.reset_index(drop=True, inplace=True)
+
+    return df_train, df_eval
+
+
+def create_histogram(data: pd.Series, bins: int, x_label: str = None, y_label: str = None, title: str = None) -> None:
+    """Generates a histogram from the provided DataFrame column (series) and displays it.
+
+    Example:
+    ```
+    helpers.create_histogram(my_df["my_column"], 10)
+    ```
+
+    Args:
+        data (pd.Series): Series (df column) with your data to plot.
+        bins (int): Number of bins to display data as.
+        x_label (str, optional): X Axis Label. Defaults to None.
+        y_label (str, optional): Y Axis Label. Defaults to None
+        title (str, optional): Title for chart. Defaults to None.
+    """
+
+    if title is None:
+        title = f"Histogram of {x_label}"
+    
+    plt.hist(data, bins=bins, edgecolor='black')
+    plt.title(title)
+    plt.ylabel(y_label)
+    plt.xlabel(x_label)
+
+    plt.show()
 
 
 def _get_ssm_parameter_value(parameter_name: str):
