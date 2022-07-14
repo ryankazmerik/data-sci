@@ -169,7 +169,7 @@ def get_train_eval_split(df: pd.DataFrame, random_state: int, train_fraction: fl
     return df_train, df_eval
 
 
-def create_histogram(data: pd.Series, bins: int, x_label, y_label, title: str, **kwargs) -> None:
+def create_histogram(data: pd.Series, bins: int, x_label: str, y_label: str, title: str, **kwargs) -> None:
     """Generates a histogram from the provided DataFrame column (series) and displays it.
 
     Title and labels are required, but if you want to add extra arguments for the histogram from the docs its easy to pass, see the example below.
