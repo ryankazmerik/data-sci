@@ -1,6 +1,8 @@
+from typing import Tuple
 import awswrangler as wr
 import boto3
 import json
+import matplotlib.pyplot as plt
 import pandas as pd
 import pyodbc
 import psycopg2
@@ -139,6 +141,62 @@ def get_product_propensity_model_dataset(cluster_id: str, database: str, lkupcli
     conn.close()
 
     return df_results
+
+
+def get_train_eval_split(df: pd.DataFrame, random_state: int, train_fraction: float = 0.85) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    """Splits a given DataFrame into train and eval DataFrames.
+
+    Example:
+    ```
+    df_train, df_eval = helpers.get_train_eval_split(full_df, 123)
+    ```
+
+    Args:
+        df (pd.DataFrame): DataFrame to be split.
+        random_state (int): Seed to randomize the split functions output.
+        train_fraction (float, optional): The size of the training DataFrame after splitting. Defaults to 0.85.
+
+    Returns:
+        Tuple[pd.DataFrame, pd.DataFrame]: The split DataFrames.
+    """
+    
+    df_train = df.sample(frac=train_fraction, random_state=random_state)
+    df_eval = df.drop(df_train.index)
+
+    df_train.reset_index(drop=True, inplace=True)
+    df_eval.reset_index(drop=True, inplace=True)
+
+    return df_train, df_eval
+
+
+def create_histogram(data: pd.Series, bins: int, x_label: str, y_label: str, title: str, **kwargs) -> None:
+    """Generates a histogram from the provided DataFrame column (series) and displays it.
+
+    Title and labels are required, but if you want to add extra arguments for the histogram from the docs its easy to pass, see the example below.
+
+    Histogram docs for reference: https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.hist.html
+
+    Example:
+    ```
+    # Range isn't in the params of this function, but **kwargs lets us pass it to the histogram function.
+    helpers.create_histogram(my_df["my_column"], 10, range=(1, 2))
+    ```
+
+    Args:
+        data (pd.Series): Series (df column) with your data to plot.
+        bins (int): Number of bins to display data as.
+        x_label (str): X Axis Label.
+        y_label (str): Y Axis Label.
+        title (str): Title for chart.
+
+    """
+    
+    plt.hist(data, bins=bins, edgecolor='black', **kwargs)
+    plt.title(title)
+    plt.ylabel(y_label)
+    plt.xlabel(x_label)
+
+    plt.show()
 
 
 def _get_ssm_parameter_value(parameter_name: str):
