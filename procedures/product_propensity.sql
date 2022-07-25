@@ -42,3 +42,8 @@ LIMIT 100;
 
 
 SELECT * FROM ds.customerproductpropensityscores;
+
+
+
+CALL ds.getproductpropensitymodeldata(91,2010,2021,'temp_cursor');
+fetch all from temp_cursor;
