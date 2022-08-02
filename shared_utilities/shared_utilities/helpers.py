@@ -54,7 +54,7 @@ def get_redshift_connection(cluster: str, database: str) -> psycopg2._psycopg.co
 
     https://github.com/psycopg/psycopg2
     """
-
+    
     client = boto3.client('redshift')
 
     if cluster == 'qa-app':
@@ -64,7 +64,7 @@ def get_redshift_connection(cluster: str, database: str) -> psycopg2._psycopg.co
     elif cluster == 'qa-app-elbu':
         endpoint = 'qa-app-elbu.ctjussvyafp4.us-east-1.redshift.amazonaws.com'
     elif cluster == 'prod-app-elbu':
-        endpoint == 'prod-app-elbu.ctjussvyafp4.us-east-1.redshift.amazonaws.com'
+        endpoint = 'prod-app-elbu.ctjussvyafp4.us-east-1.redshift.amazonaws.com'
 
     cluster_credentials = client.get_cluster_credentials(
         ClusterIdentifier=cluster,
