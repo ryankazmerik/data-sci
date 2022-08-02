@@ -209,11 +209,25 @@ Generally we work in the `stellar` environment, but you can create a new environ
 When in a Jupyter notebook ensure that the top-right of the notebook says its running in your conda environment.
 
 ### PyODBC For M1 Mac
-This seems to be a working solution to install Pyodbc on Mac with M1 Chips. Note that the steps below are what I did in order to get Pycaret working, which happened to also require getting PyODBC working. I think steps 1 and 2 are only needed for Pycaret, so you might be able to skip to steps 3-5 for just Pyodbc.
+This seems to be a working solution to install Pyodbc on Mac with M1 Chips. Steps 1 and 2 *might* be optional.
+
+>⚠️ Warning ⚠️
+>
+>If you install `pyodbc` before this, then you will need to run the following after step 5: 
+>
+>`pip install --upgrade --force-reinstall pyodbc`
+
+>Install Location
+>
+>Your install path for `unixodbc` could be different from the steps below. 
+>
+>It will be one of the following: 
+> * `/opt/homebrew/Cellar/unixodbc`
+> * `/usr/local/Cellar/unixodbc`
 
 Steps:
 1. `brew install cmake libomp`
-2. pip install xgboost --no-binary xgboost -v
+2. `pip install xgboost --no-binary xgboost -v`
 3. [Follow the steps here for ODBC 17, which are listed as sub tasks below](https://docs.microsoft.com/th-th/sql/connect/odbc/linux-mac/install-microsoft-odbc-driver-sql-server-macos?view=sql-server-2017)
    1. `brew tap microsoft/mssql-release https://github.com/Microsoft/homebrew-mssql-release`
    2. `brew update`
@@ -223,7 +237,13 @@ Steps:
 
 
 ### Pycaret for M1 Mac
-You may need a new conda environment for this, as its going to be installing lots of packages in specific ways which may get conflicts from your pre-existing packages.
+This will guide you on how to install Pycaret on an M1 Mac, follow the instructions carefully and read every step.
+
+>⚠️ Warning ⚠️
+>
+> You need a new conda environment for this, as its going to be installing lots of packages in specific ways which may get conflicts from your pre-existing packages.
+>
+> pip installing *anything* in this conda environment after could break it. if you need to update the environment be sure to make a backup or know how to revert conda environment revisions.
 
 [Essentially follow this tutorial for workaround #1](https://pareekshithkatti.medium.com/setting-up-python-for-data-science-on-m1-mac-ced8a0d05911).
 
