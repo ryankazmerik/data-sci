@@ -1,3 +1,4 @@
+from lib2to3.pgen2.pgen import DFAState
 from typing import Tuple
 import boto3
 import json
@@ -7,7 +8,7 @@ import pyodbc
 import psycopg2
 import redshift_connector
 
-boto3.setup_default_session(profile_name='Stellaralgo-DataScienceAdmin')
+from pycaret.classification import *
 
 def hello_world():
     
@@ -16,20 +17,16 @@ def hello_world():
     return msg
 
 
-def get_mssql_connection(environment: str, database: str):
-    """Return a pyodbc connection to MSSQL.
-
-    https://github.com/mkleehammer/pyodbc
-    """
-
+def get_mssql_connection(environment: str, database: str) -> pyodbc.Connection:
+    
+    client = boto3.client('ssm')
+    
     if environment == "qa" or environment == "QA":
         env = "LEGACY-MSSQL-QA-VPC-WRITE"
         serv = "52.44.171.130"
     elif environment == "prd" or environment == "PRD" or environment == "prod" or environment == "PROD":
         env = "LEGACY-MSSQL-PROD-PRODUCT-WRITE"
         serv = "34.206.73.189"
-
-    client = boto3.client('ssm')
     
     response = client.get_parameter(
         Name=f"/product/ai/notebook/db-connections/{env}",
@@ -50,10 +47,6 @@ def get_mssql_connection(environment: str, database: str):
 
 
 def get_redshift_connection(cluster: str, database: str) -> psycopg2._psycopg.connection:
-    """Returns a psycopg2 connection, requires full database connection details (user, pass, cluster, database, port, etc).
-
-    https://github.com/psycopg/psycopg2
-    """
     
     client = boto3.client('redshift')
 
@@ -67,21 +60,75 @@ def get_redshift_connection(cluster: str, database: str) -> psycopg2._psycopg.co
         endpoint = 'prod-app-elbu.ctjussvyafp4.us-east-1.redshift.amazonaws.com'
 
     cluster_credentials = client.get_cluster_credentials(
-        ClusterIdentifier=cluster,
-        DbUser='admin',
-        DbName=database,
-        DbGroups=["admin_group"],
-        AutoCreate=True
+        ClusterIdentifier = cluster,
+        DbUser = 'admin',
+        DbName = database,
+        DbGroups = ["admin_group"],
+        AutoCreate = True
     )
     cnxn = psycopg2.connect(
-        host=endpoint,
-        port=5439,
-        user=cluster_credentials["DbUser"],
-        password=cluster_credentials["DbPassword"],
-        database=database
+        host = endpoint,
+        port = 5439,
+        user = cluster_credentials["DbUser"],
+        password = cluster_credentials["DbPassword"],
+        database = database
     )
 
     return cnxn
+
+
+def get_retention_datasets(connection: pyodbc.Connection, lkupclientid: str):
+
+    sql = f"""
+        EXEC [ds].[getRetentionScoringModelData] {lkupclientid}
+    """
+
+    df = pd.read_sql(sql, connection)
+
+    features = [
+            "attendancePercent", 
+            "dimCustomerMasterId",
+            "distToVenue",
+            "isNextYear_Buyer",
+            "missed_games_1",
+            "missed_games_2",
+            "missed_games_over_2",
+            "productGrouping", 
+            "recency",
+            "recentDate",
+            "renewedBeforeDays",
+            "source_tenure",
+            "tenure",
+            "totalSpent", 
+            "year"
+    ]
+
+    # choose the features & train year & test year
+    df = df[features]
+    df["year"] = pd.to_numeric(df["year"])
+    
+    # sample training and evaluation datasets
+    df_train = df.loc[df["year"] <= 2021]
+
+    df_train = df_train.sample(frac=0.85, random_state=786)
+    df_eval = df.drop(df_train.index)
+
+    # sample inference dataset
+    df_inference = df.loc[df["year"] >= 2022]
+
+    df_train.reset_index(drop=True, inplace=True)
+    df_eval.reset_index(drop=True, inplace=True)
+    df_inference.reset_index(drop=True, inplace=True)
+
+    print('Data for Modeling: ' + str(df_train.shape))
+    print('Data For Evaluation: ' + str(df_eval.shape))
+    print('Data For Inference: ' + str(df_inference.shape), end="\n\n")
+
+    return df_train, df_eval, df_inference
+
+# def get_retention_report
+
+# def get_retention_distribution
 
 
 
@@ -99,22 +146,6 @@ def get_redshift_connection(cluster: str, database: str) -> psycopg2._psycopg.co
 #         cols = [row[0] for row in cursor.description]
 #         df_results = pd.DataFrame(data=data, columns=cols)
         
-#     return df_results
-
-
-# def get_retention_model_dataset(cluster_id: str, database: str, lkupclientid: int, start_year: int, end_year: int, temp_cursor_name: str) -> pd.DataFrame:
-#     """Runs and returns the results of the following stored procedure: 
-    
-#     `{database}.ds.getretentionmodeldata({lkupclientid}, {start_year}, {end_year}, {temp_cursor_name})`
-#     """    
-
-#     stored_procedure_query = f"""CALL {database}.ds.getretentionmodeldata({lkupclientid}, {start_year}, {end_year}, '{temp_cursor_name}');"""
-#     conn = get_redshift_awswrangler_temp_connection(cluster_id, database)
-
-#     df_results = _execute_and_fetch_stored_proc_with_redshift_connector(conn, stored_procedure_query, temp_cursor_name)
-
-#     conn.close()
-
 #     return df_results
 
 
@@ -142,31 +173,6 @@ def get_redshift_connection(cluster: str, database: str) -> psycopg2._psycopg.co
 
 #     return df_results
 
-
-# def get_train_eval_split(df: pd.DataFrame, random_state: int, train_fraction: float = 0.85) -> Tuple[pd.DataFrame, pd.DataFrame]:
-#     """Splits a given DataFrame into train and eval DataFrames.
-
-#     Example:
-#     ```
-#     df_train, df_eval = helpers.get_train_eval_split(full_df, 123)
-#     ```
-
-#     Args:
-#         df (pd.DataFrame): DataFrame to be split.
-#         random_state (int): Seed to randomize the split functions output.
-#         train_fraction (float, optional): The size of the training DataFrame after splitting. Defaults to 0.85.
-
-#     Returns:
-#         Tuple[pd.DataFrame, pd.DataFrame]: The split DataFrames.
-#     """
-    
-#     df_train = df.sample(frac=train_fraction, random_state=random_state)
-#     df_eval = df.drop(df_train.index)
-
-#     df_train.reset_index(drop=True, inplace=True)
-#     df_eval.reset_index(drop=True, inplace=True)
-
-#     return df_train, df_eval
 
 
 # def create_histogram(data: pd.Series, bins: int, x_label: str, y_label: str, title: str, **kwargs) -> None:
