@@ -19,17 +19,18 @@ def hello_world():
 
 def get_mssql_connection(environment: str, database: str) -> pyodbc.Connection:
     
-    client = boto3.client('ssm')
+    session = boto3.session.Session(profile_name='Explore-US-DataScienceAdmin')
+    client = session.client('ssm')
     
     if environment == "qa" or environment == "QA":
-        env = "LEGACY-MSSQL-QA-VPC-WRITE"
+        env = "-qa"
         serv = "52.44.171.130"
     elif environment == "prd" or environment == "PRD" or environment == "prod" or environment == "PROD":
-        env = "LEGACY-MSSQL-PROD-PRODUCT-WRITE"
+        env = ""
         serv = "34.206.73.189"
     
     response = client.get_parameter(
-        Name=f"/product/ai/notebook/db-connections/{env}",
+        Name=f"/customer/model-retention/ai/db-connections/data-sci-retention/database-write{env}",
         WithDecryption=True,
     )["Parameter"]["Value"]
 
@@ -98,7 +99,6 @@ def get_retention_datasets(connection: pyodbc.Connection, lkupclientid: str):
             "recentDate",
             "renewedBeforeDays",
             "source_tenure",
-            "tenure",
             "totalSpent", 
             "year"
     ]
