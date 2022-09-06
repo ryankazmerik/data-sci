@@ -9,7 +9,8 @@ __pycache__/
 # Stellar Custom
 models
 data
-
+.devcontainer
+.DS_Store
 
 # Distribution / packaging
 .Python
