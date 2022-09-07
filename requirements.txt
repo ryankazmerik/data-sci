@@ -21,6 +21,7 @@ openpyxl
 pandas
 pandas-profiling
 plotly
+scikit-learn==0.23.2
 psycopg2-binary==2.9.3
 pycaret==2.3.10
 pyodbc
