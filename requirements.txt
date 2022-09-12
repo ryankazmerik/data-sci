@@ -27,3 +27,4 @@ pyodbc
 requests
 SQLAlchemy
 streamlit
+xgboost
