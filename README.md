@@ -446,29 +446,31 @@ if True:
 You must be logged into the dev docker container (Dev Container: STELLARALGO) to run terraform:
 
 **1. Login to AWS SSO**
-`av tf-deploy-full`
+> `av tf-deploy-full`
 
-2. NAVIGATE TO YOUR TF RESOURCES
-cd /data-sci-event-propensity/infrastructure
 
-3. INITIALIZE TERRAFORM
-tf init
-tf workspace list (to see what workspace connected to)
+**2. Navigate to TF Resources**
+> `cd /data-sci-event-propensity/infrastructure`
 
-SELECT THE PROPER WORKSPACE
-tf workspace select explore-us.us-east-1
+**3. Initialize Terraform**
+> `tf init`
+> `tf workspace list (to see what workspace connected to)`
 
-CHECK YOUR CURRENT STATUS
-tf-plan
-OR
-tf-plan -no-color > plan.txt (to export whole plan)
+**4. Select the Workspace**
+> `tf workspace select explore-us.us-east-1`
 
-APPLY YOUR CHANGES
-tf-apply
-type: yes
+**5. Format Files (Optional)**
+> `tf fmt s3-resources.tf`
 
-FORMAT YOUR FILES (ALIGNS SPACES)
-tf fmt s3-resources.tf
+**6. Check Current Status**
+> `tf-plan`
+>  OR 
+> `tf-plan -no-color > plan.txt` (to export whole plan)
 
-PUSH UP YOUR CODE
-git add, commit, push
+**7. Apply Changes**
+> `tf-apply`
+
+**8. Push Up Code**
+> `git add -A` <br/>
+> `git commit -m 'Your commit message'` <br/>
+> `git push`
