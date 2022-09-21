@@ -1,8 +1,6 @@
 # The StellarAlgo Data Science Super Fantastic Readme
 You know, for data science...
 
-- [The StellarAlgo Data Science Super Fantastic Readme](#the-stellaralgo-data-science-super-fantastic-readme)
-  - [Style Guidelines](#style-guidelines)
 - [Onboarding](#onboarding)
   - [Setup](#setup)
     - [Installs](#installs)
@@ -19,137 +17,12 @@ You know, for data science...
     - [S3 Challenge](#s3-challenge)
     - [SSM Challenge](#ssm-challenge)
     - [Lambda Challenge](#lambda-challenge)
-
-## Style Guidelines
-This covers the main style guidelines for work in the Data-Sci repositories. If there is something not covered here then please reach out to someone or refer to [The PEP8 Guidelines](https://pep8.org/)
-
->❗ Note that the styles in this README overrule the styles in the PEP8 Guidelines.
-
-<br/>
-
-All variables should be named using underscores (no camelCase):
-
-<pre>
-dim_customer_master_id = 1001
-</pre><br/>
-
-All global variables should be named using all caps:
-
-<pre>
-DATABASE_NAME = 'stlrflames'
-</pre><br/>
-
-All import statements should appear at the top of the notebook or python script in alphabetical order:
-
-<pre>
-import awswrangler as wr
-import boto3
-import json
-import matplotlib.pyplot as plt
-import pandas as pd
-</pre><br/>
-
-All from import statements should appear below the initial import statements, with a line break in between, in alphabetical order:
-
-<pre>
-import awswrangler as wr
-import boto3
-import json
-
-from datetime import datetime
-from pycaret.classification import *
-</pre><br/>
-
-Any passwords should NEVER be hardcoded in a notebook or script. Either use the `getpass` package to be prompted for your password, or retrieve your credentials using an SSM parameter:
-
-<pre>
-PASSWORD = getpass.getpass(prompt='Enter your password')`
-</pre><br/>
-
-OR
-
-<pre>
-ssm_client = boto3.client("ssm", "us-east-1")
-
-response = ssm_client.get_parameter(Name=f"/customer/model-retention/ai/db-connections/data-sci-retention/database-write", WithDecryption=True,)["Parameter"]["Value"]
-
-params = json.loads(response)
-</pre><br/>
-
-Use the print-f standard for all print messages:
-
-<pre>
-print(f"The Calgary Flames have {num_fans} in their fan universe.")
-</pre><br/>
+- [Style Guidelines](#style-guidelines)
+- [Terraforming](#terraform)
 
 
-When writing functions declare if they are private or public using an underscore as a prefix. This does not change how they are *actually* accessed, it is a suggestion to other programmers (in Java private functions can't be accessed outside the class, in Python its a suggestion). Example:
 
-```python
-# Private
-def _my_private_function():
-    print('This should be called within this module.')
-
-# Public
-def my_public_function():
-    print('This can be called from outside this module.')
-```
-
-Type hinting should be added to functions to help describe what the variable should be or what it is. These can be added by writing a variable in the function parameter with a colon and the data type; the return value is typed with an arrow and the data type at the end of the function. 
-
-This has the following benefits:
-* Lets users easily understand parameters & return values without complex names
-* Has integration with VSCode to show code suggestions. For example, if you have a parameter that is a dict it will show the functions available for dicts, without typing it wouldn't show anything
-
-Type hinting can be done by following the example below:
-
-```python
-def my_function(param_a: str, param_b: int, param_c:Dict[str, int]) -> bool:
-    print(f'You can access the variables as you normally would: {param_a}')
-    return True
-```
-
-Docstring should be added to the line after a `def` so that users can understand what a function does or any stipulations with the function. As mentioned in [PEP 8](https://pep8.org/#documentation-strings), they are good to add for public functions, but not necessary for private functions. If the function is truly self-documenting then it can be omitted or parts of it can be omitted (if parameters are self-documenting, then don't describe them in the docstring).
-
-The largest benefit to adding docstring is if you are coding in VSCode, the intellisense will show you the docstring as you type. This can help when a docstring includes important details or examples of code for implementing a function.
-
-If you are writing a single comment (`#`) below/above a function, consider just making it a one-line docstring (`"""my docstring"""`) to support intellisense.
-
-
-White space should be added to the code to match the below requirements:
-1. after a function is defined / after the docstring of a function
-2. before a function is defined
-3. after a control statement (if, while, etc)
-4. before a control statement
-5. before a return statement
-6. between logical groupings of code (if x, y, z work together then they should be grouped, if not made into a function)
-
-See the example below for white space:
-```python
-import pandas as pd
-
-MY_GLOBAL_VAR = 'Hello world'
-
-def my_function():
-
-    print("hi")
-    my_var = 123
-    
-    return my_var
-
-# This is a logical grouping, with white space above the comment.
-conn = my_db_connection()
-result = conn.execute("select * from my_db.my_table")
-print(result)
-
-if True:
-    
-    print("True")
-
-```
-
-
-# Onboarding
+## Onboarding
 The onboarding section will setup the environment, help with working in the environment, and provide challenges to get used to the environment.
 
 ## Setup
@@ -437,3 +310,165 @@ The challenge is to create a new lambda that uses the ‘test-retention-role’ 
 * Create two functions, one called convert_to_parquet and one called convert_to_csv
 * Each function should read the json file from the S3 bucket, convert it to the appropriate type (parquet or csv), and then write the file back to the bucket in the new file format.
 * Then create a test event that passes in the file type and path to the s3 bucket.
+
+
+## Style Guidelines
+This covers the main style guidelines for work in the Data-Sci repositories. If there is something not covered here then please reach out to someone or refer to [The PEP8 Guidelines](https://pep8.org/)
+
+>❗ Note that the styles in this README overrule the styles in the PEP8 Guidelines.
+
+<br/>
+
+All variables should be named using underscores (no camelCase):
+
+<pre>
+dim_customer_master_id = 1001
+</pre><br/>
+
+All global variables should be named using all caps:
+
+<pre>
+DATABASE_NAME = 'stlrflames'
+</pre><br/>
+
+All import statements should appear at the top of the notebook or python script in alphabetical order:
+
+<pre>
+import awswrangler as wr
+import boto3
+import json
+import matplotlib.pyplot as plt
+import pandas as pd
+</pre><br/>
+
+All from import statements should appear below the initial import statements, with a line break in between, in alphabetical order:
+
+<pre>
+import awswrangler as wr
+import boto3
+import json
+
+from datetime import datetime
+from pycaret.classification import *
+</pre><br/>
+
+Any passwords should NEVER be hardcoded in a notebook or script. Either use the `getpass` package to be prompted for your password, or retrieve your credentials using an SSM parameter:
+
+<pre>
+PASSWORD = getpass.getpass(prompt='Enter your password')`
+</pre><br/>
+
+OR
+
+<pre>
+ssm_client = boto3.client("ssm", "us-east-1")
+
+response = ssm_client.get_parameter(Name=f"/customer/model-retention/ai/db-connections/data-sci-retention/database-write", WithDecryption=True,)["Parameter"]["Value"]
+
+params = json.loads(response)
+</pre><br/>
+
+Use the print-f standard for all print messages:
+
+<pre>
+print(f"The Calgary Flames have {num_fans} in their fan universe.")
+</pre><br/>
+
+
+When writing functions declare if they are private or public using an underscore as a prefix. This does not change how they are *actually* accessed, it is a suggestion to other programmers (in Java private functions can't be accessed outside the class, in Python its a suggestion). Example:
+
+```python
+# Private
+def _my_private_function():
+    print('This should be called within this module.')
+
+# Public
+def my_public_function():
+    print('This can be called from outside this module.')
+```
+
+Type hinting should be added to functions to help describe what the variable should be or what it is. These can be added by writing a variable in the function parameter with a colon and the data type; the return value is typed with an arrow and the data type at the end of the function. 
+
+This has the following benefits:
+* Lets users easily understand parameters & return values without complex names
+* Has integration with VSCode to show code suggestions. For example, if you have a parameter that is a dict it will show the functions available for dicts, without typing it wouldn't show anything
+
+Type hinting can be done by following the example below:
+
+```python
+def my_function(param_a: str, param_b: int, param_c:Dict[str, int]) -> bool:
+    print(f'You can access the variables as you normally would: {param_a}')
+    return True
+```
+
+Docstring should be added to the line after a `def` so that users can understand what a function does or any stipulations with the function. As mentioned in [PEP 8](https://pep8.org/#documentation-strings), they are good to add for public functions, but not necessary for private functions. If the function is truly self-documenting then it can be omitted or parts of it can be omitted (if parameters are self-documenting, then don't describe them in the docstring).
+
+The largest benefit to adding docstring is if you are coding in VSCode, the intellisense will show you the docstring as you type. This can help when a docstring includes important details or examples of code for implementing a function.
+
+If you are writing a single comment (`#`) below/above a function, consider just making it a one-line docstring (`"""my docstring"""`) to support intellisense.
+
+
+White space should be added to the code to match the below requirements:
+1. after a function is defined / after the docstring of a function
+2. before a function is defined
+3. after a control statement (if, while, etc)
+4. before a control statement
+5. before a return statement
+6. between logical groupings of code (if x, y, z work together then they should be grouped, if not made into a function)
+
+See the example below for white space:
+```python
+import pandas as pd
+
+MY_GLOBAL_VAR = 'Hello world'
+
+def my_function():
+
+    print("hi")
+    my_var = 123
+    
+    return my_var
+
+# This is a logical grouping, with white space above the comment.
+conn = my_db_connection()
+result = conn.execute("select * from my_db.my_table")
+print(result)
+
+if True:
+    
+    print("True")
+
+```
+
+
+## Terraform
+
+You must be logged into the dev docker container (Dev Container: STELLARALGO) to run terraform:
+
+**1. Login to AWS SSO**
+`av tf-deploy-full`
+
+2. NAVIGATE TO YOUR TF RESOURCES
+cd /data-sci-event-propensity/infrastructure
+
+3. INITIALIZE TERRAFORM
+tf init
+tf workspace list (to see what workspace connected to)
+
+SELECT THE PROPER WORKSPACE
+tf workspace select explore-us.us-east-1
+
+CHECK YOUR CURRENT STATUS
+tf-plan
+OR
+tf-plan -no-color > plan.txt (to export whole plan)
+
+APPLY YOUR CHANGES
+tf-apply
+type: yes
+
+FORMAT YOUR FILES (ALIGNS SPACES)
+tf fmt s3-resources.tf
+
+PUSH UP YOUR CODE
+git add, commit, push
