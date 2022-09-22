@@ -9,6 +9,7 @@ __pycache__/
 # Stellar Custom
 models
 data
+results
 .devcontainer
 .DS_Store
 
