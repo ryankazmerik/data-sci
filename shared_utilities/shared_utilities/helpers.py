@@ -96,6 +96,7 @@ def get_product_propensity_dataset(cluster:str, database:str, lkupclientid:str, 
 
     return df
 
+
 def get_event_propensity_training_dataset(cluster:str, database:str, lkupclientid:str, start_year:int, end_year:int) -> pd.DataFrame:
 
     conn = get_redshift_connection(cluster, database)
