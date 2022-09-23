@@ -28,10 +28,10 @@ def establish_aws_session(profile, retry = True):
         else:
             raise
 
-@st.cache()
-def get_model_metadata_files(bucket):
+#@st.cache()
+def get_model_metadata_files(session, bucket):
 
-    s3 = boto3.client('s3')
+    s3 = session.client('s3')
     my_bucket = s3.list_objects_v2(Bucket=bucket, Prefix='training')
     
     # build a list of model metadata json files
@@ -126,7 +126,7 @@ with section_1:
     s3_bucket = get_s3_path(enviro_choices[enviro], model_type)
 
     # get a list of models and their metadata
-    model_metadata_list = get_model_metadata_files(s3_bucket)
+    model_metadata_list = get_model_metadata_files(session, s3_bucket)
     
     # combine models list into a dataframe
     df = parse_config_files_into_df(model_metadata_list)
