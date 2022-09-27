@@ -10,6 +10,8 @@ import tarfile
 
 st.set_page_config(page_icon="robot", layout="wide")
 
+session = None
+
 def establish_aws_session(profile, retry = True):
     
     session = boto3.Session(profile_name=profile)
@@ -31,7 +33,7 @@ def establish_aws_session(profile, retry = True):
 @st.cache()
 def get_model_metadata_files(bucket):
 
-    s3 = boto3.client('s3')
+    s3 = session.client('s3')
     my_bucket = s3.list_objects_v2(Bucket=bucket, Prefix='training')
     
     # build a list of model metadata json files

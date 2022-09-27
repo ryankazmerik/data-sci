@@ -31,7 +31,7 @@ env_config = {
     }
 }
 
-# qa = boto3.Session(profile_name="QA-DS-Admin")
+qa = boto3.setup_default_session(profile_name="QA-DS-Admin")
 sagemaker_client = boto3.client("sagemaker", region_name="us-east-1")
 ssm_client = boto3.client("ssm", region_name="us-east-1")
 
@@ -73,21 +73,22 @@ def main():
     teams = [x["ModelName"] for x in result["Models"]]
     print(teams)
 
-    questionary.checkbox(f'Select teams to promote to {env_to_promote_to}',choices=teams).ask()
+    # questionary.checkbox(f'Select teams to promote to {env_to_promote_to}',choices=teams).ask()
 
-    assume_iam_role(selected_env["previous_env_iam_arn"])
-    print("getting sm models")
-    s3 = boto3.client("s3", region_name="us-east-1")
+    # assume_iam_role(selected_env["previous_env_iam_arn"])
+    # print("getting sm models")
+    # s3 = boto3.client("s3", region_name="us-east-1")
 
-    s3.list_objects_v2(Bucket="explore-us-model-data-sci-" + model + "-us-east-1-" + selected_model["random_bucket_id"], Prefix="training")
+    # s3.list_objects_v2(Bucket="explore-us-model-data-sci-" + model + "-us-east-1-" + selected_model["random_bucket_id"], Prefix="training")
 
-    # result = explore_sagemaker_client.list_models(MaxResults=100, NameContains=model_chosen)
-    # print(result)
+    # result = sagemaker_client.list_models(MaxResults=100, NameContains=model_chosen)
+    print(result)
+    model_chosen = teams[0]
     # model_chosen = result["Models"][0]["ModelName"]
-    # print(model_chosen)
-    # print(type(model_chosen))
-    # print(sagemaker_client.describe_model(ModelName=model_chosen))
-    # print("done")
+    print(model_chosen)
+    print(type(model_chosen))
+    print(sagemaker_client.describe_model(ModelName=model_chosen))
+    print("done")
 
     # boto3.setup_default_session(region_name="us-east-1")
     # result = _get_sagemaker_models(model)
