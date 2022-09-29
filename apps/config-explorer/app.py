@@ -8,7 +8,7 @@ import subprocess
 import tarfile
 
 
-st.set_page_config(page_icon="robot", layout="wide")
+st.set_page_config(page_icon="hockey", layout="wide")
 
 session = None
 
@@ -70,7 +70,7 @@ def parse_config_files_into_df(config_files):
         df["lkupclientid"] = [file["client_configs"][0]["lkupclientid"]]
         df["final_training_year"] = [file["client_configs"][0]["year"]]
         df["algorithms"] = [file["algorithm"]]
-        df["feature_importances"] = [file["feature_importances"]]
+        #df["feature_importances"] = [file["feature_importances"]]
 
         df_list.append(df)
 
@@ -132,5 +132,6 @@ with section_1:
     
     # combine models list into a dataframe
     df = parse_config_files_into_df(model_metadata_list)
-    
+
+    df.style.set_properties(subset=['lkupclientid', 'final_training_year'], **{'width': '150px'})
     st.dataframe(df)
