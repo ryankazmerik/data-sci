@@ -6,6 +6,8 @@ import pyodbc
 import psycopg2
 import subprocess
 
+from sqlalchemy import true
+
 
 def hello_world():
     
@@ -32,7 +34,8 @@ def get_aws_session(profile, retry = True):
 
 def get_redshift_connection(cluster: str, database: str) -> psycopg2._psycopg.connection:
     
-    client = boto3.client('redshift')
+    session = get_aws_session("Stellaralgo-DataScienceAdmin")
+    client = session.client('redshift')
 
     if cluster == 'qa-app':
         endpoint = 'qa-app.ctjussvyafp4.us-east-1.redshift.amazonaws.com'
