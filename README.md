@@ -463,12 +463,12 @@ You must be logged into the dev docker container (Dev Container: STELLARALGO) to
 > `tf fmt s3-resources.tf`
 
 **6. Check Current Status**
-> `tf-plan`
+> `tf plan`
 >  OR 
-> `tf-plan -no-color > plan.txt` (to export whole plan)
+> `tf plan -no-color > plan.txt` (to export whole plan)
 
 **7. Apply Changes**
-> `tf-apply`
+> `tf apply`
 
 **8. Push Up Code**
 > `git add -A` <br/>

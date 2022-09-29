@@ -10,6 +10,8 @@ import tarfile
 
 st.set_page_config(page_icon="robot", layout="wide")
 
+session = None
+
 def establish_aws_session(profile, retry = True):
     
     session = boto3.Session(profile_name=profile)
