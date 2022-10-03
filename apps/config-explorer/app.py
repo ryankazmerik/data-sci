@@ -9,6 +9,7 @@ import tarfile
 
 
 st.set_page_config(page_icon="hockey", layout="wide")
+pd.set_option('display.max_colwidth', None)
 
 session = None
 
@@ -39,7 +40,7 @@ def get_model_metadata_files(session, bucket):
     # build a list of model metadata json files
     model_metadata_list = []
     for file in my_bucket["Contents"]:
-                
+            
         if file["Key"].endswith(".tar.gz"):
 
             model_file = s3.get_object(Bucket=bucket, Key=file["Key"])
@@ -49,10 +50,12 @@ def get_model_metadata_files(session, bucket):
             with tarfile.open(fileobj=io.BytesIO(tar_content), mode="r:gz") as tar:
 
                 for member in tar.getmembers():
-
+                    
                     # grab the model metadata file
                     if member.name == "metadata.json":
                         model_metadata = json.load(tar.extractfile(member))
+                        model_metadata["s3_path"] = f"{bucket}/{file['Key']}"
+                        model_metadata["modified"] = file["LastModified"]
                         model_metadata_list.append(model_metadata)
 
     return model_metadata_list
@@ -70,11 +73,19 @@ def parse_config_files_into_df(config_files):
         df["lkupclientid"] = [file["client_configs"][0]["lkupclientid"]]
         df["final_training_year"] = [file["client_configs"][0]["year"]]
         df["algorithms"] = [file["algorithm"]]
+        df["s3_path"] = [file["s3_path"]]
+        df["modified"] = [file["modified"]]
         #df["feature_importances"] = [file["feature_importances"]]
 
         df_list.append(df)
 
     df_all = pd.concat(df_list)
+
+    df_all = df_all.sort_values('modified').drop_duplicates('model_subtype',keep='last')
+    df_all = df_all.sort_values('model_subtype')
+    df_all['s3_path'] = df['s3_path'].apply(make_clickable)
+
+    df_all = df_all.reset_index(drop=True)
 
     return df_all
 
@@ -105,6 +116,12 @@ def get_s3_path(enviro, model_type):
     return s3_bucket
 
 
+def make_clickable(link):
+
+    aws_path = "https://s3.console.aws.amazon.com/s3/buckets/"
+    return f'<a target="_blank" href="{aws_path}{link}">Click to Open</a>'
+
+
 # SIDEBAR COMPONENTS
 enviro_choices = {
     'Explore-US-DataScienceAdmin':'Explore-US',
@@ -133,5 +150,10 @@ with section_1:
     # combine models list into a dataframe
     df = parse_config_files_into_df(model_metadata_list)
 
-    df.style.set_properties(subset=['lkupclientid', 'final_training_year'], **{'width': '150px'})
-    st.dataframe(df)
+    # link is the column with hyperlinks
+
+    df = df.to_html(escape=False)
+    st.write(df, unsafe_allow_html=True)
+
+    df.style.format({'s3_path': make_clickable})
+    st._legacy_dataframe(df, 5000, 5000)
