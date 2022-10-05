@@ -35,11 +35,18 @@ def establish_aws_session(profile, retry = True):
 def get_model_metadata_files(session, bucket):
 
     s3 = session.client('s3')
-    my_bucket = s3.list_objects_v2(Bucket=bucket, Prefix='training')
+    response = s3.list_objects_v2(Bucket=bucket, Prefix='training')
+
+    files = response["Contents"]
+
+    while response["IsTruncated"] == True:
+        response = s3.list_objects_v2(Bucket=bucket, ContinuationToken=response["NextContinuationToken"])
+        files.extend(response["Contents"])
+
     
     # build a list of model metadata json files
     model_metadata_list = []
-    for file in my_bucket["Contents"]:
+    for file in files:
             
         if file["Key"].endswith(".tar.gz"):
 
@@ -155,5 +162,5 @@ with section_1:
     df = df.to_html(escape=False)
     st.write(df, unsafe_allow_html=True)
 
-    df.style.format({'s3_path': make_clickable})
-    st._legacy_dataframe(df, 5000, 5000)
+    # df.style.format({'s3_path': make_clickable})
+    # st._legacy_dataframe(df, 5000, 5000)
