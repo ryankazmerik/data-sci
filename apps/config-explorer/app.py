@@ -155,5 +155,4 @@ with section_1:
     df = df.to_html(escape=False)
     st.write(df, unsafe_allow_html=True)
 
-    df.style.format({'s3_path': make_clickable})
     st._legacy_dataframe(df, 5000, 5000)
