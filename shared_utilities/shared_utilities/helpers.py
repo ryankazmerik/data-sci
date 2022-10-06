@@ -123,7 +123,7 @@ def get_event_propensity_scoring_dataset(cluster:str, database:str, lkupclientid
     conn = get_redshift_connection(cluster, database)
 
     cur = conn.cursor()
-    cur.execute(f"CALL ds.geteventpropensityscoringmodeldata({lkupclientid}, cast('{game_date}' as date), 'rkcursor')")
+    cur.execute(f"CALL ds.geteventpropensityscoringdata({lkupclientid}, cast('{game_date}' as date), 'rkcursor')")
 
     named_cursor = conn.cursor('rkcursor')
     data = named_cursor.fetchall()
@@ -134,3 +134,29 @@ def get_event_propensity_scoring_dataset(cluster:str, database:str, lkupclientid
     conn.commit()
 
     return df
+
+
+def get_event_propensity_gamedays(cluster:str, database:str, lkupclientid:str) -> pd.DataFrame:
+
+    conn = get_redshift_connection(cluster, database)
+
+    cur = conn.cursor()
+    cur.execute(f"""
+        SELECT DISTINCT SPLIT_PART(eventdate, ' ', 1) as game_date
+        FROM {database}.dw.cohortpurchase 
+        WHERE lkupclientid = {lkupclientid}
+        AND eventdate > CURRENT_DATE 
+        AND productgrouping = 'Full Season'
+        ORDER BY game_date
+    """)
+
+    data = cur.fetchall()
+
+    cols = [row[0] for row in cur.description]
+    df = pd.DataFrame(data=data, columns=cols)
+
+    conn.commit()
+
+    return df
+
+
