@@ -159,7 +159,7 @@ with section_1:
 
     # link is the column with hyperlinks
 
-    df = df.to_html(escape=False)
-    st.write(df, unsafe_allow_html=True)
+    #df = df.to_html(escape=False)
+    #st.write(df, unsafe_allow_html=True)
 
     st._legacy_dataframe(df, 5000, 5000)
