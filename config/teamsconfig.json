@@ -4,7 +4,7 @@
         "name": "Milwaukee Admirals",
         "clientcode": "admirals",
         "league": "AHL",
-        "modelsubtype": "AHL",
+        "modelsubtype": "AHL-Admirals",
         "cluster": "prod-app",
         "dbname": "stlrahl"
     },
@@ -13,16 +13,25 @@
         "name": "Tuscon Road Runners",
         "clientcode": "roadrunners",
         "league": "AHL",
-        "modelsubtype": "AHL",
+        "modelsubtype": "AHL-RoadRunners",
         "cluster": "prod-app",
         "dbname": "stlrahl"
+    },
+    {
+        "lkupclientid": 101,
+        "name": "Ottawa Redblacks",
+        "clientcode": "CFLREDBLACKS",
+        "league": "CFL",
+        "modelsubtype": "CFL-Redblacks",
+        "cluster": "prod-app-elbu",
+        "dbname": "stlrcflredblacks"
     },
     {
         "lkupclientid": 35,
         "name": "Calgary Stampeders",
         "clientcode": "stamps",
         "league": "CFL",
-        "modelsubtype": "CFL",
+        "modelsubtype": "CFL-Stamps",
         "cluster": "prod-app",
         "dbname": "stlrcfl"
     },
@@ -31,7 +40,7 @@
         "name": "Florida Everblades",
         "clientcode": "echleverblades",
         "league": "ECHL",
-        "modelsubtype": "ECHL",
+        "modelsubtype": "ECHL-Everblades",
         "cluster": "prod-app-elbu",
         "dbname": "stlrechleverblades"
     },
@@ -40,7 +49,7 @@
         "name": "Toledo Walleye",
         "clientcode": "toledowalleye",
         "league": "ECHL",
-        "modelsubtype": "ECHL",
+        "modelsubtype": "ECHL-Walleye",
         "cluster": "prod-app",
         "dbname": "stlrahl"
     },
@@ -49,7 +58,7 @@
         "name": "Hillsboro Hops",
         "clientcode": "hops",
         "league": "MILB",
-        "modelsubtype": "MILB",
+        "modelsubtype": "MILB-Hops",
         "cluster": "prod-app",
         "dbname": "stlrmilb"
     },
@@ -58,7 +67,7 @@
         "name": "Durham Bulls",
         "clientcode": "bulls",
         "league": "MILB",
-        "modelsubtype": "MILB",
+        "modelsubtype": "MILB-Bulls",
         "cluster": "prod-app",
         "dbname": "stlrmilb"
     },
@@ -67,7 +76,7 @@
         "name": "Sacramento River Cats",
         "clientcode": "rivercats",
         "league": "MILB",
-        "modelsubtype": "MILB",
+        "modelsubtype": "MILB-Rivercats",
         "cluster": "prod-app",
         "dbname": "stlrmilb"
     },
@@ -76,7 +85,7 @@
         "name": "Las Vegas Aviators",
         "clientcode": "vegas51s",
         "league": "MILB",
-        "modelsubtype": "MILB",
+        "modelsubtype": "MILB-Vegas51s",
         "cluster": "prod-app",
         "dbname": "stlrmilb"
     },
@@ -85,7 +94,7 @@
         "name": "Inland Empire 66ers",
         "clientcode": "66ers",
         "league": "MILB",
-        "modelsubtype": "MILB",
+        "modelsubtype": "MILB-66ers",
         "cluster": "prod-app",
         "dbname": "stlrmilb"
     },
@@ -94,7 +103,7 @@
         "name": "Great Lakes Loons",
         "clientcode": "loons",
         "league": "MILB",
-        "modelsubtype": "MILB",
+        "modelsubtype": "MILB-Loons",
         "cluster": "prod-app",
         "dbname": "stlrmilb"
     },
@@ -103,7 +112,7 @@
         "name": "Lexington Legends",
         "clientcode": "legends",
         "league": "MILB",
-        "modelsubtype": "MILB",
+        "modelsubtype": "MILB-Legends",
         "cluster": "prod-app",
         "dbname": "stlrmilb"
     },
@@ -112,7 +121,7 @@
         "name": "Columbia Fireflies",
         "clientcode": "fireflies",
         "league": "MILB",
-        "modelsubtype": "MILB",
+        "modelsubtype": "MILB-Fireflies",
         "cluster": "prod-app",
         "dbname": "stlrmilb"
     },
@@ -121,7 +130,7 @@
         "name": "El Paso Chihauhaus",
         "clientcode": "elpaso",
         "league": "MILB",
-        "modelsubtype": "MILB",
+        "modelsubtype": "MILB-Elpaso",
         "cluster": "prod-app",
         "dbname": "stlrmilb"
     },
@@ -130,7 +139,7 @@
         "name": "Round Rock Express",
         "clientcode": "rrexpress",
         "league": "MILB",
-        "modelsubtype": "MILB",
+        "modelsubtype": "MILB-RRExpress",
         "cluster": "prod-app",
         "dbname": "stlrmilb"
     },
@@ -139,7 +148,7 @@
         "name": "Reno Aces",
         "clientcode": "renoaces",
         "league": "MILB",
-        "modelsubtype": "MILB",
+        "modelsubtype": "MILB-RenoAces",
         "cluster": "prod-app",
         "dbname": "stlrmilb"
     },
@@ -148,7 +157,7 @@
         "name": "Omaha Storm Chasers",
         "clientcode": "stormchasers",
         "league": "MILB",
-        "modelsubtype": "MILB",
+        "modelsubtype": "MILB-Stormchasers",
         "cluster": "prod-app",
         "dbname": "stlrmilb"
     },
@@ -157,7 +166,7 @@
         "name": "Hartford Yard Goats",
         "clientcode": "hartfordyardgoats",
         "league": "MILB",
-        "modelsubtype": "MILB",
+        "modelsubtype": "MILB-HardfordYardGoats",
         "cluster": "prod-app",
         "dbname": "stlrmilb"
     },
@@ -166,7 +175,7 @@
         "name": "Oklahoma City Dodgers",
         "clientcode": "okcdodgers",
         "league": "MILB",
-        "modelsubtype": "MILB",
+        "modelsubtype": "MILB-OkcDodgers",
         "cluster": "prod-app",
         "dbname": "stlrmilb"
     },
@@ -175,7 +184,7 @@
         "name": "Greenville Drive",
         "clientcode": "drive",
         "league": "MILB",
-        "modelsubtype": "MILB",
+        "modelsubtype": "MILB-Drive",
         "cluster": "prod-app",
         "dbname": "stlrmilb"
     },
@@ -184,7 +193,7 @@
         "name": "Gwinnett Stripers",
         "clientcode": "stripers",
         "league": "MILB",
-        "modelsubtype": "MILB",
+        "modelsubtype": "MILB-Stripers",
         "cluster": "prod-app",
         "dbname": "stlrmilb"
     },
@@ -193,7 +202,7 @@
         "name": "Kane County Cougars",
         "clientcode": "kanecounty",
         "league": "MILB",
-        "modelsubtype": "MILB",
+        "modelsubtype": "MILB-KaneCounty",
         "cluster": "prod-app",
         "dbname": "stlrmilb"
     },
@@ -202,7 +211,7 @@
         "name": "Toledo Mud Hens",
         "clientcode": "toledomudhens",
         "league": "MILB",
-        "modelsubtype": "MILB",
+        "modelsubtype": "MILB-ToledoMudhens",
         "cluster": "prod-app",
         "dbname": "stlrmilb"
     },
@@ -211,7 +220,7 @@
         "name": "Portland Sea Dogs",
         "clientcode": "milbseadogs",
         "league": "MILB",
-        "modelsubtype": "MILB",
+        "modelsubtype": "MILB-SeaDogs",
         "cluster": "prod-app-elbu",
         "dbname": "stlrmilbseadogs"
     },
@@ -220,7 +229,7 @@
         "name": "Wichita WindSurge",
         "clientcode": "milbwindsurge",
         "league": "MILB",
-        "modelsubtype": "MILB",
+        "modelsubtype": "MILB-WindSurge",
         "cluster": "prod-app-elbu",
         "dbname": "stlrmilbwindsurge"
     },
@@ -252,6 +261,15 @@
         "dbname": "stlrmls"
     },
     {
+        "lkupclientid": 113,
+        "name": "InterMiami CF",
+        "clientcode": "mlsInterMiami",
+        "league": "MLS",
+        "modelsubtype": "MLS-Intermiami",
+        "cluster": "prod-app",
+        "dbname": "stlrmls"
+    },
+    {
         "lkupclientid": 31,
         "name": "Sacramento Republic",
         "clientcode": "sacfc",
@@ -268,6 +286,24 @@
         "modelsubtype": "NBA-Blazers",
         "cluster": "prod-app",
         "dbname": "stlrtrailblazers"
+    },
+    {
+        "lkupclientid": 95,
+        "name": "San Francisco 49ers",
+        "clientcode": "nfl49ers",
+        "league": "NFL",
+        "modelsubtype": "NFL-49ers",
+        "cluster": "prod-app",
+        "dbname": "stlrnfl49ers"
+    },
+    {
+        "lkupclientid": 112,
+        "name": "Minnesota Vikings",
+        "clientcode": "nflVikings",
+        "league": "NFL",
+        "modelsubtype": "NFL-Vikings",
+        "cluster": "prod-app",
+        "dbname": "stlrnflvikings"
     },
     {
         "lkupclientid": 7,
@@ -297,6 +333,15 @@
         "dbname": "stlrflames"
     },
     {
+        "lkupclientid": 92,
+        "name": "Winnipeg Jets",
+        "clientcode": "NHLJETS",
+        "league": "NHL",
+        "modelsubtype": "NHL-Jets",
+        "cluster": "prod-app",
+        "dbname": "stlrnhljets"
+    },
+    {
         "lkupclientid": 93,
         "name": "Florida Panthers",
         "clientcode": "nhlpanthers",
@@ -319,16 +364,25 @@
         "name": "Calgary Roughnecks",
         "clientcode": "roughnecks",
         "league": "NLL",
-        "modelsubtype": "NLL",
+        "modelsubtype": "NLL-Roughnecks",
         "cluster": "prod-app",
         "dbname": "stlrnll"
+    },
+    {
+        "lkupclientid": 38,
+        "name": "Tennis Canada Toronto",
+        "clientcode": "tenniscantor",
+        "league": "Tennis Canada",
+        "modelsubtype": "TC-Toronto",
+        "cluster": "prod-app",
+        "dbname": "stlrtenniscan"
     },
     {
         "lkupclientid": 99,
         "name": "El Paso Locomotive",
         "clientcode": "usllocomotive",
         "league": "USL",
-        "modelsubtype": "USL",
+        "modelsubtype": "USL-Locomotive",
         "cluster": "prod-app-elbu",
         "dbname": "stlrusllocomotive"
     },
@@ -337,7 +391,7 @@
         "name": "Calgary Hitmen",
         "clientcode": "hitmen",
         "league": "WHL",
-        "modelsubtype": "WHL",
+        "modelsubtype": "WHL-Hitmen",
         "cluster": "prod-app",
         "dbname": "stlrwhl"
     }
