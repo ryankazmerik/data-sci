@@ -43,6 +43,14 @@ def get_model_metadata_files(session, bucket):
         response = s3.list_objects_v2(Bucket=bucket, ContinuationToken=response["NextContinuationToken"])
         files.extend(response["Contents"])
 
+    # Filter to remove duplicates and get most recent date for each subtype
+    modified_file_list = [{"Key": f["Key"], "Subtype": f["Key"].split("/")[1], "LastModified": f["LastModified"]} for f in files]
+    file_df = pd.DataFrame.from_records(modified_file_list)
+    file_df = file_df.sort_values('LastModified')
+    file_df = file_df[file_df["Key"].str.contains(".tar.gz")]
+    file_df = file_df.drop_duplicates('Subtype',keep='last')
+    file_df = file_df.sort_values('Subtype')
+    files = file_df.to_dict("records")
     
     # build a list of model metadata json files
     model_metadata_list = []
@@ -88,8 +96,6 @@ def parse_config_files_into_df(config_files):
 
     df_all = pd.concat(df_list)
 
-    df_all = df_all.sort_values('modified').drop_duplicates('model_subtype',keep='last')
-    df_all = df_all.sort_values('model_subtype')
     df_all['s3_path'] = df_all['s3_path'].apply(make_clickable)
 
     df_all = df_all.reset_index(drop=True)
