@@ -90,7 +90,7 @@ def parse_config_files_into_df(config_files):
 
     df_all = df_all.sort_values('modified').drop_duplicates('model_subtype',keep='last')
     df_all = df_all.sort_values('model_subtype')
-    df_all['s3_path'] = df['s3_path'].apply(make_clickable)
+    df_all['s3_path'] = df_all['s3_path'].apply(make_clickable)
 
     df_all = df_all.reset_index(drop=True)
 
