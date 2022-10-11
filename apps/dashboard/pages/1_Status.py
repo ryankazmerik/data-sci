@@ -279,10 +279,15 @@ model_df.drop("split_subtype", axis=1, inplace=True)
 
 with st.expander("Overall Status"):
     st.write("# Left Join View")
+    st.write("Below is a view of the prepipeline and curated status side-by-side. X is prepipeline and Y is curated.")
+    st.write("The calculated columns that have the suffix `_Days` show how many days since the file has been updated.")
+    st.write("`pre_diff_curated_days` shows the number of days between the prepipeline and curated files being updated. Meaning if its over 0, one hasn't run while the other did.")
     create_side_by_side_df_view(joined_df)
 
-with st.expander("Curated Status"):
-    create_df_view(curated_df)
-
 with st.expander("Preprocess Status"):
+    st.write("A simple report of the last update time for each subtype and file size. This shows teh preprocess bucket/folder.")
     create_df_view(model_df)
+    
+with st.expander("Curated Status"):
+    st.write("A simple report of the last update time for each subtype and file size. This shows the curated bucket (scores output)")
+    create_df_view(curated_df)
