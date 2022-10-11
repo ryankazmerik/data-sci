@@ -3,6 +3,7 @@ import boto3
 import io
 import json
 import pandas as pd
+import numpy as np
 import streamlit as st
 import subprocess
 import tarfile
@@ -158,10 +159,61 @@ def create_df_view(df, hyperlink_col_name: str = None):
     function(params) {return `${params.value}`}
     """)
 
+    missing_curated_style = JsCode(
+    """
+    function(params) {
+        if (!params.value) {
+            return {
+                'color': 'white',
+                'backgroundColor': 'darkred'
+            }
+        } 
+    };
+    """
+    )
+
+    greater_than_3_days_style = JsCode(
+    """
+    function(params) {
+        if (params.value > 7) {
+            return {
+                'color': 'white',
+                'backgroundColor': 'darkred'
+            }
+        } 
+        else if (params.value > 3) {
+            return {
+                'color': 'black',
+                'backgroundColor': 'orange'
+            }
+        }
+    };
+    """
+    )
+
+    diff_greater_than_0 = JsCode(
+    """
+    function(params) {
+        if (params.value > 0) {
+            return {
+                'color': 'white',
+                'backgroundColor': 'darkred'
+            }
+        } 
+    };
+    """
+    )
+
+
     options_builder = GridOptionsBuilder.from_dataframe(df)
     
     if hyperlink_col_name:
         options_builder.configure_column(hyperlink_col_name, cellRenderer=cell_renderer) 
+    options_builder.configure_column("Key_y", cellStyle=missing_curated_style)
+    options_builder.configure_column("Prepipeline_Last_Success_Days", cellStyle=greater_than_3_days_style)
+    options_builder.configure_column("Curated_Last_Success_Days", cellStyle=greater_than_3_days_style)
+    options_builder.configure_column("pre_diff_curated_days", cellStyle=diff_greater_than_0)
+
     
     grid_options = options_builder.build()
 
@@ -197,6 +249,18 @@ curated_df_modified_subtype["Subtype"] = curated_df_modified_subtype["Subtype"].
 model_df = model_df[model_df["Subtype"].str.contains("-")]
 model_df["split_subtype"] = model_df["Subtype"].apply(lambda x: x.split("-")[1].lower())
 joined_df = model_df.merge(curated_df_modified_subtype, left_on="split_subtype", right_on="Subtype", how="left")
+# joined_df = joined_df.replace("nan", np.nan)
+
+joined_df["Curated_Last_Success_Days"] = pd.to_numeric(joined_df.Curated_Last_Success_Days.astype(str).str.replace(',',''), errors='coerce')\
+              .fillna(0)\
+              .astype(int)
+
+joined_df["Prepipeline_Last_Success_Days"] = pd.to_numeric(joined_df.Prepipeline_Last_Success_Days.astype(str).str.replace(',',''), errors='coerce')\
+              .fillna(0)\
+              .astype(int)
+st.write(joined_df)
+
+joined_df["pre_diff_curated_days"] = joined_df["Prepipeline_Last_Success_Days"].sub(joined_df["Curated_Last_Success_Days"], fill_value=0)
 
 
 model_df.drop("split_subtype", axis=1, inplace=True)
