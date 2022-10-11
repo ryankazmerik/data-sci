@@ -152,7 +152,7 @@ def get_s3_path(enviro, model_type, bucket_type):
     return s3_bucket
 
 
-def create_df_view(df, hyperlink_col_name: str = None):
+def create_side_by_side_df_view(df, hyperlink_col_name: str = None):
     cell_renderer =  JsCode("""
     function(params) {return `${params.value}`}
     """)
@@ -217,7 +217,23 @@ def create_df_view(df, hyperlink_col_name: str = None):
 
     grid_return = AgGrid(df, grid_options, fit_columns_on_grid_load=True, allow_unsafe_jscode=True) 
     return grid_return
+
+
+def create_df_view(df, hyperlink_col_name: str = None):
+    cell_renderer =  JsCode("""
+    function(params) {return `${params.value}`}
+    """)
+
+    options_builder = GridOptionsBuilder.from_dataframe(df)
     
+    if hyperlink_col_name:
+        options_builder.configure_column(hyperlink_col_name, cellRenderer=cell_renderer) 
+
+    
+    grid_options = options_builder.build()
+
+    grid_return = AgGrid(df, grid_options, fit_columns_on_grid_load=True, allow_unsafe_jscode=True) 
+    return grid_return
 
 
 # ____________________________________ Streamlit ____________________________________
@@ -263,7 +279,7 @@ model_df.drop("split_subtype", axis=1, inplace=True)
 
 with st.expander("Overall Status"):
     st.write("# Left Join View")
-    create_df_view(joined_df)
+    create_side_by_side_df_view(joined_df)
 
 with st.expander("Curated Status"):
     create_df_view(curated_df)
