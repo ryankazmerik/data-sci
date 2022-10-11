@@ -192,9 +192,17 @@ model_bucket = get_s3_path(env_choices[env], model_type, "model")
 model_df = get_model_bucket_pre_pipeline_status(session, model_bucket, model_type)
 model_df = create_model_report(model_df)
 
+model_df = model_df[model_df["Subtype"].str.contains("-")]
+model_df["split_subtype"] = model_df["Subtype"].apply(lambda x: x.split("-")[1].lower())
+joined_df = model_df.merge(curated_df, left_on="split_subtype", right_on="Subtype")
+
+model_df.drop("split_subtype", axis=1, inplace=True)
 # st.dataframe(curated_df, width=5000)
 # df = curated_df.to_html(escape=False)
 # st.write(df, unsafe_allow_html=True)
+
+with st.expander("Overall Status"):
+    create_df_view(joined_df)
 
 with st.expander("Curated Status"):
     create_df_view(curated_df)
