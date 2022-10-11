@@ -194,7 +194,8 @@ model_df = create_model_report(model_df)
 
 model_df = model_df[model_df["Subtype"].str.contains("-")]
 model_df["split_subtype"] = model_df["Subtype"].apply(lambda x: x.split("-")[1].lower())
-joined_df = model_df.merge(curated_df, left_on="split_subtype", right_on="Subtype")
+joined_df = model_df.merge(curated_df, left_on="split_subtype", right_on="Subtype", how="left")
+
 
 model_df.drop("split_subtype", axis=1, inplace=True)
 # st.dataframe(curated_df, width=5000)
@@ -202,6 +203,7 @@ model_df.drop("split_subtype", axis=1, inplace=True)
 # st.write(df, unsafe_allow_html=True)
 
 with st.expander("Overall Status"):
+    st.write("# Left Join View")
     create_df_view(joined_df)
 
 with st.expander("Curated Status"):
