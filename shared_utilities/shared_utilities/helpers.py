@@ -2,7 +2,6 @@ import botocore
 import boto3
 import json
 import pandas as pd
-import pyodbc
 import psycopg2
 import subprocess
 
@@ -159,4 +158,53 @@ def get_event_propensity_gamedays(cluster:str, database:str, lkupclientid:str) -
 
     return df
 
+def establish_aws_session(profile: str, retry = True) -> boto3.Session:
+    """Creates a session with the desired profile without requiring manual console input
+
+    Args:
+        profile (str): Profile name to sign in with
+        retry (bool, optional): Can leave as default, will try to sign in if True, if False will require manual sign in. Defaults to True.
+
+    Returns:
+        boto3.Session: boto3 session
+    """
+    
+    session = boto3.Session(profile_name=profile)
+    sts = session.client('sts')
+    
+    try:
+        identity = sts.get_caller_identity()
+        print(f"Authorized as {identity['UserId']}")
+        return session
+    
+    except botocore.exceptions.UnauthorizedSSOTokenError:
+        if retry:
+            subprocess.run(['aws','sso', 'login', '--profile', profile])
+            return establish_aws_session(profile, False)
+    
+        else:
+            raise
+
+def get_s3_bucket_items(session: boto3.Session, bucket: str, prefix: str) -> list:
+    """ Recursively gets all items from a bucket with specified prefix. Normal limit is 1000, this fetches the full list.
+
+    Args:
+        session (boto3.Session): boto3 Session
+        bucket (str): Bucket name
+        prefix (str): Prefix name
+
+    Returns:
+        list: List of dictionaries as a result of boto3 s3 list_objects_v2
+    """
+
+    s3 = session.client('s3')
+    response = s3.list_objects_v2(Bucket=bucket, Prefix=prefix)
+
+    files = response["Contents"]
+
+    while response["IsTruncated"] == True:
+        response = s3.list_objects_v2(Bucket=bucket, ContinuationToken=response["NextContinuationToken"])
+        files.extend(response["Contents"])
+    
+    return files
 

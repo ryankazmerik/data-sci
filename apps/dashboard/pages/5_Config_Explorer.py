@@ -18,10 +18,8 @@ st.set_page_config(layout="wide")
 session = None
 
 @st.experimental_memo
-def get_curated_bucket_status(_session, bucket, model):
-    model_name_cleaned = model.lower().replace(' ', '-')
-    prefix = f"{model_name_cleaned}-scores"
-    files = helpers.get_s3_bucket_items(_session, bucket, prefix)
+def get_metadata_info(_session, bucket, model):
+    files = helpers.get_s3_bucket_items(_session, bucket, "training")
 
     modified_file_list = []
     for f in files:
@@ -33,33 +31,75 @@ def get_curated_bucket_status(_session, bucket, model):
             continue
 
         new_dict["Key"] = f["Key"]
-        new_dict["Subtype"] = split_key[2]
-        new_dict["Date"] = split_key[1].replace("date=", "")
+        new_dict["Subtype"] = split_key[1]
+        new_dict["Date"] = split_key[3].replace("date=", "")
         new_dict["LastModified"] = f["LastModified"]
         modified_file_list.append(new_dict)
 
-
     file_df = pd.DataFrame.from_records(modified_file_list)
     file_df = file_df.sort_values('LastModified')
-    file_df = file_df[file_df["Key"].str.contains("scores.csv")]
+    file_df = file_df[file_df["Key"].str.contains("tar.gz")]
     file_df = file_df.drop_duplicates('Subtype',keep='last')
     file_df = file_df.sort_values('Subtype').reset_index(drop=True)
 
-    return file_df
+    files = files = file_df.to_dict("records")
+
+    model_metadata_list = []
+    for file in files:
+            
+        if file["Key"].endswith(".tar.gz"):
+
+            s3 = _session.client("s3")
+            model_file = s3.get_object(Bucket=bucket, Key=file["Key"])
+            tar_content = model_file["Body"].read()
+
+            # untar the model.tar.gz file
+            with tarfile.open(fileobj=io.BytesIO(tar_content), mode="r:gz") as tar:
+
+                for member in tar.getmembers():
+                    
+                    # grab the model metadata file
+                    if member.name == "metadata.json":
+                        model_metadata = json.load(tar.extractfile(member))
+                        model_metadata["s3_path"] = f"{bucket}/{file['Key']}"
+                        model_metadata["modified"] = file["LastModified"]
+                        model_metadata_list.append(model_metadata)
+
+    return model_metadata_list
 
 def get_model_bucket_inference_status(session, env):
     pass
 
+def make_clickable(link):
 
-def create_curated_report(df):
+    aws_path = "https://s3.console.aws.amazon.com/s3/buckets/"
+    return f'<a target="_blank" href="{aws_path}{link}">Click to Open</a>'
 
-    df["Date"] = pd.to_datetime(df["Date"])
-    df["date_diff"] = pd.to_datetime(datetime.today()) - df["Date"]
-    df["Curated_Bucket_Last_Success_Days"] = df["date_diff"].astype(str).str.split(" ").str[0]
-    df["Date"] = df["Date"].dt.strftime('%Y.%m.%d')
-    df.drop(["date_diff", "LastModified"], axis=1, inplace=True)
+def create_curated_report(config_files):
 
-    return df
+    df_list = []
+    for file in config_files:  
+
+        df = pd.DataFrame()
+        df["model_subtype"] = [file["model_subtype"]]
+        df["clientcode"] = [file["client_configs"][0]["clientcode"]]
+        df["dbname"] = [file["client_configs"][0]["dbname"]]
+        df["lkupclientid"] = [file["client_configs"][0]["lkupclientid"]]
+        df["final_training_year"] = [file["client_configs"][0]["year"]]
+        df["algorithms"] = [file["algorithm"]]
+        df["s3_path"] = [file["s3_path"]]
+        df["modified"] = [file["modified"]]
+        #df["feature_importances"] = [file["feature_importances"]]
+
+        df_list.append(df)
+
+    df_all = pd.concat(df_list)
+
+    df_all['s3_path'] = df_all['s3_path'].apply(make_clickable)
+
+    df_all = df_all.reset_index(drop=True)
+
+    return df_all
 
 
 def get_s3_path(enviro, model_type, bucket_type):
@@ -128,15 +168,15 @@ model_type = st.sidebar.radio('Model:',('Retention', 'Product Propensity', 'Even
 
 session = helpers.establish_aws_session(env)
 
-curated_bucket = get_s3_path(env_choices[env], model_type, "curated")
+curated_bucket = get_s3_path(env_choices[env], model_type, "model")
 
-curated_df = get_curated_bucket_status(session, curated_bucket, model_type)
+curated_df = get_metadata_info(session, curated_bucket, model_type)
 
 curated_df = create_curated_report(curated_df)
 
 # st.dataframe(curated_df, width=5000)
 # df = curated_df.to_html(escape=False)
-# st.write(df, unsafe_allow_html=True)
+# st.dataframe(df, unsafe_allow_html=True)
 
 cell_renderer =  JsCode("""
 function(params) {return `${params.value}`}
