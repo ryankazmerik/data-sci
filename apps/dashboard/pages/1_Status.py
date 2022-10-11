@@ -192,9 +192,11 @@ model_bucket = get_s3_path(env_choices[env], model_type, "model")
 model_df = get_model_bucket_pre_pipeline_status(session, model_bucket, model_type)
 model_df = create_model_report(model_df)
 
+curated_df_modified_subtype = curated_df.copy()
+curated_df_modified_subtype["Subtype"] = curated_df_modified_subtype["Subtype"].apply(lambda x: x.replace("nhl", "").replace("milb", "").replace("cfl", "").replace("mls", "").replace("nba", "").lower())
 model_df = model_df[model_df["Subtype"].str.contains("-")]
 model_df["split_subtype"] = model_df["Subtype"].apply(lambda x: x.split("-")[1].lower())
-joined_df = model_df.merge(curated_df, left_on="split_subtype", right_on="Subtype", how="left")
+joined_df = model_df.merge(curated_df_modified_subtype, left_on="split_subtype", right_on="Subtype", how="left")
 
 
 model_df.drop("split_subtype", axis=1, inplace=True)
