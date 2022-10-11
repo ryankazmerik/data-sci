@@ -5,8 +5,6 @@ import json
 import pandas as pd
 import numpy as np
 import streamlit as st
-import subprocess
-import tarfile
 
 from datetime import datetime, timedelta, timezone
 from shared_utilities import helpers
@@ -249,7 +247,6 @@ curated_df_modified_subtype["Subtype"] = curated_df_modified_subtype["Subtype"].
 model_df = model_df[model_df["Subtype"].str.contains("-")]
 model_df["split_subtype"] = model_df["Subtype"].apply(lambda x: x.split("-")[1].lower())
 joined_df = model_df.merge(curated_df_modified_subtype, left_on="split_subtype", right_on="Subtype", how="left")
-# joined_df = joined_df.replace("nan", np.nan)
 
 joined_df["Curated_Last_Success_Days"] = pd.to_numeric(joined_df.Curated_Last_Success_Days.astype(str).str.replace(',',''), errors='coerce')\
               .fillna(0)\
@@ -258,15 +255,11 @@ joined_df["Curated_Last_Success_Days"] = pd.to_numeric(joined_df.Curated_Last_Su
 joined_df["Prepipeline_Last_Success_Days"] = pd.to_numeric(joined_df.Prepipeline_Last_Success_Days.astype(str).str.replace(',',''), errors='coerce')\
               .fillna(0)\
               .astype(int)
-st.write(joined_df)
 
 joined_df["pre_diff_curated_days"] = joined_df["Prepipeline_Last_Success_Days"].sub(joined_df["Curated_Last_Success_Days"], fill_value=0)
 
 
 model_df.drop("split_subtype", axis=1, inplace=True)
-# st.dataframe(curated_df, width=5000)
-# df = curated_df.to_html(escape=False)
-# st.write(df, unsafe_allow_html=True)
 
 with st.expander("Overall Status"):
     st.write("# Left Join View")
