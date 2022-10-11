@@ -36,6 +36,7 @@ def get_curated_bucket_status(_session, bucket, model):
         new_dict["Subtype"] = split_key[2]
         new_dict["Date"] = split_key[1].replace("date=", "")
         new_dict["LastModified"] = f["LastModified"]
+        new_dict["Size"] = f["Size"]
         modified_file_list.append(new_dict)
 
 
@@ -47,15 +48,53 @@ def get_curated_bucket_status(_session, bucket, model):
 
     return file_df
 
-def get_model_bucket_inference_status(session, env):
-    pass
+@st.experimental_memo
+def get_model_bucket_pre_pipeline_status(_session, bucket, model):
+    model_name_cleaned = model.lower().replace(' ', '-')
+    prefix = f"inference"
+    files = helpers.get_s3_bucket_items(_session, bucket, prefix)
+
+    modified_file_list = []
+    for f in files:
+
+        new_dict = {}
+        split_key = f["Key"].split("/")
+
+        if len(split_key) < 3:
+            continue
+
+        new_dict["Key"] = f["Key"]
+        new_dict["Subtype"] = split_key[1]
+        new_dict["Date"] = split_key[3].replace("date=", "")
+        new_dict["LastModified"] = f["LastModified"]
+        new_dict["Size"] = f["Size"]
+        modified_file_list.append(new_dict)
+
+
+    file_df = pd.DataFrame.from_records(modified_file_list)
+    file_df = file_df.sort_values('LastModified')
+    file_df = file_df[file_df["Key"].str.contains(".parquet")]
+    file_df = file_df.drop_duplicates('Subtype',keep='last')
+    file_df = file_df.sort_values('Subtype').reset_index(drop=True)
+
+    return file_df
 
 
 def create_curated_report(df):
 
     df["Date"] = pd.to_datetime(df["Date"])
     df["date_diff"] = pd.to_datetime(datetime.today()) - df["Date"]
-    df["Curated_Bucket_Last_Success_Days"] = df["date_diff"].astype(str).str.split(" ").str[0]
+    df["Curated_Last_Success_Days"] = df["date_diff"].astype(str).str.split(" ").str[0]
+    df["Date"] = df["Date"].dt.strftime('%Y.%m.%d')
+    df.drop(["date_diff", "LastModified"], axis=1, inplace=True)
+
+    return df
+
+def create_model_report(df):
+
+    df["Date"] = pd.to_datetime(df["Date"])
+    df["date_diff"] = pd.to_datetime(datetime.today()) - df["Date"]
+    df["Prepipeline_Last_Success_Days"] = df["date_diff"].astype(str).str.split(" ").str[0]
     df["Date"] = df["Date"].dt.strftime('%Y.%m.%d')
     df.drop(["date_diff", "LastModified"], axis=1, inplace=True)
 
@@ -114,6 +153,23 @@ def get_s3_path(enviro, model_type, bucket_type):
     return s3_bucket
 
 
+def create_df_view(df, hyperlink_col_name: str = None):
+    cell_renderer =  JsCode("""
+    function(params) {return `${params.value}`}
+    """)
+
+    options_builder = GridOptionsBuilder.from_dataframe(df)
+    
+    if hyperlink_col_name:
+        options_builder.configure_column(hyperlink_col_name, cellRenderer=cell_renderer) 
+    
+    grid_options = options_builder.build()
+
+    grid_return = AgGrid(df, grid_options, fit_columns_on_grid_load=True, allow_unsafe_jscode=True) 
+    return grid_return
+    
+
+
 # ____________________________________ Streamlit ____________________________________
 
 # SIDEBAR COMPONENTS
@@ -129,25 +185,19 @@ model_type = st.sidebar.radio('Model:',('Retention', 'Product Propensity', 'Even
 session = helpers.establish_aws_session(env)
 
 curated_bucket = get_s3_path(env_choices[env], model_type, "curated")
-
 curated_df = get_curated_bucket_status(session, curated_bucket, model_type)
-
 curated_df = create_curated_report(curated_df)
+
+model_bucket = get_s3_path(env_choices[env], model_type, "model")
+model_df = get_model_bucket_pre_pipeline_status(session, model_bucket, model_type)
+model_df = create_model_report(model_df)
 
 # st.dataframe(curated_df, width=5000)
 # df = curated_df.to_html(escape=False)
 # st.write(df, unsafe_allow_html=True)
 
-cell_renderer =  JsCode("""
-function(params) {return `${params.value}`}
-""")
+with st.expander("Curated Status"):
+    create_df_view(curated_df)
 
-options_builder = GridOptionsBuilder.from_dataframe(curated_df) 
-options_builder.configure_column("s3_path", cellRenderer=cell_renderer) 
-options_builder.configure_selection("single") 
-grid_options = options_builder.build()
-
-grid_return = AgGrid(curated_df, grid_options, fit_columns_on_grid_load=True, allow_unsafe_jscode=True) 
-selected_rows = grid_return["selected_rows"]
-
-st.write(selected_rows)
+with st.expander("Preprocess Status"):
+    create_df_view(model_df)
