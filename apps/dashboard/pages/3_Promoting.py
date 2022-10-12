@@ -318,11 +318,10 @@ def create_df_view(df, hyperlink_col_name: str = None):
 # SIDEBAR COMPONENTS
 env_choices = {
     'Explore-US-DataScienceAdmin':'Explore-US',
-    'QA-DataScienceAdmin':'QA',
-    'US-StellarSupport':'US',
+    'QA-DataScienceAdmin':'QA'
 }
 
-env = st.sidebar.selectbox('Select Algorithm:', env_choices.keys(), format_func=lambda x:env_choices[x])
+env = st.sidebar.selectbox('Select Env to promote FROM:', env_choices.keys(), format_func=lambda x:env_choices[x])
 model_type = st.sidebar.radio('Model:',('Retention', 'Product Propensity', 'Event Propensity'))
 
 session = helpers.establish_aws_session(env)
@@ -351,7 +350,7 @@ for f in files:
     with col2:
         st.write(f"{f[3]}")
     with col3:
-        promote = (st.button(f[2],key=f[2])) 
+        promote = (st.button(f"Promote: {f[2]}",key=f[2])) 
         if promote:
             with st.spinner(text=f"Promoting {f[2]}"):
                 team_uris_to_promote.append(f"s3://{model_bucket}/{f[1]}")
