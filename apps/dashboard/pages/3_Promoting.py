@@ -269,8 +269,8 @@ def get_aws_configuration(enviro):
             "destination_environment": "us",
             "aws_account_id": "314383152509",
             "aws_profile_name": "US-StellarSupport",
-            "subnets": ["subnet-016a23a22d09bac9b", "subnet-03e755df7e78d56f1"],
-            "sgs": ["sg-053b15ed15d46581a"],
+            "subnets": ["subnet-05da3f2092b77f05e", "subnet-0da584734b2fc368a"],
+            "sgs": ["sg-0ca66936278330b2c"],
             "destination_bucket_id": "d2n55o"
         },
         "US":{
