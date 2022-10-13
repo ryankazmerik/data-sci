@@ -75,7 +75,7 @@ def split_bucket(destination_env, s3_uri):
 
     
 
-def promote_team(key, bucket, env, model, role_name, aws_config):
+def promote_team(key, bucket, model, role_name, destination_bucket_id, aws_config):
     config = TransferConfig(multipart_threshold=1024 * 50, 
                             max_concurrency=20,
                             multipart_chunksize=1024 * 50,
@@ -85,7 +85,6 @@ def promote_team(key, bucket, env, model, role_name, aws_config):
     aws_profile_name = aws_config["aws_profile_name"]
     subnets = aws_config["subnets"]
     sgs = aws_config["sgs"]
-    destination_bucket_id = aws_config["destination_bucket_id"]
 
     temp_session = helpers.establish_aws_session(aws_profile_name)
     
@@ -233,12 +232,14 @@ def get_aws_configuration(enviro):
             "Retention": {
                 "model": "explore-us-model-data-sci-retention-us-east-1-ut8jag",
                 "curated": "explore-us-curated-data-sci-retention-us-east-1-ut8jag",
-                "role_name": "data-sci-retention-pipeline-24uobc"
+                "role_name": "data-sci-retention-pipeline-24uobc",
+                "destination_bucket_id": "j58tuq"
             },
             "Product Propensity": {
                 "model": "explore-us-model-data-sci-product-propensity-us-east-1-u8gldf",
                 "curated": "explore-us-curated-data-sci-product-propensity-us-east-1-u8gldf",
-                "role_name": "data-sci-product-propensity-pipeline-t6qwkf"
+                "role_name": "data-sci-product-propensity-pipeline-t6qwkf",
+                "destination_bucket_id": "mgwy8o"
             },
             "Event Propensity": {
                 "model": "explore-us-model-data-sci-event-propensity-us-east-1-tykotu",
@@ -249,18 +250,20 @@ def get_aws_configuration(enviro):
             "aws_profile_name": "QA-DataScienceAdmin",
             "subnets": ["subnet-016a23a22d09bac9b", "subnet-03e755df7e78d56f1"],
             "sgs": ["sg-053b15ed15d46581a"],
-            "destination_bucket_id": "mgwy8o"
+            
         },
         "QA":{
             "Retention": {
                 "model": "qa-model-data-sci-retention-us-east-1-j58tuq",
                 "curated": "qa-curated-data-sci-retention-us-east-1-j58tuq",
-                "role_name": "data-sci-retention-pipeline-vg27do"
+                "role_name": "data-sci-retention-pipeline-vg27do",
+                "destination_bucket_id": "5h6cml"
             },
             "Product Propensity": {
                 "model": "qa-model-data-sci-product-propensity-us-east-1-mgwy8o",
                 "curated": "qa-curated-data-sci-product-propensity-us-east-1-mgwy8o",
-                "role_name": "data-sci-product-propensity-pipeline-jxswaj"
+                "role_name": "data-sci-product-propensity-pipeline-jxswaj",
+                "destination_bucket_id": "d2n55o"
             },
             "Event Propensity": {
                 "model": "",
@@ -270,8 +273,7 @@ def get_aws_configuration(enviro):
             "aws_account_id": "314383152509",
             "aws_profile_name": "US-StellarSupport",
             "subnets": ["subnet-05da3f2092b77f05e", "subnet-0da584734b2fc368a"],
-            "sgs": ["sg-0ca66936278330b2c"],
-            "destination_bucket_id": "d2n55o"
+            "sgs": ["sg-0ca66936278330b2c"]
         },
         "US":{
             "Retention": {
@@ -329,10 +331,10 @@ session = helpers.establish_aws_session(env)
 aws_config = get_aws_configuration(env_choices[env])
 model_bucket = aws_config[model_type]["model"]
 role_name = aws_config[model_type]["role_name"]
+destination_bucket_id = aws_config[model_type]["destination_bucket_id"]
 file_df = get_model_paths(session, model_bucket, model_type)
 
 files = file_df.to_records()
-# st.write(file_df)
 
 st.write("# Promote teams")
 st.write("You can promote your models here. Each team can be promoted one-by-one.")
@@ -354,7 +356,7 @@ for f in files:
         if promote:
             with st.spinner(text=f"Promoting {f[2]}"):
                 team_uris_to_promote.append(f"s3://{model_bucket}/{f[1]}")
-                promote_team(f[1], model_bucket, env_choices[env].lower(), model_type.replace(" ", "-").lower(), role_name, aws_config)
+                promote_team(f[1], model_bucket, model_type.replace(" ", "-").lower(), role_name, destination_bucket_id, aws_config)
             st.success(f"Finished promoting {f[2]}")
             
 st.write(team_uris_to_promote)
