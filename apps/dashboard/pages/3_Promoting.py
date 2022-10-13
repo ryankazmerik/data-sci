@@ -277,8 +277,8 @@ def get_aws_configuration(enviro):
         },
         "US":{
             "Retention": {
-                "model": "",
-                "curated": ""
+                "model": "us-model-data-sci-retention-us-east-1-5h6cml",
+                "curated": "us-curated-data-sci-retention-us-east-1-5h6cml"
             },
             "Product Propensity": {
                 "model": "us-model-data-sci-product-propensity-us-east-1-d2n55o",
