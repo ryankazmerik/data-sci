@@ -4,6 +4,7 @@ import io
 import json
 import pandas as pd
 import numpy as np
+import re
 import streamlit as st
 
 from datetime import datetime, timedelta, timezone
@@ -99,6 +100,36 @@ def create_model_report(df):
 
     return df
 
+def list_pipelines(_session, model):
+    
+    sm = _session.client("sagemaker")
+
+    response = sm.list_pipelines(PipelineNamePrefix=f"data-sci-{model}", SortBy="Name", SortOrder="Ascending")
+    pipelines = response["PipelineSummaries"]
+    
+    while response.get("NextToken", False):
+        response = sm.list_pipelines(NextToken=response["NextToken"])
+        pipelines.extend(response["PipelineSummaries"])
+    
+    pipeline_format_invalid_regex = re.compile(r"MLS-Galaxy-\w+")
+    final_pipeline_list = []
+    for pipeline in pipelines:
+        if not pipeline_format_invalid_regex.search(pipeline["PipelineName"]):
+            final_pipeline_list.append(pipeline)
+    
+    return final_pipeline_list
+
+@st.experimental_memo
+def get_pipeline_status(_session, pipeline_name, pipeline_last_execution_time):
+    
+    # !!!!!!! The execution time is added as a param to cache results if no new executions have been ran to avoid rampant API calls. !!!!!!!
+    sm = _session.client("sagemaker")
+
+    response = sm.list_pipeline_executions(PipelineName=pipeline_name, MaxResults=1, SortOrder="Descending")
+    result = response["PipelineExecutionSummaries"][0]
+
+    return result
+
 
 def get_s3_path(enviro, model_type, bucket_type):
 
@@ -133,8 +164,8 @@ def get_s3_path(enviro, model_type, bucket_type):
         },
         "US":{
             "Retention": {
-                "model": "",
-                "curated": ""
+                "model": "us-model-data-sci-retention-us-east-1-5h6cml",
+                "curated": "us-curated-data-sci-retention-us-east-1-5h6cml"
             },
             "Product Propensity": {
                 "model": "us-model-data-sci-product-propensity-us-east-1-d2n55o",
@@ -271,8 +302,7 @@ joined_df["Curated_Last_Success_Days"] = pd.to_numeric(joined_df.Curated_Last_Su
 joined_df["Prepipeline_Last_Success_Days"] = pd.to_numeric(joined_df.Prepipeline_Last_Success_Days.astype(str).str.replace(',',''), errors='coerce')\
               .fillna(0)\
               .astype(int)
-
-joined_df["pre_diff_curated_days"] = joined_df["Prepipeline_Last_Success_Days"].sub(joined_df["Curated_Last_Success_Days"], fill_value=0)
+joined_df["pre_diff_curated_days"] = joined_df["Curated_Last_Success_Days"].sub(joined_df["Prepipeline_Last_Success_Days"], fill_value=0)
 
 
 model_df.drop("split_subtype", axis=1, inplace=True)
@@ -291,3 +321,31 @@ with st.expander("Preprocess Status"):
 with st.expander("Curated Status"):
     st.write("A simple report of the last update time for each subtype and file size. This shows the curated bucket (scores output)")
     create_df_view(curated_df)
+
+with st.expander("Sagemaker Pipeline Runs"):
+    pipelines = list_pipelines(session, model_type.replace(" ", "-").lower())
+    # st.write(pipelines)
+
+    for p in pipelines:
+        st.markdown("""---""") 
+        col1, col2, col3 = st.columns(3)
+
+        status = get_pipeline_status(session, p["PipelineName"], p["LastModifiedTime"].strftime("%m/%d/%Y, %H:%M:%S"))
+
+        with col1:
+            st.write(p["PipelineName"])
+        with col2:
+            st.write(status["StartTime"])
+        with col3:
+            st.write(status["PipelineExecutionStatus"])
+            if status["PipelineExecutionStatus"] == "Executing":
+                st.markdown(":arrows_counterclockwise:")
+            elif status["PipelineExecutionStatus"] == "Stopping":
+                st.markdown(":soon: :stop_sign:")
+            elif status["PipelineExecutionStatus"] == "Stopped":
+                st.markdown(":stop_sign:")
+            elif status["PipelineExecutionStatus"] == "Failed":
+                st.markdown(":x:")
+            elif status["PipelineExecutionStatus"] == "Succeeded":
+                st.markdown(":white_check_mark:")
+
