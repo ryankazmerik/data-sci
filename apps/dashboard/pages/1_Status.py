@@ -104,7 +104,7 @@ def list_pipelines(_session, model):
     
     sm = _session.client("sagemaker")
 
-    response = sm.list_pipelines(PipelineNamePrefix=f"data-sci-{model}")
+    response = sm.list_pipelines(PipelineNamePrefix=f"data-sci-{model}", SortBy="Name", SortOrder="Ascending")
     pipelines = response["PipelineSummaries"]
     
     while response.get("NextToken", False):
