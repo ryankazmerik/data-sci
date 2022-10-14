@@ -302,8 +302,7 @@ joined_df["Curated_Last_Success_Days"] = pd.to_numeric(joined_df.Curated_Last_Su
 joined_df["Prepipeline_Last_Success_Days"] = pd.to_numeric(joined_df.Prepipeline_Last_Success_Days.astype(str).str.replace(',',''), errors='coerce')\
               .fillna(0)\
               .astype(int)
-
-joined_df["pre_diff_curated_days"] = joined_df["Prepipeline_Last_Success_Days"].sub(joined_df["Curated_Last_Success_Days"], fill_value=0)
+joined_df["pre_diff_curated_days"] = joined_df["Curated_Last_Success_Days"].sub(joined_df["Prepipeline_Last_Success_Days"], fill_value=0)
 
 
 model_df.drop("split_subtype", axis=1, inplace=True)
