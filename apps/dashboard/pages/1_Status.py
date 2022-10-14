@@ -100,7 +100,6 @@ def create_model_report(df):
 
     return df
 
-@st.experimental_memo
 def list_pipelines(_session, model):
     
     sm = _session.client("sagemaker")
