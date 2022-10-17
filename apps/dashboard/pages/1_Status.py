@@ -20,12 +20,15 @@ session = None
 @st.experimental_memo
 def get_curated_bucket_status(_session, bucket, model):
     model_name_cleaned = model.lower().replace(' ', '-')
-    prefix = f"{model_name_cleaned}-scores"
+    if model_name_cleaned == "retention":
+        prefix = "date="
+    else:
+        prefix = f"{model_name_cleaned}-scores"
     files = helpers.get_s3_bucket_items(_session, bucket, prefix)
 
     modified_file_list = []
     for f in files:
-
+        print(f)
         new_dict = {}
         split_key = f["Key"].split("/")
 
@@ -33,8 +36,12 @@ def get_curated_bucket_status(_session, bucket, model):
             continue
 
         new_dict["Key"] = f["Key"]
-        new_dict["Subtype"] = split_key[2]
-        new_dict["Date"] = split_key[1].replace("date=", "")
+        if model_name_cleaned == "retention":
+            new_dict["Subtype"] = split_key[1]
+            new_dict["Date"] = split_key[0].replace("date=", "")
+        else:
+            new_dict["Subtype"] = split_key[2]
+            new_dict["Date"] = split_key[1].replace("date=", "")
         new_dict["LastModified"] = f["LastModified"]
         new_dict["Size"] = f["Size"]
         modified_file_list.append(new_dict)
