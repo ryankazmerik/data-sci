@@ -242,8 +242,8 @@ def get_aws_configuration(enviro):
                 "destination_bucket_id": "mgwy8o"
             },
             "Event Propensity": {
-                "model": "explore-us-model-data-sci-event-propensity-us-east-1-tykotu",
-                "curated": "explore-us-curated-data-sci-event-propensity-us-east-1-tykotu"
+                "model": "explore-us-model-data-sci-event-propensity-us-east-1-yvf53s",
+                "curated": "explore-us-curated-data-sci-event-propensity-us-east-1-yvf53s",
             },
             "destination_environment": "qa",
             "aws_account_id": "564285676170",
