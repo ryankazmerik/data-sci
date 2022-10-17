@@ -42,7 +42,7 @@ def get_metadata_info(_session, bucket, model):
     file_df = file_df.drop_duplicates('Subtype',keep='last')
     file_df = file_df.sort_values('Subtype').reset_index(drop=True)
 
-    files = files = file_df.to_dict("records")
+    files = file_df.to_dict("records")
 
     model_metadata_list = []
     for file in files:
@@ -115,8 +115,8 @@ def get_s3_path(enviro, model_type, bucket_type):
                 "curated": "explore-us-curated-data-sci-product-propensity-us-east-1-u8gldf"
             },
             "Event Propensity": {
-                "model": "explore-us-model-data-sci-event-propensity-us-east-1-tykotu",
-                "curated": "explore-us-curated-data-sci-event-propensity-us-east-1-tykotu"
+                "model": "explore-us-model-data-sci-event-propensity-us-east-1-yvf53s",
+                "curated": "explore-us-curated-data-sci-event-propensity-us-east-1-yvf53s"
             }
         },
         "QA":{
