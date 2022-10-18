@@ -244,6 +244,8 @@ def get_aws_configuration(enviro):
             "Event Propensity": {
                 "model": "explore-us-model-data-sci-event-propensity-us-east-1-yvf53s",
                 "curated": "explore-us-curated-data-sci-event-propensity-us-east-1-yvf53s",
+                "role_name": "data-sci-event-propensity-pipeline-4p7aw3",
+                "destination_bucket_id": "9ai5md"
             },
             "destination_environment": "qa",
             "aws_account_id": "564285676170",
@@ -266,8 +268,8 @@ def get_aws_configuration(enviro):
                 "destination_bucket_id": "d2n55o"
             },
             "Event Propensity": {
-                "model": "",
-                "curated": ""
+                "model": "qa-model-data-sci-event-propensity-us-east-1-9ai5md",
+                "curated": "qa-curated-data-sci-event-propensity-us-east-1-9ai5md"
             },
             "destination_environment": "us",
             "aws_account_id": "314383152509",
