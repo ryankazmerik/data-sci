@@ -81,12 +81,12 @@ def get_retention_dataset(cluster:str, database:str, lkupclientid:str, start_yea
     return df
 
 
-def get_product_propensity_dataset(cluster:str, database:str, lkupclientid:str, start_year:int, end_year:int) -> pd.DataFrame:
+def get_product_propensity_dataset(cluster:str, database:str, lkupclientid:str, scoring_year:int, type_flag:int) -> pd.DataFrame:
 
     conn = get_redshift_connection(cluster, database)
 
     cur = conn.cursor()
-    cur.execute(f"CALL ds.getproductpropensitymodeldata({lkupclientid}, {start_year}, {end_year}, 'rkcursor')")
+    cur.execute(f"CALL ds.getproductpropensitymodeldata({lkupclientid}, {scoring_year}, {type_flag}, 'rkcursor')")
 
     named_cursor = conn.cursor('rkcursor')
     data = named_cursor.fetchall()
