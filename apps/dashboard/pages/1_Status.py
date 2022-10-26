@@ -113,12 +113,18 @@ def list_pipelines(_session, model):
 
     response = sm.list_pipelines(PipelineNamePrefix=f"data-sci-{model}", SortBy="Name", SortOrder="Ascending")
     pipelines = response["PipelineSummaries"]
+
+    token = response.get("NextToken", False)
+    try:
+        while token:
+            response = sm.list_pipelines(NextToken=response["NextToken"])
+            pipelines.extend(response["PipelineSummaries"])
+    except Exception as e:
+        print(f"Getting next set with NextToken {token} failed.") 
     
-    while response.get("NextToken", False):
-        response = sm.list_pipelines(NextToken=response["NextToken"])
-        pipelines.extend(response["PipelineSummaries"])
-    
+    # This catches all of the old MLS-Galaxy pipelines before when a hash would follow MLS-Galaxy
     pipeline_format_invalid_regex = re.compile(r"MLS-Galaxy-\w+")
+    
     final_pipeline_list = []
     for pipeline in pipelines:
         if not pipeline_format_invalid_regex.search(pipeline["PipelineName"]):
@@ -296,6 +302,9 @@ model_bucket = get_s3_path(env_choices[env], model_type, "model")
 model_df = get_model_bucket_pre_pipeline_status(session, model_bucket, model_type)
 model_df = create_model_report(model_df)
 
+
+
+# ------ Create Joined DF (will be a function when done)
 curated_df_modified_subtype = curated_df.copy()
 curated_df_modified_subtype["Subtype"] = curated_df_modified_subtype["Subtype"].apply(lambda x: x.replace("nhl", "").replace("milb", "").replace("cfl", "").replace("mls", "").replace("nba", "").lower())
 model_df = model_df[model_df["Subtype"].str.contains("-")]
@@ -310,10 +319,11 @@ joined_df["Prepipeline_Last_Success_Days"] = pd.to_numeric(joined_df.Prepipeline
               .fillna(0)\
               .astype(int)
 joined_df["pre_diff_curated_days"] = joined_df["Curated_Last_Success_Days"].sub(joined_df["Prepipeline_Last_Success_Days"], fill_value=0)
-
-
 model_df.drop("split_subtype", axis=1, inplace=True)
 
+
+
+# ------ Display Results
 with st.expander("Overall Status"):
     st.write("# Left Join View")
     st.write("Below is a view of the prepipeline and curated status side-by-side. X is prepipeline and Y is curated.")
@@ -354,5 +364,4 @@ with st.expander("Sagemaker Pipeline Runs"):
             elif status["PipelineExecutionStatus"] == "Failed":
                 st.markdown(":x:")
             elif status["PipelineExecutionStatus"] == "Succeeded":
-                st.markdown(":white_check_mark:")
-
+                st.markdown(":white_check_mark:")    
