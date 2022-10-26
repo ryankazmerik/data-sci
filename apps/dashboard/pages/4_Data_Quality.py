@@ -89,12 +89,9 @@ def get_curated_bucket_items(_session, bucket, model):
 @st.experimental_singleton(suppress_st_warning=True)
 def read_scores(_session, _file_df, team, bucket, file_ext):
 
-    if len(team.split("-")) == 2 and file_ext == ".csv":
-        team = team.split("-")[1].lower()
-        team = team.replace("nhl", "").replace("milb", "").replace("cfl", "").replace("mls", "").replace("nba", "")
-
     st.write(f"Cache miss: read_scores ran: {team} - {bucket}")
-    df = _file_df[_file_df["Subtype"] == team]
+    df = _file_df[(_file_df["Subtype"] == team) | (_file_df["Subtype"] == "".join(team.split("-")).lower())]
+    print(f"team: {team} | renamed team: {team} | subtype: {df['Subtype'].to_list()} | split: {''.join(team.split('-')).lower()}")
     files = df.to_dict("records")
     # scores = files
     s3 = _session.client("s3")
@@ -235,7 +232,7 @@ selected_team_scores = read_scores(session, file_df, selected_team, inference_bu
 
 with st.expander("scores.csv Summary (after post pipeline)"):
     st.write("Report of scores in scores.csv")
-    selected_head_count = st.number_input("Select number of rows to show from scores.csv", 5, 10000)
+    selected_head_count = st.number_input("Select number of rows to show from scores.csv", 5, 10000, step=1)
     curated_bucket = get_s3_path(env_choices[env], model_type, "curated")
     curated_df = get_curated_bucket_items(session, curated_bucket, model_type)
     selected_team_curated_scores = read_scores(session, curated_df, selected_team, curated_bucket, ".csv").copy()
