@@ -65,7 +65,7 @@ def split_bucket(destination_env, s3_uri):
 
     key_array = bucket_key.split("/")
     print(f"Key Array: {key_array}")
-    model_subtype = re.search("training/(\w+-\w+)", s3_uri).groups()[0]
+    model_subtype = re.search("training/(\w+-\w+|\w+)", s3_uri).groups()[0]
     print(f"Model subtype: {model_subtype}")
     extracted_date = re.search("\d+-\d+-\d+", s3_uri).group()
     print(f"Extracted Date: {extracted_date}")
