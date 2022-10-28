@@ -67,13 +67,10 @@ def get_metadata_info(_session, bucket, model):
 
     return model_metadata_list
 
+
 def get_model_bucket_inference_status(session, env):
     pass
 
-def make_clickable(link):
-
-    aws_path = "https://s3.console.aws.amazon.com/s3/buckets/"
-    return f'<a target="_blank" href="{aws_path}{link}">Click to Open</a>'
 
 def create_curated_report(config_files):
 
@@ -94,8 +91,6 @@ def create_curated_report(config_files):
         df_list.append(df)
 
     df_all = pd.concat(df_list)
-
-    df_all['s3_path'] = df_all['s3_path'].apply(make_clickable)
 
     df_all = df_all.reset_index(drop=True)
 
@@ -170,13 +165,9 @@ session = helpers.establish_aws_session(env)
 
 curated_bucket = get_s3_path(env_choices[env], model_type, "model")
 
-curated_df = get_metadata_info(session, curated_bucket, model_type)
+df_curated = get_metadata_info(session, curated_bucket, model_type)
 
-curated_df = create_curated_report(curated_df)
-
-# st.dataframe(curated_df, width=5000)
-# df = curated_df.to_html(escape=False)
-# st.dataframe(df, unsafe_allow_html=True)
+curated_df = create_curated_report(df_curated)
 
 cell_renderer =  JsCode("""
 function(params) {return `${params.value}`}
@@ -185,6 +176,8 @@ function(params) {return `${params.value}`}
 options_builder = GridOptionsBuilder.from_dataframe(curated_df) 
 options_builder.configure_column("s3_path", cellRenderer=cell_renderer) 
 options_builder.configure_selection("single") 
+options_builder.configure_grid_options(enableRangeSelection=True)
+options_builder.configure_grid_options(copyHeadersToClipboard=True)
 grid_options = options_builder.build()
 
 grid_return = AgGrid(curated_df, grid_options, fit_columns_on_grid_load=True, allow_unsafe_jscode=True) 
