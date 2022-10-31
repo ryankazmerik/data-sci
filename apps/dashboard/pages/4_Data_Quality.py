@@ -90,10 +90,27 @@ def get_curated_bucket_items(_session, bucket, model):
 def read_scores(_session, _file_df, team, bucket, file_ext):
 
     st.write(f"Cache miss: read_scores ran: {team} - {bucket}")
-    df = _file_df[(_file_df["Subtype"] == team) | (_file_df["Subtype"] == "".join(team.split("-")).lower())]
+    print(f"------ File ext: {file_ext} ------")
+
+
+    alt_client_code = "NA"
+    renamed_team = "NA"
+    try:
+        renamed_team = team.split("-")[1].lower()
+        if team.lower() == "milb-66ers":
+            alt_client_code = "milb-ie66"
+        elif team.lower() == "milb-blazers":
+            alt_client_code = "milb-ptb"
+        elif team.lower() == "milb-hartfordyardgoats":
+            alt_client_code = "milb-yardgoats"
+    except:
+        print("No alt code or renamed team applicable")
+        
+
+    df = _file_df[(_file_df["Subtype"] == team) | (_file_df["Subtype"] == "".join(team.split("-")).lower()) | (_file_df["Subtype"] == renamed_team) | (_file_df["Subtype"] == alt_client_code)]
+    print(f"team: {team} | renamed team: {team} | subtype: {_file_df['Subtype'].to_list()} | split: {''.join(team.split('-')).lower()}")
     print(f"team: {team} | renamed team: {team} | subtype: {df['Subtype'].to_list()} | split: {''.join(team.split('-')).lower()}")
     files = df.to_dict("records")
-    # scores = files
     s3 = _session.client("s3")
     csv_file = s3.get_object(Bucket=bucket, Key=files[0]["Key"])
     
@@ -229,6 +246,8 @@ selected_team = st.selectbox(
 
 selected_team_scores = read_scores(session, file_df, selected_team, inference_bucket, ".csv.out").copy()
 
+if len(selected_team_scores.index) == 0:
+    st.error("Empty Dataframe")
 
 with st.expander("scores.csv Summary (after post pipeline)"):
     st.write("Report of scores in scores.csv")
@@ -236,7 +255,11 @@ with st.expander("scores.csv Summary (after post pipeline)"):
     curated_bucket = get_s3_path(env_choices[env], model_type, "curated")
     curated_df = get_curated_bucket_items(session, curated_bucket, model_type)
     selected_team_curated_scores = read_scores(session, curated_df, selected_team, curated_bucket, ".csv").copy()
-    st.write(selected_team_curated_scores.head(selected_head_count))
+
+    if len(selected_team_curated_scores.index) == 0:
+        st.error("Empty Dataframe")
+
+    st.write(selected_team_curated_scores.head(int(selected_head_count)))
 
     st.markdown("---")
 

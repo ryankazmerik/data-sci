@@ -9,12 +9,13 @@ import re
 import streamlit as st
 
 
-from urllib.parse import urlparse
 from boto3.s3.transfer import TransferConfig
 from datetime import datetime, timedelta, timezone
+from data_sci_toolkit.aws_tools import lambda_tools
 from shared_utilities import helpers
 from st_aggrid import AgGrid, GridOptionsBuilder
 from st_aggrid import JsCode
+from urllib.parse import urlparse
 
 pd.set_option('display.max_colwidth', None)
 st.set_page_config(layout="wide")
@@ -342,23 +343,37 @@ st.write("# Promote teams")
 st.write("You can promote your models here. Each team can be promoted one-by-one.")
 
 team_uris_to_promote = []
-col1, col2, col3 = st.columns(3)
+col1, col2, col3, col4, col5 = st.columns(5)
 col1.write("### Team")
 col2.write("### Date")
-col3.write("### Run Promote Script")
+col3.write("### Run Train Script")
+col4.write("### Run Promote Script")
+col5.write("### Run Inference Script")
 for f in files:
     st.markdown("""---""") 
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3, col4, col5 = st.columns(5)
     with col1:
         st.write(f"{f[2]}")
     with col2:
         st.write(f"{f[3]}")
     with col3:
+        promote = (st.button(f"Train: {f[2]}",key=f[2])) 
+        if promote:
+            with st.spinner(text=f"Launching Training Lambda {f[2]}"):
+                lambda_tools.kickoff_ml_pipeline(session, "-".join(model_type.lower().split(" ")), f[2], "training")
+            st.success(f"Finished launching train Lambda {f[2]}")
+    with col4:
         promote = (st.button(f"Promote: {f[2]}",key=f[2])) 
         if promote:
             with st.spinner(text=f"Promoting {f[2]}"):
                 team_uris_to_promote.append(f"s3://{model_bucket}/{f[1]}")
                 promote_team(f[1], model_bucket, model_type.replace(" ", "-").lower(), role_name, destination_bucket_id, aws_config)
             st.success(f"Finished promoting {f[2]}")
+    with col5:
+        promote = (st.button(f"Inference: {f[2]}",key=f[2])) 
+        if promote:
+            with st.spinner(text=f"Launching Inference Lambda {f[2]}"):
+                lambda_tools.kickoff_ml_pipeline(session, "-".join(model_type.lower().split(" ")), f[2], "inference")
+            st.success(f"Finished launching inference Lambda {f[2]}")
             
 st.write(team_uris_to_promote)
