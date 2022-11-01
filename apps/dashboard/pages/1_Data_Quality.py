@@ -220,6 +220,9 @@ def show_model_report(model):
 
 # ____________________________________ Streamlit ____________________________________
 
+# MAIN COMPONENTS
+st.title("Data Quality")
+
 # SIDEBAR COMPONENTS
 env_choices = {
     'Explore-US-DataScienceAdmin':'Explore-US',
@@ -227,8 +230,8 @@ env_choices = {
     'US-StellarSupport':'US',
 }
 
-env = st.sidebar.selectbox('Select Algorithm:', env_choices.keys(), format_func=lambda x:env_choices[x])
-model_type = st.sidebar.radio('Model:',('Retention', 'Product Propensity', 'Event Propensity'))
+env = st.sidebar.selectbox('Environment:', env_choices.keys(), format_func=lambda x:env_choices[x])
+model_type = st.sidebar.radio('Model:',('Event Propensity', 'Product Propensity', 'Retention'), index=1)
 
 if model_type == "Event Propensity":
     st.warning("Event Propensity has very large files, it may freeze your computer and cost losts on S3 if ran many times. It may not even work.")
@@ -240,7 +243,7 @@ file_df = get_inference_bucket_items(session, inference_bucket, model_type)
 
 
 selected_team = st.selectbox(
-    "Select Team to View Data Quality", file_df["Subtype"].to_list()
+    "Select Team:", file_df["Subtype"].to_list()
 )
 
 

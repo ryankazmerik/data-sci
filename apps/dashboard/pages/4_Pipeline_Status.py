@@ -282,6 +282,9 @@ def create_df_view(df, hyperlink_col_name: str = None):
 
 # ____________________________________ Streamlit ____________________________________
 
+# MAIN COMPONENTS
+st.title("Pipeline Status")
+
 # SIDEBAR COMPONENTS
 env_choices = {
     'Explore-US-DataScienceAdmin':'Explore-US',
@@ -289,8 +292,8 @@ env_choices = {
     'US-StellarSupport':'US',
 }
 
-env = st.sidebar.selectbox('Select Algorithm:', env_choices.keys(), format_func=lambda x:env_choices[x])
-model_type = st.sidebar.radio('Model:',('Retention', 'Product Propensity', 'Event Propensity'))
+env = st.sidebar.selectbox('Environment:', env_choices.keys(), format_func=lambda x:env_choices[x])
+model_type = st.sidebar.radio('Model:',('Event Propensity', 'Product Propensity', 'Retention'), index=1)
 
 session = helpers.establish_aws_session(env)
 
@@ -324,8 +327,7 @@ model_df.drop("split_subtype", axis=1, inplace=True)
 
 
 # ------ Display Results
-with st.expander("Overall Status"):
-    st.write("# Left Join View")
+with st.expander("Overall Status", expanded=True):
     st.write("Below is a view of the prepipeline and curated status side-by-side. X is prepipeline and Y is curated.")
     st.write("The calculated columns that have the suffix `_Days` show how many days since the file has been updated.")
     st.write("`pre_diff_curated_days` shows the number of days between the prepipeline and curated files being updated. Meaning if its over 0, one hasn't run while the other did.")

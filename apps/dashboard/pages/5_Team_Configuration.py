@@ -61,8 +61,6 @@ def get_metadata_info(_session, bucket, model):
                     # grab the model metadata file
                     if member.name == "metadata.json":
                         model_metadata = json.load(tar.extractfile(member))
-                        model_metadata["s3_path"] = f"{bucket}/{file['Key']}"
-                        model_metadata["modified"] = file["LastModified"]
                         model_metadata_list.append(model_metadata)
 
     return model_metadata_list
@@ -75,24 +73,25 @@ def get_model_bucket_inference_status(session, env):
 def create_curated_report(config_files):
 
     df_list = []
-    for file in config_files:  
+    for idx, file in enumerate(config_files):  
 
         df = pd.DataFrame()
+        df["no."] = [idx+1]
+        df["lkupclientid"] = [file["client_configs"][0]["lkupclientid"]]
         df["model_subtype"] = [file["model_subtype"]]
         df["clientcode"] = [file["client_configs"][0]["clientcode"]]
+        df["league"] = [file["model_subtype"].split("-")[0]]
+        #df["cluster"] = [file["client_configs"][0]["cluster"]]
         df["dbname"] = [file["client_configs"][0]["dbname"]]
-        df["lkupclientid"] = [file["client_configs"][0]["lkupclientid"]]
         df["final_training_year"] = [file["client_configs"][0]["year"]]
         df["algorithms"] = [file["algorithm"]]
-        df["s3_path"] = [file["s3_path"]]
-        df["modified"] = [file["modified"]]
-        #df["feature_importances"] = [file["feature_importances"]]
-
+        df["features"] = [file["feature_importances"]]
+        
         df_list.append(df)
 
     df_all = pd.concat(df_list)
 
-    df_all = df_all.reset_index(drop=True)
+    df_all.columns = ["No.", "LkupClientId", "Model Subtype", "Client Code", "League", "RedShift Database", "Training Year", "Algorithm", "Features"]
 
     return df_all
 
@@ -124,8 +123,8 @@ def get_s3_path(enviro, model_type, bucket_type):
                 "curated": "qa-curated-data-sci-product-propensity-us-east-1-mgwy8o"
             },
             "Event Propensity": {
-                "model": "",
-                "curated": ""
+                "model": "qa-model-data-sci-event-propensity-us-east-1-9ai5md",
+                "curated": "qa-curated-data-sci-event-propensity-us-east-1-9ai5md"
             }
         },
         "US":{
@@ -138,8 +137,8 @@ def get_s3_path(enviro, model_type, bucket_type):
                 "curated": "us-curated-data-sci-product-propensity-us-east-1-d2n55o"
             },
             "Event Propensity": {
-                "model": "",
-                "curated": ""
+                "model": "us-model-data-sci-event-propensity-us-east-1-zzw0rj",
+                "curated": "us-curated-data-sci-event-propensity-us-east-1-zzw0rj"
             }
         }
     }
@@ -151,6 +150,9 @@ def get_s3_path(enviro, model_type, bucket_type):
 
 # ____________________________________ Streamlit ____________________________________
 
+# MAIN COMPONENTS
+st.title("Team Configuration")
+
 # SIDEBAR COMPONENTS
 env_choices = {
     'Explore-US-DataScienceAdmin':'Explore-US',
@@ -158,8 +160,8 @@ env_choices = {
     'US-StellarSupport':'US',
 }
 
-env = st.sidebar.selectbox('Select Algorithm:', env_choices.keys(), format_func=lambda x:env_choices[x])
-model_type = st.sidebar.radio('Model:',('Retention', 'Product Propensity', 'Event Propensity'))
+env = st.sidebar.selectbox('Environment:', env_choices.keys(), format_func=lambda x:env_choices[x])
+model_type = st.sidebar.radio('Model:',('Event Propensity', 'Product Propensity', 'Retention'), index=1)
 
 session = helpers.establish_aws_session(env)
 
@@ -174,7 +176,6 @@ function(params) {return `${params.value}`}
 """)
 
 options_builder = GridOptionsBuilder.from_dataframe(curated_df) 
-options_builder.configure_column("s3_path", cellRenderer=cell_renderer) 
 options_builder.configure_selection("single") 
 options_builder.configure_grid_options(enableRangeSelection=True)
 options_builder.configure_grid_options(copyHeadersToClipboard=True)
