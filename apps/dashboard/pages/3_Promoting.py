@@ -357,21 +357,21 @@ for f in files:
     with col2:
         st.write(f"{f[3]}")
     with col3:
-        promote = (st.button(f"Train: {f[2]}",key=f[2])) 
-        if promote:
+        train = (st.button(f"Train: {f[2]}",key=f"train-{f[2]}")) 
+        if train:
             with st.spinner(text=f"Launching Training Lambda {f[2]}"):
                 lambda_tools.kickoff_ml_pipeline(session, "-".join(model_type.lower().split(" ")), f[2], "training")
             st.success(f"Finished launching train Lambda {f[2]}")
     with col4:
-        promote = (st.button(f"Promote: {f[2]}",key=f[2])) 
+        promote = (st.button(f"Promote: {f[2]}",key=f"promote-{f[2]}")) 
         if promote:
             with st.spinner(text=f"Promoting {f[2]}"):
                 team_uris_to_promote.append(f"s3://{model_bucket}/{f[1]}")
                 promote_team(f[1], model_bucket, model_type.replace(" ", "-").lower(), role_name, destination_bucket_id, aws_config)
             st.success(f"Finished promoting {f[2]}")
     with col5:
-        promote = (st.button(f"Inference: {f[2]}",key=f[2])) 
-        if promote:
+        inference = (st.button(f"Inference: {f[2]}",key=f"inference-{f[2]}")) 
+        if inference:
             with st.spinner(text=f"Launching Inference Lambda {f[2]}"):
                 lambda_tools.kickoff_ml_pipeline(session, "-".join(model_type.lower().split(" ")), f[2], "inference")
             st.success(f"Finished launching inference Lambda {f[2]}")
