@@ -1,13 +1,15 @@
 import streamlit as st
+from PIL import Image
+
+favicon = Image.open('./images/ds-icon-white.ico')
+icon = Image.open('./images/ds-icon-white.png')
 
 st.set_page_config(
-    page_title="Hello",
-    page_icon="👋",
+    page_title="StellarAlgo - Data Sci Dashboard",
+    page_icon= favicon,
     layout="wide"
 )
 
-st.write("# Welcome to Streamlit! 👋")
+st.title("StellarAlgo - Data Science Dashboard")
 
-st.sidebar.success("Select a demo above.")
-
-
+with open('./style.css') as css: st.markdown(css.read(), unsafe_allow_html=True)
