@@ -252,7 +252,7 @@ def get_aws_configuration(enviro):
             "aws_account_id": "564285676170",
             "aws_profile_name": "QA-DataScienceAdmin",
             "subnets": ["subnet-016a23a22d09bac9b", "subnet-03e755df7e78d56f1"],
-            "sgs": ["sg-053b15ed15d46581a"],
+            "sgs": ["sg-0f5d1519835df3e9d"],
             
         },
         "QA":{
