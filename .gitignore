@@ -107,6 +107,16 @@ celerybeat.pid
 # SageMath parsed files
 *.sage.py
 
+# Terraform
+# Local .terraform directories
+**/*.zip
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+*.terraform.lock.hcl
+
 # Environments
 .env
 .venv
