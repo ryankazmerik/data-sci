@@ -270,7 +270,9 @@ def get_aws_configuration(enviro):
             },
             "Event Propensity": {
                 "model": "qa-model-data-sci-event-propensity-us-east-1-9ai5md",
-                "curated": "qa-curated-data-sci-event-propensity-us-east-1-9ai5md"
+                "curated": "qa-curated-data-sci-event-propensity-us-east-1-9ai5md",
+                "role_name": "data-sci-event-propensity-pipeline-vdia2z",
+                "destination_bucket_id": "zzw0rj"
             },
             "destination_environment": "us",
             "aws_account_id": "314383152509",
@@ -286,11 +288,10 @@ def get_aws_configuration(enviro):
             "Product Propensity": {
                 "model": "us-model-data-sci-product-propensity-us-east-1-d2n55o",
                 "curated": "us-curated-data-sci-product-propensity-us-east-1-d2n55o",
-                "role_name": "null"
             },
             "Event Propensity": {
-                "model": "",
-                "curated": ""
+                "model": "us-model-data-sci-event-propensity-us-east-1-zzw0rj",
+                "curated": "us-curated-data-sci-event-propensity-us-east-1-zzw0rj"
             }
         }
     }
