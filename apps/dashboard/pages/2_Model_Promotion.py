@@ -77,10 +77,7 @@ def split_bucket(destination_env, s3_uri):
     
 
 def promote_team(key, bucket, model, role_name, destination_bucket_id, aws_config):
-    config = TransferConfig(multipart_threshold=1024 * 50, 
-                            max_concurrency=20,
-                            multipart_chunksize=1024 * 50,
-                            use_threads=True)
+
     destination_environment = aws_config["destination_environment"]
     aws_account_id = aws_config["aws_account_id"]
     aws_profile_name = aws_config["aws_profile_name"]
@@ -95,6 +92,7 @@ def promote_team(key, bucket, model, role_name, destination_bucket_id, aws_confi
     s3_uri = f"s3://{bucket}/{key}"
     random_bucket_id = bucket.split("-")[-1]
     print(f"Random bucket id: {random_bucket_id}")
+    
     bucket_name, bucket_key, product, region, model_subtype, extracted_date, training_id = split_bucket(destination_environment, s3_uri)
 
     container_image = f"{aws_config['aws_account_id']}.dkr.ecr.us-east-1.amazonaws.com/data-sci-{model}-model:latest"
@@ -102,26 +100,46 @@ def promote_team(key, bucket, model, role_name, destination_bucket_id, aws_confi
 
     destination_bucket = f"{destination_environment}-model-data-sci-{model}-{region}-{destination_bucket_id}"
     destination_key = f"training/{model_subtype}/training-output/date={extracted_date}/{training_id}/output/model.tar.gz"
+
     print(destination_bucket)
     print(destination_key)
- 
-    temp_session = boto3.setup_default_session(profile_name=aws_profile_name)
-    s3 = boto3.resource("s3") 
-    copy_source = {
-        "Bucket": bucket_name,
-        "Key": bucket_key[1:]
-    }
-
-    s3_bucket = s3.Bucket(destination_bucket)
-    obj = s3_bucket.Object(destination_key)
-    obj.copy(
-        CopySource=copy_source,
-        ExtraArgs={"ACL": "bucket-owner-full-control"},
-        Config=config
-    )
-
-    full_model_name = f"data-sci-{model}-{model_subtype}-{date}"
+    
     try:
+
+        temp_session = boto3.setup_default_session(profile_name=aws_profile_name)
+        
+
+        s3 = boto3.resource("s3") 
+        copy_source = {
+            "Bucket": bucket_name,
+            "Key": bucket_key[1:]
+        }
+
+        s3_bucket = s3.Bucket(destination_bucket)
+        obj = s3_bucket.Object(destination_key)
+
+        config = TransferConfig(
+            multipart_threshold=1024 * 50, 
+            max_concurrency=20,
+            multipart_chunksize=1024 * 50,
+            use_threads=True
+        )
+
+        print(f"AWS PROFILE: {aws_profile_name}")
+        print(f"DESTINATION BUCKET: {s3_bucket}")
+        print(f"DESTINATION KEY: {obj}")
+        print(f"CONFIG: {config}")
+
+        obj.copy(
+            CopySource=copy_source,
+            ExtraArgs={"ACL": "bucket-owner-full-control"},
+            Config=config
+        )
+
+
+
+        full_model_name = f"data-sci-{model}-{model_subtype}-{date}"
+
         response = sagemaker_client.create_model(
             ModelName=full_model_name,
             PrimaryContainer={
@@ -170,6 +188,7 @@ def promote_team(key, bucket, model, role_name, destination_bucket_id, aws_confi
         )
 
         print(response)
+
     except Exception as e:
         print("ERROR: Could not create sagemaker model.")
         print(e)
