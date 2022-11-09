@@ -258,7 +258,7 @@
         "league": "MLS",
         "modelsubtype": "MLS-Galaxy",
         "cluster": "prod-app",
-        "dbname": "stlrmls"
+        "dbname": "stlrlagalaxy"
     },
     {
         "lkupclientid": 113,
@@ -367,6 +367,15 @@
         "modelsubtype": "NLL-Roughnecks",
         "cluster": "prod-app",
         "dbname": "stlrnll"
+    },
+    {
+        "lkupclientid": 39,
+        "name": "Tennis Canada Montreal",
+        "clientcode": "tenniscanmtl",
+        "league": "Tennis Canada",
+        "modelsubtype": "TC-Montreal",
+        "cluster": "prod-app",
+        "dbname": "stlrtenniscan"
     },
     {
         "lkupclientid": 38,
