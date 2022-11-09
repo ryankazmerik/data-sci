@@ -363,7 +363,6 @@ file_df = get_model_paths(session, model_bucket, model_type)
 
 files = file_df.to_records()
 
-st.write("# Promote teams")
 st.write("You can promote your models here. Each team can be promoted one-by-one.")
 
 team_uris_to_promote = []
