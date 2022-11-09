@@ -307,6 +307,8 @@ def get_aws_configuration(enviro):
             "Product Propensity": {
                 "model": "us-model-data-sci-product-propensity-us-east-1-d2n55o",
                 "curated": "us-curated-data-sci-product-propensity-us-east-1-d2n55o",
+                "role_name": "null",
+                "destination_bucket_id": "null"
             },
             "Event Propensity": {
                 "model": "us-model-data-sci-event-propensity-us-east-1-zzw0rj",
