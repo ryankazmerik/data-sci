@@ -3,4 +3,4 @@
 
 
 def run(event, context):
-    print("Hello World")
+    print("Hello World!")
