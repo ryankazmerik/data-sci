@@ -45,10 +45,8 @@ jobs:
         id: account
         shell: bash
         run: |
-          if [ ${{ github.ref_name }} = "explore" ]; then 
+          if [ ${{ github.ref_name }} = "main" ]; then 
             echo ::set-output name=id::${{ env.EXPLOREUS_AWS_ACCOUNT_ID }}
-          elif [ ${{ github.ref_name }} = "main" ]; then 
-            echo ::set-output name=id::${{ env.QA_AWS_ACCOUNT_ID }}
           elif [ ${{ github.event_name }} = "release" ]; then 
             echo ::set-output name=id::${{ env.US_AWS_ACCOUNT_ID }}
           else
