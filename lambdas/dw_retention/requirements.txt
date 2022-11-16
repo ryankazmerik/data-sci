@@ -1,4 +1,9 @@
 boto3
+data-sci-toolkit
 numpy
-pandas
 pyodbc
+pyarrow==8.0.0
+pandas==1.4.2
+scikit-learn==1.1.1
+matplotlib==3.5.2
+pycaret==2.3.10
