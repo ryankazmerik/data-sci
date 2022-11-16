@@ -46,9 +46,9 @@ jobs:
         shell: bash
         run: |
           if [ ${{ github.ref_name }} = "main" ]; then 
-            echo id={{ env.EXPLOREUS_AWS_ACCOUNT_ID }} >> $GITHUB_OUTPUT
+            echo "id=${{ env.EXPLOREUS_AWS_ACCOUNT_ID }}" >> $GITHUB_OUTPUT
           elif [ ${{ github.event_name }} = "release" ]; then 
-            echo id={{ env.US_AWS_ACCOUNT_ID }} >> $GITHUB_OUTPUT
+            echo "id=${{ env.US_AWS_ACCOUNT_ID }}" >> $GITHUB_OUTPUT
           else
             echo "Account ID not availible."
           fi
