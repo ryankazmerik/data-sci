@@ -61,7 +61,7 @@ module "dw_role_policy" {
         "ssm:Get*"
       ]
       resources = [
-        "arn:aws:ssm:${var.region}:${var.aws_account_id}:parameter/model/*"
+        "arn:aws:ssm:${var.region}:${var.aws_account_id}:parameter/data-sci/*"
       ]
     }
 
