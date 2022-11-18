@@ -30,7 +30,7 @@ module "retention_dw_lambda" {
 
   iam_role_arn       = module.dw_iam_role[0].iam_role_arn
   security_group_ids = [module.dw_lambda_sg[0].security_group_id]
-  subnet_ids         = values(data.terraform_remote_state.account.outputs.vpc_networks["main"].private_subnet_ids["data"])
+  subnet_ids         = values(data.terraform_remote_state.account.outputs.vpc_networks["main"].private_subnet_ids["ai"])
 
   tags = local.tags
 }
