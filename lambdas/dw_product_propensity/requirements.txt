@@ -1,0 +1,9 @@
+boto3
+data-sci-toolkit
+numpy
+pyodbc
+pyarrow
+pandas
+scikit-learn
+matplotlib
+pycaret==2.3.10
