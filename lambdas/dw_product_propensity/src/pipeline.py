@@ -34,7 +34,7 @@ def run(event, context):
 
     df = get_data_from_SQL(113)
 
-    # choose the features for the stellar base retention model
+    # choose the features for the stellar base retention model 
     features = [
         'dimCustomerMasterId', 
         'ticketingid', 
