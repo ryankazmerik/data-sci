@@ -5,13 +5,15 @@ from PIL import Image
 def main():
 
     favicon = Image.open('./images/ds-icon-white.ico')
-    icon = Image.open('./images/ds-icon-white.png')
+    icon = Image.open('./images/sa-logo-blk.png')
 
     st.set_page_config(
         page_title="StellarAlgo - Data Sci Dashboard",
         page_icon= favicon,
         layout="wide"
     )
+
+    st.sidebar.image(icon)
 
     model_choices = {
         'Event Propensity':'Event Propensity',
