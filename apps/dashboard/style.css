@@ -4,4 +4,11 @@ h1 {
     margin-top:-40px;
 }
 
+[data-testid="stImage"] img{
+    padding:0px;
+    position:fixed;
+    top:30px;
+    width:300px;
+}
+
 </style>
