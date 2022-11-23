@@ -28,9 +28,8 @@ RUN \
     export CFLAGS="-I/opt/include" && \
     export LDFLAGS="-L/opt/lib"
 
-RUN pip3 config set global.index-url https://aws:${CODEARTIFACT_AUTH_TOKEN}@stellaralgo-176624903806.d.codeartifact.us-east-1.amazonaws.com/pypi/products/simple/
 
 ENV NUMBA_CACHE_DIR=/tmp/numba_cache
 
-# RUN pip3 config set global.index-url https://aws:${CODEARTIFACT_AUTH_TOKEN}@stellaralgo-176624903806.d.codeartifact.us-east-1.amazonaws.com/pypi/machine-learning/simple/
+RUN pip3 config set global.index-url https://aws:${CODEARTIFACT_AUTH_TOKEN}@stellaralgo-176624903806.d.codeartifact.us-east-1.amazonaws.com/pypi/machine-learning/simple/
 RUN pip3 install -r requirements.txt --target "${LAMBDA_TASK_ROOT}"
