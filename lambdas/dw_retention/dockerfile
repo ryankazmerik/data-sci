@@ -28,11 +28,8 @@ RUN pip3 config set global.index-url https://aws:${CODEARTIFACT_AUTH_TOKEN}@stel
 COPY lambdas/dw_retention/requirements.txt  .
 RUN pip install --upgrade pip && pip install pipenv
 
-COPY Pipfile .
-COPY Pipfile.lock .
-RUN pipenv lock --requirements --keep-outdated > requirements.txt && pip install -r requirements.txt -t /var/task
-
+# COPY Pipfile .
+# COPY Pipfile.lock .
+# RUN pipenv lock --requirements --keep-outdated > requirements.txt && pip install -r requirements.txt -t /var/task
+RUN pip3 install -r requirements.txt --target "${LAMBDA_TASK_ROOT}"
 COPY lambdas/dw_retention/src/ ${LAMBDA_TASK_ROOT}
-
-
-# RUN pip3 install -r requirements.txt --target "${LAMBDA_TASK_ROOT}"
