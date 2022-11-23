@@ -1,36 +1,34 @@
-FROM public.ecr.aws/lambda/python:3.9 as builder
-ENV ODBCINI=/opt/odbc.ini
-ENV ODBCSYSINI=/opt/
-ARG UNIXODBC_VERSION=2.3.9
-RUN yum install -y gzip tar openssl-devel && yum groupinstall "Development Tools" -y
-RUN curl ftp://ftp.unixodbc.org/pub/unixODBC/unixODBC-${UNIXODBC_VERSION}.tar.gz -O \
-    && tar xzvf unixODBC-${UNIXODBC_VERSION}.tar.gz \
-    && cd unixODBC-${UNIXODBC_VERSION} \
-    && ./configure --sysconfdir=/opt --disable-gui --disable-drivers --enable-iconv --with-iconv-char-enc=UTF8 --with-iconv-ucode-enc=UTF16LE --prefix=/opt \
-    && make \
-    && make install
-RUN curl https://packages.microsoft.com/config/rhel/6/prod.repo > /etc/yum.repos.d/mssql-release.repo
-RUN yum install e2fsprogs.x86_64 0:1.43.5-2.43.amzn1 fuse-libs.x86_64 0:2.9.4-1.18.amzn1 libss.x86_64 0:1.43.5-2.43.amzn1 -y
-RUN ACCEPT_EULA=Y yum install -y msodbcsql17
-ENV CFLAGS="-I/opt/include"
-ENV LDFLAGS="-L/opt/lib"
-RUN mkdir /opt/python/ && cd /opt/python/ && pip install pyodbc -t .
-
-
 FROM public.ecr.aws/lambda/python:3.9
-COPY --from=builder /opt/python /opt/python
-COPY --from=builder /opt/microsoft /opt/microsoft
-COPY --from=builder /opt/lib /opt/lib
 
-ENV NUMBA_CACHE_DIR=/tmp/numba_cache
 ARG CODEARTIFACT_AUTH_TOKEN
 
-RUN pip3 config set global.index-url https://aws:${CODEARTIFACT_AUTH_TOKEN}@stellaralgo-176624903806.d.codeartifact.us-east-1.amazonaws.com/pypi/machine-learning/simple/
-COPY lambdas/dw_retention/requirements.txt  .
-RUN pip install --upgrade pip && pip install pipenv
+ENV ODBC_VERSION=2.3.9
 
-# COPY Pipfile .
-# COPY Pipfile.lock .
-# RUN pipenv lock --requirements --keep-outdated > requirements.txt && pip install -r requirements.txt -t /var/task
-RUN pip3 install -r requirements.txt --target "${LAMBDA_TASK_ROOT}"
 COPY lambdas/dw_retention/src/ ${LAMBDA_TASK_ROOT}
+
+COPY lambdas/dw_retention/requirements.txt  .
+
+RUN yum install -y tar gzip make gcc-c++ build-essential python3-devel unixODBC-devel unixodbc unixodbc-dev e2fsprogs.x86_64 0:1.43.5-2.43.amzn1 fuse-libs.x86_64 0:2.9.4-1.18.amzn1 libss.x86_64 0:1.43.5-2.43.amzn1 openssl && \
+    ln -s /usr/libexec/gcc/x86_64-redhat-linux/7/cc1plus /usr/bin/
+
+RUN \
+    curl ftp://ftp.unixodbc.org/pub/unixODBC/unixODBC-${ODBC_VERSION}.tar.gz -O && \
+    tar xzvf unixODBC-${ODBC_VERSION}.tar.gz && \
+    cd unixODBC-${ODBC_VERSION} && \
+    ./configure --sysconfdir=/opt --disable-gui --disable-drivers --enable-iconv --with-iconv-char-enc=UTF8 --with-iconv-ucode-enc=UTF16LE --prefix=/opt && \
+    make && \
+    make install && \
+    cp include/*.h /usr/include/ && \
+    cd .. && \
+    rm -rf unixODBC-${ODBC_VERSION} unixODBC-${ODBC_VERSION}.tar.gz
+
+RUN \
+    curl https://packages.microsoft.com/config/rhel/6/prod.repo > /etc/yum.repos.d/mssql-release.repo && \
+    ACCEPT_EULA=Y yum install -y msodbcsql17 --disablerepo=amzn* && \
+    export CFLAGS="-I/opt/include" && \
+    export LDFLAGS="-L/opt/lib"
+
+ENV NUMBA_CACHE_DIR=/tmp/numba_cache
+
+RUN pip3 config set global.index-url https://aws:${CODEARTIFACT_AUTH_TOKEN}@stellaralgo-176624903806.d.codeartifact.us-east-1.amazonaws.com/pypi/machine-learning/simple/
+RUN pip3 install -r requirements.txt --target "${LAMBDA_TASK_ROOT}"
