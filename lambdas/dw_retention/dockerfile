@@ -8,7 +8,7 @@ COPY lambdas/dw_retention/src/ ${LAMBDA_TASK_ROOT}
 
 COPY lambdas/dw_retention/requirements.txt  .
 
-RUN yum install -y tar gzip make gcc-c++ python3-devel unixODBC-devel e2fsprogs.x86_64 0:1.43.5-2.43.amzn1 fuse-libs.x86_64 0:2.9.4-1.18.amzn1 libss.x86_64 0:1.43.5-2.43.amzn1 openssl && \
+RUN yum install -y tar gzip make gcc-c++ build-essential python3-devel unixODBC-devel unixodbc unixodbc-dev e2fsprogs.x86_64 0:1.43.5-2.43.amzn1 fuse-libs.x86_64 0:2.9.4-1.18.amzn1 libss.x86_64 0:1.43.5-2.43.amzn1 openssl && \
     ln -s /usr/libexec/gcc/x86_64-redhat-linux/7/cc1plus /usr/bin/
 
 RUN \
