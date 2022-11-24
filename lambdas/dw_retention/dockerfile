@@ -1,4 +1,4 @@
-FROM public.ecr.aws/lambda/python:3.8
+FROM public.ecr.aws/lambda/python:3.9
 
 ARG CODEARTIFACT_AUTH_TOKEN
 
@@ -27,6 +27,9 @@ RUN \
     ACCEPT_EULA=Y yum install -y msodbcsql17 --disablerepo=amzn* && \
     export CFLAGS="-I/opt/include" && \
     export LDFLAGS="-L/opt/lib"
+
+
+ENV NUMBA_CACHE_DIR=/tmp/numba_cache
 
 RUN pip3 config set global.index-url https://aws:${CODEARTIFACT_AUTH_TOKEN}@stellaralgo-176624903806.d.codeartifact.us-east-1.amazonaws.com/pypi/machine-learning/simple/
 RUN pip3 install -r requirements.txt --target "${LAMBDA_TASK_ROOT}"
