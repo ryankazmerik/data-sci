@@ -49,7 +49,6 @@ def main():
     total_teams = df_filtered["Tenant"].unique().size
     unique_users = df_filtered["User"].unique().size
     avg_hits_team = round(total_hits / total_teams, 2)
-    avg_hits_week =  round(total_hits / 16, 2)
 
     col1, col2, col3 = st.columns(3)
     tab1, tab2, tab3, tab4 = st.tabs(['First Line', 'Second Line', 'Rookies', 'Veterans'])
@@ -64,7 +63,7 @@ def main():
         st.metric(label="Avg Hits / Team:", value=avg_hits_team)
     
     with col3:
-        st.metric(label="Avg Hits / Week:", value=avg_hits_week)
+        st.line_chart(data=df_filtered, x='Quarter', y='Last Reported')
     
     with tab1:
         st.dataframe(df_filtered)

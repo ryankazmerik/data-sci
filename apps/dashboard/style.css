@@ -11,4 +11,12 @@ h1 {
     width:300px;
 }
 
+[data-testid="metric-container"]{
+    border:1pt solid black;
+    border-radius:4px;
+    height:120px;
+    width:120px;
+    padding:10px;
+}
+
 </style>
