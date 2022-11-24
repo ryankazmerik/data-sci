@@ -6,6 +6,8 @@ on:
       - main
     paths:
       - 'lambdas/dw_retention/**'
+  release:
+    types: [published]
 
 jobs:
   push_container_to_ecr:
