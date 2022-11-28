@@ -11,8 +11,10 @@ from data_sci_toolkit.aws_tools import permission_tools, ssm_tools
 
 def get_data_from_SQL(lkupclientid: int):
     
-    conn_params = ssm_tools.get_ssm_parameter_value("/data-sci/data-sci-dw/db_connection")
-    conn = pyodbc.connect(conn_params)
+    ssm_client = boto3.client("ssm")
+    client_reponse = ssm_client.get_parameter("/data-sci/data-sci-dw/db_connection", WithDecryption=True)
+    # conn_params = ssm_tools.get_ssm_parameter_value("/data-sci/data-sci-dw/db_connection", WithDecryption=True)
+    conn = pyodbc.connect(client_reponse["Parameter"]["Value"])
 
     cursor = conn.cursor()
 
