@@ -107,13 +107,16 @@ def run(event, context):
     df_inference = df_inference.fillna(0)
 
     lightgbm_predictions = predict_model(lightgbm_model, data=df_inference, raw_score=True)
+    
+    pd.set_option('display.max_columns', None)  
 
     print(f"Lightgbm info:\n {lightgbm_predictions.info()}")
     print(f"Lightgbm head:\n{lightgbm_predictions.head()}")
 
-    print(f"lightgbm:\n {lightgbm_predictions.Label.value_counts()}")
+    print(f"lightgbm:\n {lightgbm_predictions['prediction_label'].value_counts()}")
 
-    print(f"lightgbm:\n {lightgbm_predictions.Score_1.value_counts(bins=[0, 0.25, 0.5, 0.75, 1])}")
+    print(f"lightgbm:\n {lightgbm_predictions['prediction_score_0'].value_counts(bins=[0, 0.25, 0.5, 0.75, 1])}")
+    print(f"lightgbm:\n {lightgbm_predictions['prediction_score_1'].value_counts(bins=[0, 0.25, 0.5, 0.75, 1])}")
 
     model_predictions = [lightgbm_predictions]
 
@@ -126,7 +129,7 @@ def run(event, context):
     df_output["lkupclientid"] = 113
     df_output["mostrecentattendance"] = lightgbm_predictions["recentDate"]
     df_output["product"] = lightgbm_predictions["productGrouping"]
-    df_output["sascore"] = lightgbm_predictions["Score_1"]
+    df_output["sascore"] = lightgbm_predictions["prediction_score_1"]
     df_output["scoredate"] = current_date
     df_output["seasonyear"] = lightgbm_predictions["year"]
     df_output["tenuredays"] = lightgbm_predictions["tenure"]
