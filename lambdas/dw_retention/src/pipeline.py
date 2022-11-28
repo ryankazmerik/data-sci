@@ -12,7 +12,7 @@ from data_sci_toolkit.aws_tools import permission_tools, ssm_tools
 def get_data_from_SQL(lkupclientid: int):
     
     ssm_client = boto3.client("ssm")
-    client_reponse = ssm_client.get_parameter("/data-sci/data-sci-dw/db_connection", WithDecryption=True)
+    client_reponse = ssm_client.get_parameter(Name="/data-sci/data-sci-dw/db_connection", WithDecryption=True)
     # conn_params = ssm_tools.get_ssm_parameter_value("/data-sci/data-sci-dw/db_connection", WithDecryption=True)
     conn = pyodbc.connect(client_reponse["Parameter"]["Value"])
 
