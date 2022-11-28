@@ -6,13 +6,13 @@ import matplotlib.pyplot as plt
 
 from datetime import datetime
 from pycaret.classification import *
-from data_sci_toolkit.aws_tools import permission_tools, ssm_tools
 
 
 def get_data_from_SQL(lkupclientid: int):
     
-    conn_params = ssm_tools.get_ssm_parameter_value("/data-sci/data-sci-dw/db_connection")
-    conn = pyodbc.connect(conn_params)
+    ssm_client = boto3.client("ssm")
+    client_reponse = ssm_client.get_parameter(Name="/data-sci/data-sci-dw/db_connection", WithDecryption=True)
+    conn = pyodbc.connect(client_reponse["Parameter"]["Value"])
 
     cursor = conn.cursor()
 
@@ -73,7 +73,7 @@ def run(event, context):
         target="product_current", 
         train_size = 0.85,
         data_split_shuffle=True,
-        silent=True,
+        # silent=True,
         verbose=False,
         ignore_features=[
             "dimCustomerMasterId",
@@ -110,7 +110,10 @@ def run(event, context):
 
     s3 = boto3.resource('s3')
 
-    bucket = "us-curated-data-sci-product-propensity-us-east-1-d2n55o"
+    if event["env"] == "dev":
+        bucket = "explore-us-curated-data-sci-product-propensity-us-east-1-u8gldf"
+    else:
+        bucket = "us-curated-data-sci-product-propensity-us-east-1-d2n55o"
     current_date = datetime.today().strftime('%Y-%m-%d')
     path = "./data/-product-propensity-scores.csv"
 

@@ -6,14 +6,12 @@ import matplotlib.pyplot as plt
 
 from datetime import datetime
 from pycaret.classification import *
-from data_sci_toolkit.aws_tools import permission_tools, ssm_tools
 
 
 def get_data_from_SQL(lkupclientid: int):
     
     ssm_client = boto3.client("ssm")
     client_reponse = ssm_client.get_parameter(Name="/data-sci/data-sci-dw/db_connection", WithDecryption=True)
-    # conn_params = ssm_tools.get_ssm_parameter_value("/data-sci/data-sci-dw/db_connection", WithDecryption=True)
     conn = pyodbc.connect(client_reponse["Parameter"]["Value"])
 
     cursor = conn.cursor()
@@ -82,7 +80,7 @@ def run(event, context):
         train_size = 0.85,
         data_split_shuffle=True,
         ignore_features=["dimCustomerMasterId","email","productGrouping","ticketingid","year"],
-        silent=True,
+        # silent=True,
         verbose=False,
         numeric_features=[
         "totalSpent", 
@@ -116,21 +114,6 @@ def run(event, context):
 
     model_predictions = [lightgbm_predictions]
 
-    # for idx, df_predictions in enumerate(model_predictions):
-
-    #     plt.subplot(1, 3, idx+1)
-
-    #     plt.hist(df_predictions["Score_1"], bins=20, edgecolor='black')
-    #     plt.title("Retention Scores")
-    #     plt.ylabel("Num Fans")
-    #     plt.xlabel("SA Buyer Score")
-
-    # plt.rcParams["figure.figsize"] = (20,4)
-    # plt.show()
-
-    # plot_model(lightgbm_model, plot='feature')
-    # plot_model(lightgbm_model, plot='confusion_matrix')
-
     current_date = datetime.today().strftime('%Y-%m-%d')
     df_output = pd.DataFrame()
     df_output["attendancepercentage"] = lightgbm_predictions["attendancePercent"]
@@ -148,7 +131,11 @@ def run(event, context):
 
     s3 = boto3.resource('s3')
 
-    bucket = "us-curated-data-sci-retention-us-east-1-5h6cml"
+    if event["env"] == "dev":
+        bucket = "explore-us-curated-data-sci-retention-us-east-1-ut8jag"
+    else:
+        bucket = "us-curated-data-sci-retention-us-east-1-5h6cml"
+    
     current_date = datetime.today().strftime('%Y-%m-%d')
     path = "./data/retention-scores.csv"
 
