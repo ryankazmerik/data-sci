@@ -108,6 +108,9 @@ def run(event, context):
 
     lightgbm_predictions = predict_model(lightgbm_model, data=df_inference, raw_score=True)
 
+    print(f"Lightgbm info:\n {lightgbm_predictions.info()}")
+    print(f"Lightgbm head:\n{lightgbm_predictions.head()}")
+
     print(f"lightgbm:\n {lightgbm_predictions.Label.value_counts()}")
 
     print(f"lightgbm:\n {lightgbm_predictions.Score_1.value_counts(bins=[0, 0.25, 0.5, 0.75, 1])}")
