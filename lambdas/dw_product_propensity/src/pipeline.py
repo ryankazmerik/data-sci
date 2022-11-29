@@ -4,6 +4,7 @@ import pyodbc
 import pandas as pd
 import matplotlib.pyplot as plt
 
+from data_sci_toolkit.aws_tools import permission_tools, redshift_tools, ssm_tools
 from datetime import datetime
 from pycaret.classification import *
 
@@ -117,6 +118,9 @@ def run(event, context):
         bucket = "us-curated-data-sci-product-propensity-us-east-1-d2n55o"
     current_date = datetime.today().strftime('%Y-%m-%d')
     path = "/tmp/product-propensity-scores.csv"
+
+    # permission_tools.assume_iam_role("arn:aws:iam::173696899631:role/datascience-redshift-etl")
+    permission_tools.assume_iam_role("arn:aws:iam::176624903806:role/data-sci-product-propensity-pipeline-8wt5ep")
 
     df_predictions.to_csv(path, index=False)
     s3.Bucket(bucket).upload_file(path, f'date={current_date}/mlsintermiami/scores.csv')
