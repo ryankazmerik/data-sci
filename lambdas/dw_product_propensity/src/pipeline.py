@@ -100,7 +100,7 @@ def run(event, context):
     final_model = finalize_model(best_model)
 
     print(f"Season Year Values: {df['seasonYear'].value_counts()}")
-    df_inference = df.loc[df["seasonYear"] >= 2023]
+    df_inference = df.loc[df["seasonYear"].astype("int") >= 2023]
     df_inference = df_inference.fillna(0)
 
     df_predictions = predict_model(final_model, data=df_inference)
