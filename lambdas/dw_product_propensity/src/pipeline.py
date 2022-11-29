@@ -73,7 +73,7 @@ def run(event, context):
         target="product_current", 
         train_size = 0.85,
         data_split_shuffle=True,
-        # silent=True,
+        silent=True,
         verbose=False,
         ignore_features=[
             "dimCustomerMasterId",
@@ -89,7 +89,7 @@ def run(event, context):
             "events_prior",
             "tenure" 
         ]
-    )
+    );
     
     model_matrix = compare_models(
         fold= 10,
