@@ -8,7 +8,7 @@ environment                                 = "prod"
 region                                      = "us-east-1"
 
 deploy_retention                            = true
-deploy_product_propensity                   = false
+deploy_product_propensity                   = true
 
 deploy_training                             = true
 enable_training_trigger                     = false

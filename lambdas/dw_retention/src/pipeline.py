@@ -79,6 +79,7 @@ def run(event, context):
         target="isNextYear_Buyer", 
         train_size = 0.85,
         data_split_shuffle=True,
+        keep_features=["dimCustomerMasterId","email","productGrouping","ticketingid","year"],
         ignore_features=["dimCustomerMasterId","email","productGrouping","ticketingid","year"],
         # silent=True,
         verbose=False,
