@@ -116,7 +116,7 @@ def run(event, context):
     else:
         bucket = "us-curated-data-sci-product-propensity-us-east-1-d2n55o"
     current_date = datetime.today().strftime('%Y-%m-%d')
-    path = "./data/-product-propensity-scores.csv"
+    path = "/tmp/product-propensity-scores.csv"
 
     df_predictions.to_csv(path, index=False)
     s3.Bucket(bucket).upload_file(path, f'date={current_date}/mlsintermiami/scores.csv')
