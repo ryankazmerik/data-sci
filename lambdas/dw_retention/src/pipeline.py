@@ -142,7 +142,7 @@ def run(event, context):
         bucket = "us-curated-data-sci-retention-us-east-1-5h6cml"
     
     current_date = datetime.today().strftime('%Y-%m-%d')
-    path = "./data/retention-scores.csv"
+    path = "/tmp/retention-scores.csv"
 
     df_output.to_csv(path, index=False)
     # s3.Bucket(bucket).upload_file(path, f'date={current_date}/mlsintermiami/scores.csv')
