@@ -38,7 +38,6 @@ def run(event, context):
     # choose the features for the stellar base retention model
     features = [
                 "dimCustomerMasterId",
-                "email",
                 "ticketingid",
                 "year",
                 "productGrouping", 
@@ -79,7 +78,7 @@ def run(event, context):
         target="isNextYear_Buyer", 
         train_size = 0.85,
         data_split_shuffle=True,
-        ignore_features=["dimCustomerMasterId","email","productGrouping","ticketingid","year"],
+        ignore_features=["dimCustomerMasterId","productGrouping","ticketingid","year"],
         silent=True,
         verbose=False,
         numeric_features=[
@@ -123,7 +122,6 @@ def run(event, context):
     df_output["attendancepercentage"] = lightgbm_predictions["attendancePercent"]
     df_output["clientcode"] = "mlsintermiami"
     df_output["dimcustomermasterid"] = lightgbm_predictions["dimCustomerMasterId"]
-    df_output["email"]= lightgbm_predictions["email"]
     df_output["lkupclientid"] = 113
     df_output["mostrecentattendance"] = lightgbm_predictions["recentDate"]
     df_output["product"] = lightgbm_predictions["productGrouping"]
