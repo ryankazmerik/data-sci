@@ -1,10 +1,6 @@
 module "dw_role_policy" {
   count = var.deploy_retention || var.deploy_product_propensity ? 1 : 0
 
-  depends_on = [
-    module.model_kms_key,
-  ]
-
   source             = "../../infrastructure-common/modules/iam_policy"
   policy_name        = format("%s-policy-%s", local.model_name, random_string.random_role_id.result)
   policy_path        = "/"
@@ -27,7 +23,8 @@ module "dw_role_policy" {
         "kms:GenerateDataKeyPairWithoutPlaintext"
       ]
       resources = [
-        "arn:aws:kms:us-east-1:176624903806:key/2183b5e1-671b-48b7-b335-2ad05e17fb96"
+        "arn:aws:kms:us-east-1:176624903806:key/2183b5e1-671b-48b7-b335-2ad05e17fb96",
+        "arn:aws:kms:us-east-1:176624903806:key/c04fab4f-0fd8-440a-a3ac-bb0ede289ced"
       ]
     }
 
