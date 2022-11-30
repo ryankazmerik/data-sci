@@ -101,6 +101,7 @@ def run(event, context):
     final_model = finalize_model(best_model)
 
     df_inference = df.loc[df["seasonYear"].astype("int") >= 2023]
+    df_inference = df_inference[features]
     df_inference = df_inference.fillna(0)
 
     df_predictions = predict_model(final_model, data=df_inference)

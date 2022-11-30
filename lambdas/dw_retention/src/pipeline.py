@@ -103,6 +103,7 @@ def run(event, context):
     lightgbm_model = create_model('lightgbm')
 
     df_inference = df.loc[df["year"] >= 2022]
+    df_inference = df_inference[features]
     df_inference = df_inference.fillna(0)
 
     lightgbm_predictions = predict_model(lightgbm_model, data=df_inference, raw_score=True)
