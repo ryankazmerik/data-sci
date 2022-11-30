@@ -143,5 +143,4 @@ def run(event, context):
     path = "/tmp/retention-scores.csv"
 
     df_output.to_csv(path, index=False)
-    # s3.Bucket(bucket).upload_file(path, f'date={current_date}/mlsintermiami/scores.csv')
-    s3.Bucket(bucket).upload_file(path, f'testpleaseignore/mlsintermiami/scores.csv')
+    s3.Bucket(bucket).upload_file(path, f'date={current_date}/mlsintermiami/scores.csv')
