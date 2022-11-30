@@ -119,8 +119,7 @@ def run(event, context):
     current_date = datetime.today().strftime('%Y-%m-%d')
     path = "/tmp/product-propensity-scores.csv"
 
-    # permission_tools.assume_iam_role("arn:aws:iam::173696899631:role/datascience-redshift-etl")
-    permission_tools.assume_iam_role("arn:aws:iam::176624903806:role/data-sci-product-propensity-pipeline-8wt5ep")
+    permission_tools.assume_iam_role("arn:aws:iam::173696899631:role/datascience-redshift-etl")
 
     df_predictions.to_csv(path, index=False)
     s3.Bucket(bucket).upload_file(path, f'date={current_date}/mlsintermiami/scores.csv')
