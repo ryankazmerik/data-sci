@@ -111,7 +111,6 @@ def run(event, context):
     pd.set_option('display.max_columns', None)  
 
     print(f"Lightgbm info:\n {lightgbm_predictions.info()}")
-    print(f"Lightgbm head:\n{lightgbm_predictions.head()}")
 
     print(f"lightgbm:\n {lightgbm_predictions.Label.value_counts()}")
 
