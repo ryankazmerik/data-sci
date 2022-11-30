@@ -27,7 +27,7 @@ module "dw_role_policy" {
         "kms:GenerateDataKeyPairWithoutPlaintext"
       ]
       resources = [
-        module.model_kms_key.kms_key_arn
+        "arn:aws:kms:us-east-1:176624903806:key/2183b5e1-671b-48b7-b335-2ad05e17fb96"
       ]
     }
 
