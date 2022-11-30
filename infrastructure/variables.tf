@@ -59,6 +59,19 @@ variable "deploy_product_propensity" {
   default     = false
 }
 
+variable "retention_trigger" {
+  description = "Enables the trigger for retention lambda."
+  type        = bool
+  default     = false
+}
+
+variable "product_propensity_trigger" {
+  description = "Enables the trigger for product propensity lambda."
+  type        = bool
+  default     = false
+}
+
+
 ### Variables for run pipeline
 variable "deploy_training" {
   description = "Deploys the training pipeline."
