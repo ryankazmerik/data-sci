@@ -6,6 +6,8 @@ on:
       - main
     paths:
       - 'lambdas/dw_product_propensity/**'
+  release:
+    types: [published]
 
 jobs:
   push_container_to_ecr:

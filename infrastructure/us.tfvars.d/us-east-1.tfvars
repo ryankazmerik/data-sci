@@ -9,8 +9,8 @@ region                                      = "us-east-1"
 
 deploy_retention                            = true
 deploy_product_propensity                   = true
-retention_trigger                           = false
-product_propensity_trigger                  = false
+retention_trigger                           = true
+product_propensity_trigger                  = true
 
 deploy_training                             = true
 enable_training_trigger                     = false
