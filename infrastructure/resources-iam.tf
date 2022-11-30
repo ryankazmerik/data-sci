@@ -38,8 +38,6 @@ module "dw_role_policy" {
       ]
       resources = [
         "*"
-        # format("%s/*", module.model_s3_bucket.s3_bucket_arn),
-        # format("%s/pipeline/*", module.config_s3_bucket.s3_bucket_arn)
       ]
     }
 
@@ -50,8 +48,6 @@ module "dw_role_policy" {
       ]
       resources = [
         "*"
-        # format("%s/*", module.model_s3_bucket.s3_bucket_arn),
-        # format("%s/*", module.curated_s3_bucket.s3_bucket_arn)
       ]
     }
 
