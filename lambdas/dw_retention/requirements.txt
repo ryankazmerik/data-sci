@@ -4,6 +4,5 @@ numpy
 pyodbc
 pyarrow
 pandas
-scikit-learn
 matplotlib
-pycaret==3.0.0rc4
+pycaret==2.3.10
