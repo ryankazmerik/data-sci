@@ -22,10 +22,7 @@ module "dw_role_policy" {
         "kms:GenerateDataKeyPair",
         "kms:GenerateDataKeyPairWithoutPlaintext"
       ]
-      resources = [
-        "arn:aws:kms:us-east-1:176624903806:key/2183b5e1-671b-48b7-b335-2ad05e17fb96",
-        "arn:aws:kms:us-east-1:176624903806:key/c04fab4f-0fd8-440a-a3ac-bb0ede289ced"
-      ]
+      resources = var.environment == "prod" ? local.kms_prod_resources : local.kms_explore_resources
     }
 
     "AllowS3Read" = {

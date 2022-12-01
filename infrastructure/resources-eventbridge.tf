@@ -31,7 +31,7 @@ module "data_sci_dw_retention_weekly_trigger" {
         }
         input_template = <<-EOF
           {
-            "env": "prod"
+            "env": "${var.environment}"
           }
           EOF
       }
@@ -74,7 +74,7 @@ module "data_sci_dw_product_propensity_weekly_trigger" {
         }
         input_template = <<-EOF
           {
-            "env": "prod"
+            "env": "${var.environment}"
           }
           EOF
       }

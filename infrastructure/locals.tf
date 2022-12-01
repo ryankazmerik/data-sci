@@ -5,6 +5,16 @@ locals {
 
   pipelines = ["product-propensity", "retention"]
 
+  kms_explore_resources = [
+    "arn:aws:kms:us-east-1:176624903806:key/2183b5e1-671b-48b7-b335-2ad05e17fb96",
+    "arn:aws:kms:us-east-1:176624903806:key/c04fab4f-0fd8-440a-a3ac-bb0ede289ced"
+  ]
+
+  kms_prod_resources = [
+    "arn:aws:kms:us-east-1:314383152509:key/f06e6fb5-10a8-4ad4-8ac1-30b556f55978",
+    "arn:aws:kms:us-east-1:314383152509:key/2b216958-7631-42cf-a00e-60568c397846"
+  ]
+
   # model_bucket_name   = format("%s-model-%s-%s-%s", var.account_name, local.model_name, var.region, random_string.random_bucket_id.result)
   # config_bucket_name  = format("%s-config-%s-%s-%s", var.account_name, local.model_name, var.region, random_string.random_bucket_id.result)
   # curated_bucket_name = format("%s-curated-%s-%s-%s", var.account_name, local.model_name, var.region, random_string.random_bucket_id.result)

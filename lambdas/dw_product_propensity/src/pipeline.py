@@ -112,7 +112,7 @@ def run(event, context):
 
     s3 = boto3.resource('s3')
 
-    if event["env"] == "dev":
+    if event["env"] == "explore":
         bucket = "explore-us-curated-data-sci-product-propensity-us-east-1-u8gldf"
     else:
         bucket = "us-curated-data-sci-product-propensity-us-east-1-d2n55o"
