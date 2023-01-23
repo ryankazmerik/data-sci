@@ -1,0 +1,73 @@
+{
+    "Explore-US":{
+        "Retention": {
+            "model": "explore-us-model-data-sci-retention-us-east-1-ut8jag",
+            "curated": "explore-us-curated-data-sci-retention-us-east-1-ut8jag",
+            "role_name": "data-sci-retention-pipeline-24uobc",
+            "destination_bucket_id": "j58tuq"
+        },
+        "Product Propensity": {
+            "model": "explore-us-model-data-sci-product-propensity-us-east-1-u8gldf",
+            "curated": "explore-us-curated-data-sci-product-propensity-us-east-1-u8gldf",
+            "role_name": "data-sci-product-propensity-pipeline-t6qwkf",
+            "destination_bucket_id": "mgwy8o"
+        },
+        "Event Propensity": {
+            "model": "explore-us-model-data-sci-event-propensity-us-east-1-yvf53s",
+            "curated": "explore-us-curated-data-sci-event-propensity-us-east-1-yvf53s",
+            "role_name": "data-sci-event-propensity-pipeline-4p7aw3",
+            "destination_bucket_id": "9ai5md"
+        },
+        "destination_environment": "qa",
+        "aws_account_id": "564285676170",
+        "aws_profile_name": "QA-DataScienceAdmin",
+        "subnets": ["subnet-016a23a22d09bac9b", "subnet-03e755df7e78d56f1"],
+        "sgs": ["sg-0f5d1519835df3e9d"]
+        
+    },
+    "QA":{
+        "Retention": {
+            "model": "qa-model-data-sci-retention-us-east-1-j58tuq",
+            "curated": "qa-curated-data-sci-retention-us-east-1-j58tuq",
+            "role_name": "data-sci-retention-pipeline-vg27do",
+            "destination_bucket_id": "5h6cml"
+        },
+        "Product Propensity": {
+            "model": "qa-model-data-sci-product-propensity-us-east-1-mgwy8o",
+            "curated": "qa-curated-data-sci-product-propensity-us-east-1-mgwy8o",
+            "role_name": "data-sci-product-propensity-pipeline-jxswaj",
+            "destination_bucket_id": "d2n55o"
+        },
+        "Event Propensity": {
+            "model": "qa-model-data-sci-event-propensity-us-east-1-9ai5md",
+            "curated": "qa-curated-data-sci-event-propensity-us-east-1-9ai5md",
+            "role_name": "data-sci-event-propensity-pipeline-vdia2z",
+            "destination_bucket_id": "zzw0rj"
+        },
+        "destination_environment": "us",
+        "aws_account_id": "314383152509",
+        "aws_profile_name": "US-StellarSupport",
+        "subnets": ["subnet-05da3f2092b77f05e", "subnet-0da584734b2fc368a"],
+        "sgs": ["sg-0ca66936278330b2c"]
+    },
+    "US":{
+        "Retention": {
+            "model": "us-model-data-sci-retention-us-east-1-5h6cml",
+            "curated": "us-curated-data-sci-retention-us-east-1-5h6cml",
+            "role_name": "null",
+            "destination_bucket_id": "null"
+        },
+        "Product Propensity": {
+            "model": "us-model-data-sci-product-propensity-us-east-1-d2n55o",
+            "curated": "us-curated-data-sci-product-propensity-us-east-1-d2n55o",
+            "role_name": "null",
+            "destination_bucket_id": "null"
+        },
+        "Event Propensity": {
+            "model": "us-model-data-sci-event-propensity-us-east-1-zzw0rj",
+            "curated": "us-curated-data-sci-event-propensity-us-east-1-zzw0rj",
+            "role_name": "null",
+            "destination_bucket_id": "null"
+        }
+    }
+}

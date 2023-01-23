@@ -1,9 +1,5 @@
-import botocore
-import boto3
-import io
 import json
 import pandas as pd
-import numpy as np
 import re
 import streamlit as st
 
@@ -57,8 +53,10 @@ def get_curated_bucket_status(_session, bucket, model):
 
 @st.experimental_memo
 def get_model_bucket_pre_pipeline_status(_session, bucket, model):
+    
     model_name_cleaned = model.lower().replace(' ', '-')
     prefix = f"inference"
+
     files = helpers.get_s3_bucket_items(_session, bucket, prefix)
 
     modified_file_list = []
@@ -146,51 +144,8 @@ def get_pipeline_status(_session, pipeline_name, pipeline_last_execution_time):
 
 def get_s3_path(enviro, model_type, bucket_type):
 
-    settings = {
-        "Explore-US":{
-            "Retention": {
-                "model": "explore-us-model-data-sci-retention-us-east-1-ut8jag",
-                "curated": "explore-us-curated-data-sci-retention-us-east-1-ut8jag"
-            },
-            "Product Propensity": {
-                "model": "explore-us-model-data-sci-product-propensity-us-east-1-u8gldf",
-                "curated": "explore-us-curated-data-sci-product-propensity-us-east-1-u8gldf"
-            },
-            "Event Propensity": {
-                "model": "explore-us-model-data-sci-event-propensity-us-east-1-tykotu",
-                "curated": "explore-us-curated-data-sci-event-propensity-us-east-1-tykotu"
-            }
-        },
-        "QA":{
-            "Retention": {
-                "model": "qa-model-data-sci-retention-us-east-1-j58tuq",
-                "curated": "qa-curated-data-sci-retention-us-east-1-j58tuq"
-            },
-            "Product Propensity": {
-                "model": "qa-model-data-sci-product-propensity-us-east-1-mgwy8o",
-                "curated": "qa-curated-data-sci-product-propensity-us-east-1-mgwy8o"
-            },
-            "Event Propensity": {
-                "model": "",
-                "curated": ""
-            }
-        },
-        "US":{
-            "Retention": {
-                "model": "us-model-data-sci-retention-us-east-1-5h6cml",
-                "curated": "us-curated-data-sci-retention-us-east-1-5h6cml"
-            },
-            "Product Propensity": {
-                "model": "us-model-data-sci-product-propensity-us-east-1-d2n55o",
-                "curated": "us-curated-data-sci-product-propensity-us-east-1-d2n55o"
-            },
-            "Event Propensity": {
-                "model": "",
-                "curated": ""
-            }
-        }
-    }
-    
+    # load settings from json
+    settings = json.load(open("./settings.json"))
     s3_bucket = settings[enviro][model_type][bucket_type]
 
     return s3_bucket

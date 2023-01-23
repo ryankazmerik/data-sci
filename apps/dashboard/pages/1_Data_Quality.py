@@ -125,51 +125,7 @@ def read_scores(_session, _file_df, team, bucket, file_ext):
 
 def get_s3_path(enviro, model_type, bucket_type):
 
-    settings = {
-        "Explore-US":{
-            "Retention": {
-                "model": "explore-us-model-data-sci-retention-us-east-1-ut8jag",
-                "curated": "explore-us-curated-data-sci-retention-us-east-1-ut8jag"
-            },
-            "Product Propensity": {
-                "model": "explore-us-model-data-sci-product-propensity-us-east-1-u8gldf",
-                "curated": "explore-us-curated-data-sci-product-propensity-us-east-1-u8gldf"
-            },
-            "Event Propensity": {
-                "model": "explore-us-model-data-sci-event-propensity-us-east-1-yvf53s",
-                "curated": "explore-us-curated-data-sci-event-propensity-us-east-1-yvf53s"
-            }
-        },
-        "QA":{
-            "Retention": {
-                "model": "qa-model-data-sci-retention-us-east-1-j58tuq",
-                "curated": "qa-curated-data-sci-retention-us-east-1-j58tuq"
-            },
-            "Product Propensity": {
-                "model": "qa-model-data-sci-product-propensity-us-east-1-mgwy8o",
-                "curated": "qa-curated-data-sci-product-propensity-us-east-1-mgwy8o"
-            },
-            "Event Propensity": {
-                "model": "",
-                "curated": ""
-            }
-        },
-        "US":{
-            "Retention": {
-                "model": "us-model-data-sci-retention-us-east-1-5h6cml",
-                "curated": "us-curated-data-sci-retention-us-east-1-5h6cml"
-            },
-            "Product Propensity": {
-                "model": "us-model-data-sci-product-propensity-us-east-1-d2n55o",
-                "curated": "us-curated-data-sci-product-propensity-us-east-1-d2n55o"
-            },
-            "Event Propensity": {
-                "model": "",
-                "curated": ""
-            }
-        }
-    }
-    
+    settings = json.load(open("./settings.json"))
     s3_bucket = settings[enviro][model_type][bucket_type]
 
     return s3_bucket
@@ -232,9 +188,6 @@ env_choices = {
 
 env = st.sidebar.selectbox('Environment:', env_choices.keys(), format_func=lambda x:env_choices[x])
 model_type = st.sidebar.radio('Model:',('Event Propensity', 'Product Propensity', 'Retention'), index=1)
-
-if model_type == "Event Propensity":
-    st.warning("Event Propensity has very large files, it may freeze your computer and cost losts on S3 if ran many times. It may not even work.")
 
 session = helpers.establish_aws_session(env)
 

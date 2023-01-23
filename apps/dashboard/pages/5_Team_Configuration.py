@@ -1,13 +1,9 @@
-import botocore
-import boto3
 import io
 import json
 import pandas as pd
 import streamlit as st
-import subprocess
 import tarfile
 
-from datetime import datetime, timedelta, timezone
 from shared_utilities import helpers
 from st_aggrid import AgGrid, GridOptionsBuilder
 from st_aggrid import JsCode
@@ -98,51 +94,7 @@ def create_curated_report(config_files):
 
 def get_s3_path(enviro, model_type, bucket_type):
 
-    settings = {
-        "Explore-US":{
-            "Retention": {
-                "model": "explore-us-model-data-sci-retention-us-east-1-ut8jag",
-                "curated": "explore-us-curated-data-sci-retention-us-east-1-ut8jag"
-            },
-            "Product Propensity": {
-                "model": "explore-us-model-data-sci-product-propensity-us-east-1-u8gldf",
-                "curated": "explore-us-curated-data-sci-product-propensity-us-east-1-u8gldf"
-            },
-            "Event Propensity": {
-                "model": "explore-us-model-data-sci-event-propensity-us-east-1-yvf53s",
-                "curated": "explore-us-curated-data-sci-event-propensity-us-east-1-yvf53s"
-            }
-        },
-        "QA":{
-            "Retention": {
-                "model": "qa-model-data-sci-retention-us-east-1-j58tuq",
-                "curated": "qa-curated-data-sci-retention-us-east-1-j58tuq"
-            },
-            "Product Propensity": {
-                "model": "qa-model-data-sci-product-propensity-us-east-1-mgwy8o",
-                "curated": "qa-curated-data-sci-product-propensity-us-east-1-mgwy8o"
-            },
-            "Event Propensity": {
-                "model": "qa-model-data-sci-event-propensity-us-east-1-9ai5md",
-                "curated": "qa-curated-data-sci-event-propensity-us-east-1-9ai5md"
-            }
-        },
-        "US":{
-            "Retention": {
-                "model": "us-model-data-sci-retention-us-east-1-5h6cml",
-                "curated": "us-curated-data-sci-retention-us-east-1-5h6cml"
-            },
-            "Product Propensity": {
-                "model": "us-model-data-sci-product-propensity-us-east-1-d2n55o",
-                "curated": "us-curated-data-sci-product-propensity-us-east-1-d2n55o"
-            },
-            "Event Propensity": {
-                "model": "us-model-data-sci-event-propensity-us-east-1-zzw0rj",
-                "curated": "us-curated-data-sci-event-propensity-us-east-1-zzw0rj"
-            }
-        }
-    }
-    
+    settings = json.load(open("./settings.json"))
     s3_bucket = settings[enviro][model_type][bucket_type]
 
     return s3_bucket
