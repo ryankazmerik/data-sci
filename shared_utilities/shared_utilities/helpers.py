@@ -12,6 +12,7 @@ def hello_world():
     
     return "Hello World"
 
+
 def get_aws_session(profile, retry = True):
     
     session = boto3.Session(profile_name=profile)
