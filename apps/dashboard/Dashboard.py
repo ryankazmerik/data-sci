@@ -28,13 +28,13 @@ def main():
         header_left, header_mid, header_right = st.columns(3)
 
         with header_left:
-            reports = st.multiselect('Model Subtype:', model_choices.keys(), format_func=lambda x:model_choices[x], default=['Lead Recommender', 'Data Analysis: Retention'])
+            reports = st.multiselect('Model Subtype:', model_choices.keys(), format_func=lambda x:model_choices[x], default=['Event Propensity', 'Lead Recommender', 'Data Analysis: Retention'])
         
         with header_mid:
-            quarters = st.multiselect('Quarter(s):',('Q1', 'Q2', 'Q3', 'Q4'), default='Q4')
+            quarters = st.multiselect('Quarter(s):',('Q1', 'Q2', 'Q3', 'Q4'), default='Q1')
 
         with header_right:
-            year = st.multiselect('Year(s)', ('2022', '2021'), default='2022')
+            year = st.multiselect('Year(s)', ('2022', '2021', '2023'), default='2022')
 
     
     df_usage = pd.read_csv("data/ml_usage_report.csv")

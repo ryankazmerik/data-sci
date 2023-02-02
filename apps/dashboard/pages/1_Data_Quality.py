@@ -262,3 +262,4 @@ with st.expander("inference.csv.out Summary / SAScore Distribution (before post 
         plt.title(selected_team, fontsize = 12)
         st.pyplot(fig2)
 
+with open('./style.css') as css: st.markdown(css.read(), unsafe_allow_html=True)

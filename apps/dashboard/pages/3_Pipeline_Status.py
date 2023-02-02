@@ -322,3 +322,6 @@ with st.expander("Sagemaker Pipeline Runs"):
                 st.markdown(":x:")
             elif status["PipelineExecutionStatus"] == "Succeeded":
                 st.markdown(":white_check_mark:")    
+
+
+with open('./style.css') as css: st.markdown(css.read(), unsafe_allow_html=True)
