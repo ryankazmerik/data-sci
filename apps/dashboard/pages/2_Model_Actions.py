@@ -212,8 +212,10 @@ def promote_team(key, bucket, model, role_name, destination_bucket_id, aws_confi
 
     ssm_payload = json.loads(ssm_parameter["Parameter"]["Value"]) 
 
-    # if "${model_subtype}" in ssm_payload
-    ssm_payload[model_subtype] = full_model_name
+    if model == "product-propensity":
+        ssm_payload[model_subtype] = f"{model_subtype}-{date}"
+    else:
+        ssm_payload[model_subtype] = full_model_name
 
     try:
         response = ssm_client.put_parameter(
