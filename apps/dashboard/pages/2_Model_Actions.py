@@ -78,6 +78,7 @@ def promote_team(key, bucket, model, role_name, destination_bucket_id, aws_confi
     destination_environment = aws_config["destination_environment"]
     aws_account_id = aws_config["aws_account_id"]
     aws_profile_name = aws_config["aws_profile_name"]
+    aws_old_profile = aws_config["aws_current_profile"]
     subnets = aws_config["subnets"]
     sgs = aws_config["sgs"]
 
@@ -98,42 +99,33 @@ def promote_team(key, bucket, model, role_name, destination_bucket_id, aws_confi
     destination_bucket = f"{destination_environment}-model-data-sci-{model}-{region}-{destination_bucket_id}"
     destination_key = f"training/{model_subtype}/training-output/date={extracted_date}/{training_id}/output/model.tar.gz"
 
-    print(destination_bucket)
-    print(destination_key)
+    print(f"From Bucket: {bucket_name}")
+    print(f"From key: {bucket_key}")
+    
+    print(f"Destination bucket: {destination_bucket}")
+    print(f"Destination key: {destination_key}")
+
     
     try:
 
-        temp_session = boto3.setup_default_session(profile_name=aws_profile_name)
+        # old_env_session = boto3.setup_default_session(profile_name=aws_old_profile)
+        old_env_session = helpers.establish_aws_session(aws_old_profile)
         
 
-        s3 = boto3.resource("s3") 
-        copy_source = {
-            "Bucket": bucket_name,
-            "Key": bucket_key[1:]
-        }
+        old_s3 = old_env_session.client("s3")
 
-        s3_bucket = s3.Bucket(destination_bucket)
-        obj = s3_bucket.Object(destination_key)
-
-        config = TransferConfig(
-            multipart_threshold=1024 * 50, 
-            max_concurrency=20,
-            multipart_chunksize=1024 * 50,
-            use_threads=True
-        )
-
-        print(f"AWS PROFILE: {aws_profile_name}")
-        print(f"DESTINATION BUCKET: {s3_bucket}")
-        print(f"DESTINATION KEY: {obj}")
-        print(f"CONFIG: {config}")
-
-        obj.copy(
-            CopySource=copy_source,
-            ExtraArgs={"ACL": "bucket-owner-full-control"},
-            Config=config
-        )
-
-
+        # files = old_s3.list_objects_v2(Bucket=bucket_name, Prefix="training/")
+        # print(f"Files: {files}")
+        try:
+            old_s3.download_file(bucket_name, bucket_key[1:], "data/model.tar.gz")
+        except Exception as e:
+            print(f"Failed to download file w/ exception: {e}")
+        
+        new_s3 = temp_session.client("s3")
+        try:
+            new_s3.upload_file("data/model.tar.gz", destination_bucket, destination_key)
+        except Exception as e:
+            print(f"Failed to upload file w/ exception: {e}")
 
         full_model_name = f"data-sci-{model}-{model_subtype}-{date}"
 

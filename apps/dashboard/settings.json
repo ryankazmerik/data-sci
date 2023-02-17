@@ -20,6 +20,7 @@
         },
         "destination_environment": "qa",
         "aws_account_id": "564285676170",
+        "aws_current_profile": "Explore-US-DataScienceAdmin",
         "aws_profile_name": "QA-DataScienceAdmin",
         "subnets": ["subnet-016a23a22d09bac9b", "subnet-03e755df7e78d56f1"],
         "sgs": ["sg-0f5d1519835df3e9d"]
@@ -46,7 +47,8 @@
         },
         "destination_environment": "us",
         "aws_account_id": "314383152509",
-        "aws_profile_name": "US-StellarSupport",
+        "aws_current_profile": "QA-DataScienceAdmin",
+        "aws_profile_name": "US-StellarDataScienceAdmin",
         "subnets": ["subnet-05da3f2092b77f05e", "subnet-0da584734b2fc368a"],
         "sgs": ["sg-0ca66936278330b2c"]
     },

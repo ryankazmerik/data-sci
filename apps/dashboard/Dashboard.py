@@ -1,5 +1,7 @@
+import os
 import pandas as pd
 import streamlit as st
+
 from PIL import Image
 
 def main():
@@ -71,8 +73,11 @@ def main():
 
 if __name__ == "__main__":
 
-    
-    main()
+    if os.path.isfile("data/ml_usage_report.csv"):
+        main()
+    else:
+        st.write("No ml_usage_report.csv found.")
+        st.sidebar.success("Hi")
 
 
     with open('./style.css') as css: st.markdown(css.read(), unsafe_allow_html=True)
