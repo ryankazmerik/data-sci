@@ -20,6 +20,8 @@ COPY requirements.txt  requirements.txt
 
 RUN pip install ipykernel && \
     python -m ipykernel install --sys-prefix
+    
+RUN pip install jupyter_kernel_gateway
 
 RUN pip config set global.index-url https://aws:${CODEARTIFACT_AUTH_TOKEN}@stellaralgo-176624903806.d.codeartifact.us-east-1.amazonaws.com/pypi/machine-learning/simple/ \
     && pip install --no-cache-dir --upgrade pip \
