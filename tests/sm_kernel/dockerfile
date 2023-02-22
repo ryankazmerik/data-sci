@@ -1,0 +1,27 @@
+FROM python:3.8.16
+
+ARG DEBIAN_FRONTEND=noninteractive
+ARG CODEARTIFACT_AUTH_TOKEN
+
+#Set LANG ENV
+ENV LC_ALL C.UTF-8
+ENV LANG C.UTF-8
+ENV LANGUAGE C.UTF-8
+
+ENV PYTHONUNBUFFERED=1
+
+# Set Timezone ENV
+ENV TZ="America/Edmonton"
+run pip --version
+
+RUN apt-get update -y
+
+COPY requirements.txt  requirements.txt
+
+RUN pip install ipykernel && \
+    python -m ipykernel install --sys-prefix
+
+RUN pip config set global.index-url https://aws:${CODEARTIFACT_AUTH_TOKEN}@stellaralgo-176624903806.d.codeartifact.us-east-1.amazonaws.com/pypi/machine-learning/simple/ \
+    && pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir -r requirements.txt
+
