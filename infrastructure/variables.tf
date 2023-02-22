@@ -59,6 +59,12 @@ variable "deploy_product_propensity" {
   default     = false
 }
 
+variable "deploy_sagemaker_image" {
+  description = "Deploys the sagemaker custom image."
+  type        = bool
+  default     = false
+}
+
 variable "retention_trigger" {
   description = "Enables the trigger for retention lambda."
   type        = bool

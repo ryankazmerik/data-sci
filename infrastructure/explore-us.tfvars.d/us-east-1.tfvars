@@ -18,6 +18,8 @@ enable_training_trigger                     = false
 deploy_inference                            = true
 enable_inference_trigger                    = false
 
+deploy_sagemaker_image = true
+
 table_load_event_source                     = "na"
 
 include("explore-us.tfvars.d/us-east-1/*.tfvars")
