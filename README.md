@@ -1,10 +1,11 @@
 # The StellarAlgo Data Science Super Fantastic Readme
 You know, for data science...
 
-- [Onboarding](#onboarding)
+- [The StellarAlgo Data Science Super Fantastic Readme](#the-stellaralgo-data-science-super-fantastic-readme)
+  - [Onboarding](#onboarding)
   - [Setup](#setup)
     - [Installs](#installs)
-    - [Git & Repo & Folder Setup](#git--repo--folder-setup)
+    - [Git \& Repo \& Folder Setup](#git--repo--folder-setup)
     - [Conda (Python) Setup](#conda-python-setup)
     - [PyODBC For M1 Mac](#pyodbc-for-m1-mac)
     - [Pycaret for M1 Mac](#pycaret-for-m1-mac)
@@ -17,8 +18,9 @@ You know, for data science...
     - [S3 Challenge](#s3-challenge)
     - [SSM Challenge](#ssm-challenge)
     - [Lambda Challenge](#lambda-challenge)
-- [Style Guidelines](#style-guidelines)
-- [Terraforming](#terraform)
+  - [Style Guidelines](#style-guidelines)
+  - [Terraform](#terraform)
+- [Offboarding a Team](#offboarding-a-team)
 
 
 
@@ -474,3 +476,16 @@ You must be logged into the dev docker container (Dev Container: STELLARALGO) to
 > `git add -A` <br/>
 > `git commit -m 'Your commit message'` <br/>
 > `git push`
+
+
+# Offboarding a Team
+
+1. Delete the pipeline folder
+2. Use the notebook below to delete the model packages
+   1. https://github.com/stellaralgo/data-sci/blob/main/sandbox/ryan%20sandbox/Delete%20Model%20Packages.ipynb
+   2. Only model packages in Datascience-Development need to be deleted, as they are not created in other environments
+3. Delete team from terraform config files
+4. Terraform apply changes in all environments
+   1. As of 2023-03-07, this should result in roughly 4 to 7 deletes and in explore `n` modifications (`n` being number of teams)
+5. Remove SSM entries in each environment manually
+6. Commit, push, and PR your changes through all environments and prod.
