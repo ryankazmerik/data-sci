@@ -152,7 +152,7 @@ dmypy.json
 .obsidian/workspace.json
 
 # exclude personal note folders
-Obsidian Vault/Personal Notes
+vault/Personal Notes
 
 # Add below lines to exclude OS settings and caches
 .trash/
