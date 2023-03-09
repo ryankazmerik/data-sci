@@ -10,4 +10,4 @@
 - [ ] Refactor post pipeline lambda using DSTK
 - [ ] Test top-3 ensemble method for retention in SageMaker Studio notebook
 - [ ] Add archive folders for off-boarded teams
-- [ ] See if we can use something like Obsidian for a shared back burner list
+- [x] See if we can use something like Obsidian for a shared back burner list
