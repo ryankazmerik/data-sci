@@ -1,0 +1,13 @@
+- [ ] Deprecate local shared_utilities library and use data-sci-toolkit instead
+- [ ] Update old model names (ex. AHL-Wallyeye -> ECHL-Walleye)
+- [ ] Deprecate data-sci-tests (repo and any AWS resources)
+- [ ] Delete old models in model registry (ex. MILB)
+- [ ] Solution for ssm param max character limit
+- [ ] Terraform S3 retention policy (hot, cold, glacier)
+- [ ] Submit data science summit proposal
+- [ ] PR train/eval split enhancement - EP PP Ret
+- [ ] Refactor pre pipeline lambda using DSTK
+- [ ] Refactor post pipeline lambda using DSTK
+- [ ] Test top-3 ensemble method for retention in SageMaker Studio notebook
+- [ ] Add archive folders for off-boarded teams
+- [ ] See if we can use something like Obsidian for a shared back burner list
