@@ -1,5 +1,5 @@
 - [ ] Deprecate local shared_utilities library and use data-sci-toolkit instead
-- [ ] Update old model names (ex. AHL-Wallyeye -> ECHL-Walleye)
+- [ ] Update old model names (ex. AHL-Walleye -> ECHL-Walleye)
 - [ ] Deprecate data-sci-tests (repo and any AWS resources)
 - [ ] Delete old models in model registry (ex. MILB)
 - [ ] Solution for ssm param max character limit
