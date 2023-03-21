@@ -1,3 +1,18 @@
+
+## Hot Topics
+- AWS Cloud Practitioner Training
+- Model Promotion Solution
+- JIRA Code Branching
+- Obsidian License
+- MLFlow Deployment
+- Kernel MVP
+- Centralized Logging
+- Terraform Refactor
+- License List
+
+
+
+## Backburners
 - [ ] Deprecate local shared_utilities library and use data-sci-toolkit instead
 - [ ] Update old model names (ex. AHL-Walleye -> ECHL-Walleye)
 - [ ] Deprecate data-sci-tests (repo and any AWS resources)
