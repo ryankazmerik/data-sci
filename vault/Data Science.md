@@ -4,6 +4,7 @@
 - Model Promotion Solution
 - JIRA Code Branching
 - Obsidian License
+- In-Market Visits
 - MLFlow Deployment
 - Kernel MVP
 - Centralized Logging
