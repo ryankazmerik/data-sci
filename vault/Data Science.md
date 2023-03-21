@@ -1,15 +1,22 @@
 
 ## Hot Topics
 - AWS Cloud Practitioner Training
+	- Book exam in advance? Friday - Mar 31
 - Model Promotion Solution
-- JIRA Code Branching
-- Obsidian License
+	- Moving to Friday April 7
+* Model Documentation
 - In-Market Visits
-- MLFlow Deployment
+	- Check with AM for Q2
+- Feature Evaluation
+- SageMaker Studio Notebooks
+	- Waiting for SaaS Ops ticket (Cross-account)
 - Kernel MVP
 - Centralized Logging
 - Terraform Refactor
+	- Still working on the SageMaker part
+	- Setting up the base environment
 - License List
+	- Compile list of packages from requirements.txt and investigate license types
 
 
 
