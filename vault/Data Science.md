@@ -17,6 +17,7 @@
 	- Setting up the base environment
 - License List
 	- Compile list of packages from requirements.txt and investigate license types
+- New M1/M2 laptop request
 
 
 
