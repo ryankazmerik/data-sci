@@ -156,3 +156,4 @@ vault/Personal Notes
 
 # Add below lines to exclude OS settings and caches
 .trash/
+catboost_info/
