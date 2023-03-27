@@ -1,17 +1,16 @@
 
 ## Hot Topics
 - AWS Cloud Practitioner Training
-	- Book exam in advance? Friday - Mar 31
+- Centralized Logging
+- Model Documentation
 - Model Promotion Solution
 	- Moving to Friday April 7
-* Model Documentation
+
 - In-Market Visits
 	- Check with AM for Q2
-- Feature Evaluation
+- MLFlow Deployment
 - SageMaker Studio Notebooks
-	- Waiting for SaaS Ops ticket (Cross-account)
 - Kernel MVP
-- Centralized Logging
 - Terraform Refactor
 	- Still working on the SageMaker part
 	- Setting up the base environment
