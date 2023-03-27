@@ -18,7 +18,10 @@
 - License List
 	- Compile list of packages from requirements.txt and investigate license types
 - New M1/M2 laptop request
-
+- Catboost
+	- Research new algorithm (https://catboost.ai/)
+	- Experiment to see if it provides more value than other algorithms, see if it changes data too much (especially for NBA-Nets)
+	- Test using the built-in GPU capabilities w/ Sagemaker
 
 
 ## Backburners
