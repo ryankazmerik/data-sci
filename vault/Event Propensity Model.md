@@ -2,47 +2,31 @@
 # Event Propensity Model
 ## Business Challenge
 
-### How can we best identify and activate on our existing fans for a larger commitment to attendance in future games?
+### How can we use our historical fan data and behaviours to help sell single game inventory ?
 
-The product propensity model aims to generate the best potential leads for:
-
-### Package Buyers Upsells
-* Full Season Buyers - what half season package buyers, and mini plan buyers may be good leads to purchase a full season package?
-* Half Season Buyers -  what mini plan buyers may be good leads to purchase a half season package?
+The event propensity model aims to generate the best potential leads for:
 	  
-### Individual Ticket Buyers Upsells 
-* What individual ticket buyers may be good leads to purchase any type of package?*
+### Individual Ticket Buyers 
+* What fans have a higher likelihood to purchase an individual ticket to an upcoming game?
 
-To solve this problem, we use a multi-class classification model to assess what package type might be best for each fan. For more detail on multi-class classification models, see the *Multi-class Model Explanation* section below.
+To solve this problem, we use a binary classification model to assess what fans have a high probability for purchasing a ticket to an upcoming game. For more detail on multi-class classification models, see the *Binary Classification Model Explanation* section below.
 
 ## Lead Availability
 
-### CDP - Lead Recommender
-Leads provided by the product propensity model are available in the CDP Lead Recommender:
-
-![[Pasted image 20230316104429.png]]
-
-Package leads for every product are capped at the top 200 until they take action. Top leads may still show up on the next day if their propensity outweighs their last action date.
-
-Individual leads are capped at 2000 until they take action. Top Leads who have been stale for >90 days will show up again and be flagged as fresh for Sales team to start re-engaging/warming them up again.
-
 ### CDP - Segment Builder
-A larger list of leads are also available in the CDP Segment Builder:
+Leads for the next 20 home games are available as an Event Propensity filter in the CDP Segment Builder:
 
-![[Pasted image 20230316102500.png]]
+![[Pasted image 20230328143308.png]]
 
-How many leads are available can be configured on a team by team basis in the CDP. A target size of 50,000 leads is recommended for creating segments via the segment builder.
-
+The lead list consists of any fan who has bought an individual ticket in the past 2 seasons, and fans with less than 50% probability of purchasing a ticket are automatically filtered out of the lead list.
 
 
 ## Features
+
 The model is trained and scored using the following features:
-* atp_last : the average ticket price from last season
-* attended_last : how many games the fan attended last season
-* attended_prior : how many games the fan attended in all past seasons
-* events_last : how many events the fan purchased last season
-* events_prior : how many events the fan purchased in all past seasons
-* tenure : how many days since the fans first purchase with the tea
+* distance_to_venue : how far the fan lives from the venue
+* daysout : how many days between today and the game date
+* 
 
 
 ## Additional Data
@@ -177,7 +161,7 @@ Below is a full list of features and their definitions:
 | Recent Email Click Rate          | recent_clickRate            | Marketing               | true         | Total number of clicked email divided by total number of opened email. For true purchases (training), scoped to the week prior to purchase date. For potential purchases (training + scoring), scoped to the week prior to the date corresponding to minDaysOut |
 | Recent Email Open Rate           | recent_openRate             | Marketing               | true         | Total number of opened email divided by total number of sent email. For true purchases (training), scoped to the week prior to purchase date. For potential purchases (training + scoring), scoped to the week prior to the date corresponding to minDaysOut    |
 | Last Attendance Date             | recentDate                  | Ticketing               | true         | The last event date that a customer attended the game                                                                                                                                                                                                           |
-| Time to Renew                    | renewedBeforeDays           | Ticketing               | true         | The number of days a customer bought a ticket before game                                                                                                                                                                                                       |
+| Time to Renew                    | renewedBeforeDays           | Ticketing               | true         | The number of days between when the fan renewed their package and the first game of the season                                                                                                                                                                                                      |
 | No. Marketing Email Sends        | send_email                  | Marketing               | true         | Total number of activities a customer Sent an marketing email                                                                                                                                                                                                   |
 | Tenure (Provided by Team)        | source_tenure               | Ticketing               | true         | Source tenure for the customer provided by the team                                                                                                                                                                                                             |
 | Total Games Attended             | totalGames                  | Ticketing               | true         | Total attended games by customer, season and product                                                                                                                                                                                                            |
