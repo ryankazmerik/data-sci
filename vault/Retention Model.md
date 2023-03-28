@@ -9,7 +9,7 @@ The retention model aims to help prioritize customers during the renewal process
 ### Package Buyers
 The retention model focusses on multi-game package buyers. Regardless of package type from a 'full season' ticket holder to a 'mini plan' buyer, the model looks at scoring a customer on how likely they are to renew that specific package for the next season.
 
-To solve this problem, we use a binary classification model to assess from 0 to 100, how likely it is that an individual will renew their package. For more detail on binary classification models, see the Binary Classification Model Explanation below.
+To solve this problem, we use a binary classification model to assess from 0 to 100, how likely it is that an individual will renew their package. For more detail on binary classification models, see the *Binary Classification Model Explanation* below.
 
 ## Retention Score Availability
 
@@ -25,59 +25,51 @@ The retention scores are also available in the CDP Segment Builder:
 
 ## Features
 The model is trained and scored using the following features:
-* atp_last : the average ticket price from last season
-* attended_last : how many games the fan attended last season
-* attended_prior : how many games the fan attended in all past seasons
-* events_last : how many events the fan purchased last season
-* events_prior : how many events the fan purchased in all past seasons
-* tenure : how many days since the fans first purchase with the tea
+- attendancepercent: percentage of games a fan has attended in a season
+- disttovenue: how far a fan is from the venue
+- missed_games_1: how many times a fan has missed 1 game
+- missed_games_2: how many times a fan has missed 2 games in a row
+- missed_games_over_2: how many times a fan has missed more than 2 games in a row
+- recency: how many days since the fans last game attended
+- renewedbeforedays: how many days before the first game of the season did the fan renew their package
+- tenure: how many days since the fans first purchase with the team
+- totalspent: total amount spent by a fan in the current season
 
 
 ## Additional Data
 The following fields are also available along side the scores for additional data analysis:
-* attendedpct_prior
-* attendedpct_last
-* attendance_current
-* clientcode
-* dimcustomermasterid
-* distance
-* events_current
-* lkupclientid
-* product_current
-* product_last
-* seasonyear
-* spend_current
-* volume_current
-* sends
-* sends_prior
-* opens
-* opens_prior
-* date_last_send
-* date_last_touch
-* date_last_save
+- dimcustomermasterid
+- lkupclientid
+- mostrecentattendance
+- product
+- sascore
+- scoredate
+- seasonyear
+- tenuredays
 
 ** see the data dictionary section below for full descriptions of each of these fields. **
 
 ## Algorithm
-The product propensity model uses a random forest tree-based algorithm to assign a probabilty to each fan for each package type. See the *Algorithm Explanation* section for more information on the random forest algorithm.
+The retention model uses the light gradient-boosting machine (LightGBM) algorithm to assign a probabilty of renewal for each fan based on their package type. See the *Algorithm Explanation* section for more information on the LightGBM algorithm.
 
 ex. Let's say Fan XYZ has the following values for each model feature:
-* atp_last = $320
-* attended_last = 24
-* attended_prior = 140
-* events_last = 26
-* events_prior = 155
-* tenure = 1056
+- attendancepercent: 0.84
+- disttovenue: 8
+- missed_games_1: 3
+- missed_games_2: 1
+- missed_games_over_2: 0
+- recency: 0
+- renewedbeforedays: 42 
+- tenure: 1264
+- totalspent: $7010
 
-The model will score this fan and assign a probability for each package type:
-* Full Season = 0.25
-* Half Season = 0.55
-* Mini Plan = 0.20
+The model will score this fan and assign a probability that they will renew their package:
+* Score = 0.84
 
-This means the model is suggesting that this fan may be a good candidate for a Half Season package, because their features look most similar to a typical Half Season fan.
+This means the model is suggesting that this fan is very likely to renew their ticket package, because their features look similar to a typical fan that renews their same ticket package.
 
 ## Model Performance
-The product propensity model is evaluated based on 5 common machine learning performance metrics:
+The retention model is evaluated based on 5 common machine learning performance metrics:
 
 ### Accuracy
 Accuracy is a common performance metric used in machine learning that measures the overall correctness of a model's predictions. It is calculated by dividing the number of correct predictions by the total number of predictions made. It is expressed as a percentage and can range from 0% to 100%. While accuracy can be a useful metric, it can sometimes be misleading if the classes in the dataset are imbalanced.
@@ -96,31 +88,33 @@ AUC is a performance metric that measures the ability of a model to distinguish 
 
 ## Algorithm Explanation
 
-Random Forest is a group of decision trees that work together to solve a problem.
+LightGBM is like a very smart and fast teacher who helps you learn things quickly.
 
-Imagine you have a bunch of toys on the floor and you want to put them away in the right boxes. You ask your friends for help, but they might make mistakes. So, you ask many friends to help you, and you give each friend a different set of toys to put away.
+Imagine you are learning to read and your teacher has a bunch of books with different stories in them. She wants to help you learn how to read faster, so she gives you the most important words from each story and puts them on flashcards. These are words that appear a lot in the stories and will help you understand what's going on.
 
-Each friend decides where to put each toy by asking questions like, "Is this toy soft or hard?" or "Is this toy blue or green?" based on what they see. They keep asking questions together until they put all their toys away.
+LightGBM does something similar when it's trying to learn from data. Instead of books and flashcards, it has a big table of data with different columns that represent different things. For example, if we're trying to predict whether a person will buy a certain product or not, we might have columns for their age, gender, income, and so on.
 
-When all your friends are done, you can look at all the toys in their correct boxes, and you can be confident that the toys are put away correctly.
+LightGBM wants to find the most important columns, or "features," that will help it make accurate predictions. So it looks at all the columns and tries to figure out which ones are the most important. It does this by looking at lots of different examples of people who did or didn't buy the product, and seeing which columns were most helpful in predicting whether they would buy it or not.
 
-That's what Random Forest does. It uses many decision trees that work together, and each tree asks different questions to help solve a problem. When all the trees are done, they vote on the best answer, and that's the answer the Random Forest gives you.
+Once LightGBM has figured out which columns are the most important, it uses those to make its predictions. It does this by building a tree - like a decision tree - where each node represents a decision based on one of the important columns. The tree splits the data into smaller and smaller groups, and eventually makes a prediction for each group based on the examples in that group.
 
-## Multi-class Model Explanation
+Overall, LightGBM is really good at finding the most important features and making accurate predictions quickly. That's why it's such a popular algorithm for machine learning!
 
-A multi-classification model is a type of machine learning model that is designed to classify data points into multiple classes or categories.
+## Binary Classification Explanation
 
-In a multi-classification problem, there are more than two possible outcomes or classes. For example, a model might be trained to classify images of animals into categories such as dogs, cats, and birds.
+Imagine you have a box of apples, and you want to sort them into two groups: ripe apples and unripe apples. A binary classification model is like a super smart robot that can help you do this automatically.
 
-A common approach is to use an ensemble of binary classifiers, where each classifier is trained to distinguish between two classes. The final prediction is then made by combining the outputs of all the binary classifiers.
+The robot looks at each apple and decides whether it's ripe or unripe based on certain characteristics, like its color, size, and firmness. If the apple is ripe, the robot puts it in the "ripe" group, and if it's unripe, it puts it in the "unripe" group.
 
-To evaluate the performance of a multi-classification model, metrics such as accuracy, precision, recall, and F1 score can be used. These metrics measure how well the model is able to correctly classify data points into the correct classes.
+Similarly, a binary classification model looks at data and decides whether each example belongs to one of two groups, like "yes" or "no", "spam" or "not spam", "dog" or "cat", and so on. It does this by looking at certain characteristics, called "features," of each example. For example, if we're trying to classify whether an email is spam or not, the model might look at features like the words used in the email, the sender's email address, and the subject line.
 
-Overall, a multi-classification model is a powerful tool for solving complex classification problems with multiple outcomes, and can be used in a wide range of applications, from image classification to natural language processing.
+The model learns from lots of examples of data that are already labeled as belonging to one of the two groups. It tries to find patterns in the features of each example that are associated with one group or the other. Once it has learned these patterns, it can use them to make predictions on new, unseen data.
+
+So in short, a binary classification model is a tool that helps us sort things into two groups automatically based on certain characteristics, and it learns from examples of labeled data to do so.
 
 ## Pipeline Architecutre
 
-![[Pasted image 20230316101435.png]]
+![[retention-arch.png]]
 
 ## Data Dictionary
 Below is a full list of features and their definitions:
