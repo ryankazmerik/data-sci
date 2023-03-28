@@ -1,27 +1,39 @@
 ![[StellarAlgo-Full-Colour-Logo.png]]
-# Retention Model
+# Event Propensity Model
 ## Business Challenge
 
-### How can we best identify those who are most likely to renew their current ticket package from those who are less likely to renew? 
+### How can we best identify and activate on our existing fans for a larger commitment to attendance in future games?
 
-The retention model aims to help prioritize customers during the renewal process for:
+The product propensity model aims to generate the best potential leads for:
 
-### Package Buyers
-The retention model focusses on multi-game package buyers. Regardless of package type from a 'full season' ticket holder to a 'mini plan' buyer, the model looks at scoring a customer on how likely they are to renew that specific package for the next season.
+### Package Buyers Upsells
+* Full Season Buyers - what half season package buyers, and mini plan buyers may be good leads to purchase a full season package?
+* Half Season Buyers -  what mini plan buyers may be good leads to purchase a half season package?
+	  
+### Individual Ticket Buyers Upsells 
+* What individual ticket buyers may be good leads to purchase any type of package?*
 
-To solve this problem, we use a binary classification model to assess from 0 to 100, how likely it is that an individual will renew their package. For more detail on binary classification models, see the Binary Classification Model Explanation below.
+To solve this problem, we use a multi-class classification model to assess what package type might be best for each fan. For more detail on multi-class classification models, see the *Multi-class Model Explanation* section below.
 
-## Retention Score Availability
+## Lead Availability
 
-### CDP - Retention
-Retention scores provided by the retention model are available in the CDP Data Analysis: retention page:
+### CDP - Lead Recommender
+Leads provided by the product propensity model are available in the CDP Lead Recommender:
 
-![[Pasted image 20230324143916.png]]
+![[Pasted image 20230316104429.png]]
+
+Package leads for every product are capped at the top 200 until they take action. Top leads may still show up on the next day if their propensity outweighs their last action date.
+
+Individual leads are capped at 2000 until they take action. Top Leads who have been stale for >90 days will show up again and be flagged as fresh for Sales team to start re-engaging/warming them up again.
 
 ### CDP - Segment Builder
-The retention scores are also available in the CDP Segment Builder:
+A larger list of leads are also available in the CDP Segment Builder:
 
-![[Pasted image 20230324143408.png]]
+![[Pasted image 20230316102500.png]]
+
+How many leads are available can be configured on a team by team basis in the CDP. A target size of 50,000 leads is recommended for creating segments via the segment builder.
+
+
 
 ## Features
 The model is trained and scored using the following features:
@@ -124,6 +136,7 @@ Overall, a multi-classification model is a powerful tool for solving complex cla
 
 ## Data Dictionary
 Below is a full list of features and their definitions:
+
 | feature                          | featureraw                  | source                  | engineered   | description                                                                                                                                                                                                                                                     |
 |:---------------------------------|:----------------------------|:------------------------|:-------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Tenure                           | tenure                      | Ticketing               | true         | Days between first ticketing purchase date to the latest event date for a customer                                                                                                                                                                              |
