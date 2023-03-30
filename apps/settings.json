@@ -48,7 +48,7 @@
         "destination_environment": "us",
         "aws_account_id": "314383152509",
         "aws_current_profile": "QA-DataScienceAdmin",
-        "aws_profile_name": "US-StellarDataScienceAdmin",
+        "aws_profile_name": "US-DataScienceAdmin",
         "subnets": ["subnet-05da3f2092b77f05e", "subnet-0da584734b2fc368a"],
         "sgs": ["sg-0ca66936278330b2c"]
     },

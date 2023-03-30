@@ -5,7 +5,6 @@
 - Model Documentation
 - Model Promotion Solution
 	- Moving to Friday April 7
-
 - In-Market Visits
 	- Check with AM for Q2
 - MLFlow Deployment
@@ -16,7 +15,6 @@
 	- Setting up the base environment
 - License List
 	- Compile list of packages from requirements.txt and investigate license types
-- New M1/M2 laptop request
 - Catboost
 	- Research new algorithm (https://catboost.ai/)
 	- Experiment to see if it provides more value than other algorithms, see if it changes data too much (especially for NBA-Nets)
