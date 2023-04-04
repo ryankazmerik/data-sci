@@ -124,6 +124,20 @@ module "sagemaker_studio_role" {
         }
       }
     }
+
+    "AssumeRedshiftETLRole" = {
+      statements = {
+        "AllowAssumeRedshiftETLRole" = {
+          effect = "Allow"
+          actions = [
+            "sts:AssumeRole"
+          ]
+          resources = [
+            "arn:aws:iam::173696899631:role/datascience-redshift-etl"
+          ]
+        }
+      }
+    }
   }
 
   trust_relationships = {
