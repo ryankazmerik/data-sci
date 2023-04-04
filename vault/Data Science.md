@@ -1,4 +1,3 @@
-
 ## Hot Topics
 - AWS Cloud Practitioner Training
 - Centralized Logging
