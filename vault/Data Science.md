@@ -1,6 +1,7 @@
 ## Hot Topics
 - AWS Cloud Practitioner Training
 - Centralized Logging
+- G2 Model
 - Model Documentation
 - Model Promotion Solution
 	- Moving to Friday April 7
