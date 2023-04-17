@@ -135,11 +135,14 @@ This will guide you on how to install Pycaret on an M1 Mac, follow the instructi
 Steps:
 
 `conda create --name stellar python=3.8`
+
 `conda activate stellar`
+
 `conda install https://anaconda.org/conda-forge/gensim/3.8.3/download/osx-64/gensim-3.8.3-py38ha048514_4.tar.bz2`
 - this is needed because the maintainers for gensim on conda-forge didn't create gensim releases for versions <4.0.0 so we need to download it manually... from conda-forge.
 
 `conda install pycaret=2.3.10 psycopg2-binary numpy scipy pandas matplotlib boto3 jsonlines streamlit streamlit-aggrid flask xgboost plotly pandas-profiling botocore eli5 jupyterlab seaborn notebook awswrangler eli5`
+
 - this will say the environment has an inconsistency (the url for gensim). Ignore this.
 - this may take a while but it is working. You'll see a prompt for `Proceed ([y]/n)?` enter `y`
 
