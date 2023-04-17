@@ -7,8 +7,10 @@ You know, for data science...
     - [Installs](#installs)
     - [Git \& Repo \& Folder Setup](#git--repo--folder-setup)
     - [Conda (Python) Setup](#conda-python-setup)
-    - [PyODBC For M1 Mac](#pyodbc-for-m1-mac)
-    - [Pycaret for M1 Mac](#pycaret-for-m1-mac)
+      - [PyODBC For M1 Mac](#pyodbc-for-m1-mac)
+      - [Pycaret for M1 Mac](#pycaret-for-m1-mac)
+        - [Pycaret 2.3.10 (env: Stellar)](#pycaret-2310-env-stellar)
+        - [Pycaret 3.0 Pip](#pycaret-30-pip)
     - [Visual Studio Code (VSCode) Setup](#visual-studio-code-vscode-setup)
     - [AWS CLI Setup](#aws-cli-setup)
     - [Docker/Terraform/Pyodbc Setup](#dockerterraformpyodbc-setup)
@@ -49,14 +51,16 @@ The following software should be installed (The links may assume you're on Mac. 
    1. [Terminal Guide 1](https://medium.com/ayuth/iterm2-zsh-oh-my-zsh-the-most-power-full-of-terminal-on-macos-bdb2823fb04c)
    2. [Terminal Guide 2](https://dev.to/ibrahim_s/iterm2-oh-my-zsh-dracula-theme-plugins-2f9e)
       * This one installs the syntax highlighting and autocompletion plugins which are worth installing.
-4. [Minicoda (Python)](https://docs.conda.io/en/latest/miniconda.html#:~:text=Miniconda%20is%20a%20free%20minimal,zlib%20and%20a%20few%20others.)
-5. [Docker](https://docs.docker.com/desktop/mac/install/)
+4. [Mini-forge (Python)](https://github.com/conda-forge/miniforge)
+   1. This can be installed with the downloads, or by running `brew install miniforge`
+   2. Follow the steps in [The Conda (Python) Setup step](#conda-python-setup)
+5. (Optional) [Docker](https://docs.docker.com/desktop/mac/install/)
    * This may need you to run `softwareupdate --install-rosetta` if your computer has an M1 Apple chip.
 6. [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
    * This is easier with the CLI than the GUI installation. You can just copy-paste the commands into your terminal 
 
 The following installs won't work if you're on an M1 Mac:
-1. [DBeaver Community Edition]()
+1. [DBeaver Community Edition](https://dbeaver.io/)
    1. If so see section on M1 Mac Workarounds
 
 
@@ -67,9 +71,11 @@ There are only a few repos used, but the best way to keep these managed on your 
 
 The repos that are useful to pull are:
 * https://github.com/stellaralgo/data-sci
-* https://github.com/stellaralgo/datascience-shared-utilities
+* https://github.com/stellaralgo/data-sci-toolkit
 * https://github.com/stellaralgo/data-sci-product-propensity
-* https://github.com/stellaralgo/infrastructure-utilities
+* https://github.com/stellaralgo/data-sci-retention
+* https://github.com/stellaralgo/data-sci-event-propensity
+* https://github.com/stellaralgo/infrastructure-data-sci-modules
 
 
 ### Conda (Python) Setup
@@ -83,7 +89,11 @@ Generally we work in the `stellar` environment, but you can create a new environ
 
 When in a Jupyter notebook ensure that the top-right of the notebook says its running in your conda environment.
 
-### PyODBC For M1 Mac
+#### PyODBC For M1 Mac
+
+>⚠️ We don't use PyODBC as of 2023 ⚠️
+> This step can be skipped
+
 This seems to be a working solution to install Pyodbc on Mac with M1 Chips. Steps 1 and 2 *might* be optional.
 
 >⚠️ Warning ⚠️
@@ -111,86 +121,50 @@ Steps:
 5. `CPPFLAGS='-I/opt/homebrew/Cellar/unixodbc/2.3.11/include' LDFLAGS='-L/opt/homebrew/Cellar/unixodbc/2.3.11/lib' pip install`
 
 
-### Pycaret for M1 Mac
+#### Pycaret for M1 Mac
 This will guide you on how to install Pycaret on an M1 Mac, follow the instructions carefully and read every step.
 
 >⚠️ Warning ⚠️
 >
 > You need a new conda environment for this, as its going to be installing lots of packages in specific ways which may get conflicts from your pre-existing packages.
->
-> pip installing *anything* in this conda environment after could break it. if you need to update the environment be sure to make a backup or know how to revert conda environment revisions.
 
-[Essentially follow this tutorial for workaround #1](https://pareekshithkatti.medium.com/setting-up-python-for-data-science-on-m1-mac-ced8a0d05911).
+> This requires 100% of your packages to be installed in Conda UNLESS you install the package without dependencies in pip (`pip install --no-build-isolation --no-deps your_package_name`)
+> Once we move to pycaret 3.0 this won't be an issue
 
+##### Pycaret 2.3.10 (env: Stellar)
 Steps:
-1. `pip install --no-dependencies pycaret`
-2. Create a pycaret_requirements.txt file w/ the contents from the list below in this section
-3. `cat pycaret_requirements.txt | xargs -n 1 conda install`
-4. The tutorial stopped working after step 3 for me. I ended up making another requirements.txt (see below) and `pip install -r requirements.txt`
-5. I then ran step 3 above again
-   * This seemed to work. Maybe you could do step 3 and 4 in opposite orders.
 
-**List for step 2 above:**
-pandas
-scipy
-numpy
-seaborn
-matplotlib
-IPython
-joblib
-scikit-learn
-ipywidgets
-yellowbrick>=1.0.1
-lightgbm>=2.3.1
-plotly>=4.4.1
-wordcloud
-textblob
-cufflinks>=0.17.0
-umap-learn
-pyLDAvis
-gensim
-spacy
-nltk
-mlxtend>=0.17.0
-pyod
-pandas-profiling>=2.8.0
-kmodes>=0.10.1
-mlflow
-imbalanced-learn
-scikit-plot #for lift and gain charts
-Boruta
-numba
+`conda create --name stellar python=3.8`
+`conda activate stellar`
+`conda install https://anaconda.org/conda-forge/gensim/3.8.3/download/osx-64/gensim-3.8.3-py38ha048514_4.tar.bz2`
+- this is needed because the maintainers for gensim on conda-forge didn't create gensim releases for versions <4.0.0 so we need to download it manually... from conda-forge.
 
-**List for step 4 above:**
-pandas
-seaborn
-matplotlib
-IPython 
-joblib
-scikit-learn==0.23.2 
-ipywidgets 
-yellowbrick>=1.0.1 
-lightgbm>=2.3.1 
-plotly>=4.4.1 
-wordcloud 
-textblob 
-cufflinks>=0.17.0 
-umap-learn 
-pyLDAvis 
-gensim<4.0.0 
-spacy<2.4.0 
-nltk 
-mlxtend>=0.17.0 
-pyod 
-pandas-profiling>=2.8.0 
-kmodes>=0.10.1 
-mlflow 
-imbalanced-learn==0.7.0 
-scikit-plot 
-Boruta 
-pyyaml<6.0.0 
-numba<0.55
+`conda install pycaret=2.3.10 psycopg2-binary numpy scipy pandas matplotlib boto3 jsonlines streamlit streamlit-aggrid flask xgboost plotly pandas-profiling botocore eli5 jupyterlab seaborn notebook awswrangler eli5`
+- this will say the environment has an inconsistency (the url for gensim). Ignore this.
+- this may take a while but it is working. You'll see a prompt for `Proceed ([y]/n)?` enter `y`
 
+`conda install conda-build`
+- cd to data-sci-toolkit after
+
+`pip install --no-build-isolation --no-deps -e .`
+- this is like `pip install -e .` but doesn't install the dependencies listed. Instead uses the ones you have.
+
+`conda install fsspec=0.6.3 s3fs=0.4.0`
+- This will resolve the dependencies for these two libraries and awswrangler.
+
+Run `conda list` and if it shows any version of pycaret thats NOT 2.3.10, run `conda install pycaret=2.3.10` again.
+
+`conda create --clone stellar --name stellar_backup`
+
+- This will create a backup so if you break it (using pip install) you can clone the backup to a new environment
+
+##### Pycaret 3.0 Pip
+
+> This must be in a new environment, not your Stellar environment with pycaret 2.3.10
+
+You can install pycaret 3.0 with pip if you want, create a new environment, `pip install pycaret` and you're done!
+
+If you want, you can use mamba with this environment!
 
 ### Visual Studio Code (VSCode) Setup
 The VSCode setup is largely adding extensions that we use to collaborate and work in the environment. 
@@ -208,8 +182,10 @@ Below is the list of required extensions. If you copy-paste the line into the ex
 
 Optional Extensions:
 * yzhang.markdown-all-in-one
-* eamodio.gitlens
 * njpwerner.autodocstring
+* donjayamanne.githistory
+* mhutchie.git-graph
+* waderyan.gitblame
 
 ### AWS CLI Setup
 After the AWS CLI is installed you want to set up the profiles. When you set up a profile you can specify its name in boto3 to connect using that profile. For example, we will set up in this section a profile for StellarAlgo and for Explore-US to access resources in each.
@@ -243,6 +219,8 @@ region = us-east-1
 output = json
 ```
 If any of the above is different then you can update these by editing the file with vim.
+
+Reach out to Peter for their config file to get all profiles used by the team.
 
 ### Docker/Terraform/Pyodbc Setup
 >This assumes you have installed Docker and the Container extension in the above sections.
